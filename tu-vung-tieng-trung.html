@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#a5271b">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Học 学">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+<title>Tiếng Trung</title>
+<style>
+  :root {
+    --bg: #faf7f2;
+    --card: #ffffff;
+    --ink: #2b2b2b;
+    --red: #c0392b;
+    --red-dark: #96281b;
+    --gold: #b8860b;
+    --muted: #777;
+    --border: #e8e0d4;
+    --example-bg: #fdf6ec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1a17;
+      --card: #262320;
+      --ink: #e8e4dd;
+      --red: #e07b6f;
+      --red-dark: #f0a89f;
+      --gold: #d4a53a;
+      --muted: #a09a90;
+      --border: #3a352f;
+      --example-bg: #2e2a24;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    padding: 24px 16px 80px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  header {
+    text-align: center;
+    padding: 32px 16px 24px;
+    border-bottom: 3px double var(--red);
+    margin-bottom: 12px;
+  }
+  header h1 { color: var(--red); font-size: 1.9rem; margin-bottom: 6px; }
+  header p { color: var(--muted); font-size: 0.95rem; }
+  nav.toc {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    padding: 16px 0 8px;
+    position: sticky; top: 0;
+    background: var(--bg);
+    z-index: 10;
+    border-bottom: 1px solid var(--border);
+  }
+  nav.toc .tab-btn {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    color: var(--red);
+    padding: 9px 22px;
+    border-radius: 22px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  nav.toc .tab-btn:hover { border-color: var(--red); }
+  nav.toc .tab-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+  section.lesson { margin-top: 36px; }
+  section.lesson > h2 {
+    color: var(--red);
+    font-size: 1.35rem;
+    padding-left: 12px;
+    border-left: 5px solid var(--gold);
+    margin-bottom: 16px;
+  }
+  .word-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .word-head {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .hanzi {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--red-dark);
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .pinyin { color: var(--gold); font-weight: 600; font-size: 1.05rem; }
+  .meaning { color: var(--ink); font-size: 0.98rem; }
+  .example {
+    background: var(--example-bg);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+  }
+  .example .ex-cn {
+    font-size: 1.15rem;
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .example .ex-py { color: var(--gold); font-style: italic; }
+  .example .ex-vi { color: var(--muted); }
+  .speak-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.05rem;
+    padding: 0 2px;
+    line-height: 1;
+    vertical-align: middle;
+  }
+  .speak-btn:hover { transform: scale(1.2); }
+  .speak-btn.speaking { animation: pulse 0.8s infinite; }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+  .stroke-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 16px;
+    padding: 3px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .stroke-btn:hover, .stroke-btn.active { background: var(--gold); color: #fff; }
+  .stroke-panel {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    background: var(--example-bg);
+    border: 1px dashed var(--gold);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .stroke-item { text-align: center; }
+  .stroke-box {
+    width: 110px; height: 110px;
+    background-color: #fffdf8;
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    background-image:
+      linear-gradient(to right, transparent 49.4%, #e9dcc3 49.4%, #e9dcc3 50.6%, transparent 50.6%),
+      linear-gradient(to bottom, transparent 49.4%, #e9dcc3 49.4%, #e9dcc3 50.6%, transparent 50.6%);
+    cursor: pointer;
+  }
+  .stroke-label { font-size: 0.95rem; color: var(--muted); margin-top: 4px; }
+  .stroke-hint { width: 100%; font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .stroke-offline { color: var(--muted); font-style: italic; font-size: 0.9rem; }
+  /* ===== Luyện tập ===== */
+  .practice-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .practice-controls select {
+    padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--ink); font-size: 0.9rem;
+  }
+  .pr-btn {
+    background: var(--red); color: #fff; border: none;
+    border-radius: 8px; padding: 8px 16px;
+    font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  }
+  .pr-btn:hover { opacity: 0.88; }
+  .pr-btn.ok { background: #2e7d32; }
+  .pr-btn.no { background: #b8860b; }
+  #btnHide.active { outline: 3px solid var(--gold); }
+  .word-ctrl { margin-bottom: 10px; text-align: right; }
+  .flashcard {
+    background: var(--card); border: 2px solid var(--gold); border-radius: 14px;
+    min-height: 230px; display: flex; align-items: center; justify-content: center;
+    text-align: center; cursor: pointer; padding: 24px; margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .fc-hanzi {
+    font-size: 3rem; color: var(--red-dark); font-weight: 700;
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .fc-tip { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
+  .fc-pinyin { color: var(--gold); font-size: 1.3rem; font-weight: 600; margin-top: 6px; }
+  .fc-meaning { font-size: 1.05rem; margin-top: 6px; }
+  .fc-ex { margin-top: 14px; font-size: 1.05rem; }
+  .fc-ex span { color: var(--muted); font-size: 0.9rem; }
+  .flash-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .flash-progress { color: var(--muted); font-size: 0.85rem; margin-bottom: 10px; }
+  .flash-done {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; text-align: center; font-size: 1.05rem; line-height: 2.2;
+  }
+  .quiz-q {
+    font-size: 1.15rem; margin-bottom: 14px; background: var(--card);
+    padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border);
+  }
+  .quiz-q .fc-hanzi { font-size: 2rem; }
+  .quiz-opts {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px; margin-bottom: 14px;
+  }
+  .quiz-opt {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; font-size: 1rem; cursor: pointer; color: var(--ink); text-align: left;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--gold); }
+  .quiz-opt.right { border-color: #2e7d32; background: rgba(46,125,50,0.14); }
+  .quiz-opt.wrong { border-color: #c62828; background: rgba(198,40,40,0.14); }
+  .write-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; }
+  .write-box { width: 150px; height: 150px; touch-action: none; }
+  .write-input {
+    font-size: 1.7rem; padding: 8px 16px; border-radius: 10px;
+    border: 2px solid var(--gold); background: var(--card); color: var(--ink);
+    width: 240px; max-width: 60vw; text-align: center;
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .write-input:focus { outline: none; border-color: var(--red); }
+  .dict-search { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dict-search input {
+    flex: 1 1 260px; font-size: 1.1rem; padding: 10px 14px; border-radius: 10px;
+    border: 2px solid var(--gold); background: var(--card); color: var(--ink);
+  }
+  .dict-search input:focus { outline: none; border-color: var(--red); }
+  #dictSuggest {
+    display: none; margin-top: 6px; border: 1.5px solid var(--gold); border-radius: 10px;
+    background: var(--card); max-height: 340px; overflow-y: auto;
+  }
+  .sug-item { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .sug-item:last-child { border-bottom: none; }
+  .sug-item:hover { background: var(--example-bg); }
+  .sug-hz { font-weight: 700; color: var(--red-dark); font-size: 1.15rem; font-family: "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; }
+  .sug-py { color: var(--gold); font-size: 0.85rem; }
+  .sug-vi { color: var(--muted); font-size: 0.9rem; flex: 1 1 140px; }
+  .dict-entry {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .dict-entry .d-hanzi {
+    font-size: 1.6rem; font-weight: 700; color: var(--red-dark);
+    font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    cursor: pointer;
+  }
+  .dict-entry .d-py { color: var(--gold); font-weight: 600; }
+  .dict-entry .d-vi { flex: 1 1 200px; color: var(--ink); }
+  .dict-entry .d-en { color: var(--muted); font-size: 0.85rem; font-style: italic; }
+  .dict-entry .d-save { margin-left: auto; white-space: nowrap; }
+  .dict-entry .d-save.saved { background: #2e7d32; }
+  .d-pos { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+  .d-ex { flex: 1 1 100%; margin-top: 4px; font-size: 0.92rem; color: var(--ink); background: var(--example-bg); border-radius: 6px; padding: 5px 9px; }
+  .d-ex .d-ex-py { color: var(--gold); font-style: italic; font-size: 0.85rem; }
+  .d-ex .d-ex-tr { color: var(--muted); }
+
+  .cw-pos { color: var(--muted); font-size: 0.78rem; font-style: italic; }
+  .dict-edit-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; background: var(--example-bg); border: 1px dashed var(--gold); border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; }
+  .dict-edit-row .de-input { flex: 1 1 220px; font-size: 1rem; padding: 7px 10px; border-radius: 8px; border: 1.5px solid var(--gold); background: var(--card); color: var(--ink); }
+  .dict-edit-row .de-input:focus { outline: none; border-color: var(--red); }
+
+  .dict-collbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; font-size: 0.9rem; }
+  .dict-collbar select { padding: 6px 10px; border-radius: 8px; border: 1.5px solid var(--gold); background: var(--card); color: var(--ink); font-size: 0.9rem; }
+  .coll-create { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .coll-create input {
+    flex: 1 1 240px; font-size: 1rem; padding: 8px 12px; border-radius: 10px;
+    border: 2px solid var(--gold); background: var(--card); color: var(--ink);
+  }
+  .coll-create input:focus { outline: none; border-color: var(--red); }
+  .coll-box { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+  .coll-box-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .coll-box-head .cb-name { font-size: 1.1rem; font-weight: 700; color: var(--red); }
+  .coll-box-head .cb-count { color: var(--muted); font-size: 0.85rem; }
+  .coll-box-head .cb-actions { margin-left: auto; display: flex; gap: 6px; }
+  .coll-mini { background: transparent; border: 1px solid var(--border); color: var(--ink); border-radius: 8px; padding: 3px 10px; font-size: 0.82rem; cursor: pointer; }
+  .coll-mini:hover { border-color: var(--red); color: var(--red); }
+  #profileBar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 12px; font-size: 0.9rem; color: var(--ink);
+  }
+  #profileBar select {
+    padding: 5px 10px; border-radius: 8px; border: 1.5px solid var(--gold);
+    background: var(--card); color: var(--ink); font-size: 0.9rem; font-weight: 600;
+  }
+  .coll-word { display: flex; align-items: center; gap: 12px; padding: 6px 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .coll-word:last-child { border-bottom: none; }
+  .coll-word .cw-hanzi { font-size: 1.3rem; font-weight: 700; color: var(--red-dark); font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; cursor: pointer; }
+  .coll-word .cw-py { color: var(--gold); font-weight: 600; font-size: 0.9rem; }
+  .coll-word .cw-mean { flex: 1 1 160px; color: var(--ink); font-size: 0.92rem; }
+  .coll-word .cw-del { margin-left: auto; background: transparent; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; }
+  .coll-word .cw-del:hover { color: var(--red); }
+  .coll-word.is-sentence .cw-hanzi { font-size: 1.05rem; line-height: 1.5; }
+  .cw-thumb { width: 42px; height: 42px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); flex: 0 0 auto; }
+  .img-picker {
+    background: var(--example-bg); border: 1px dashed var(--gold); border-radius: 10px;
+    padding: 12px; margin: 4px 0 10px;
+  }
+  .img-picker .ip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .img-picker input { flex: 1 1 180px; font-size: 0.95rem; padding: 7px 10px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); color: var(--ink); }
+  .img-picker input:focus { outline: none; border-color: var(--red); }
+  .img-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+  .img-grid img {
+    width: 100%; height: 90px; object-fit: cover; border-radius: 8px; cursor: pointer;
+    border: 2px solid transparent; background: var(--card);
+  }
+  .img-grid img:hover { border-color: var(--red); }
+  .fc-img { max-width: 220px; max-height: 180px; border-radius: 12px; margin: 0 auto 12px; display: block; object-fit: cover; }
+  .drill-img { max-width: 150px; max-height: 120px; border-radius: 10px; margin: 6px auto 0; display: block; object-fit: cover; }
+  .sent-tag { font-size: 0.7rem; background: var(--gold); color: #fff; border-radius: 6px; padding: 1px 6px; margin-right: 4px; }
+  .sent-add {
+    background: var(--example-bg); border: 1px dashed var(--gold); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .sent-add input, .sent-add select {
+    font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--card); color: var(--ink); width: 100%;
+  }
+  .sent-add input:focus { outline: none; border-color: var(--red); }
+  .sent-add .sent-py-row { display: flex; gap: 8px; }
+  .sent-add .sent-py-row input { flex: 1; }
+  .sent-add .cn-input { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 1.15rem; }
+  .listen-reveal { margin-top: 10px; font-size: 1rem; }
+  .listen-reveal .fc-pinyin { font-size: 1.05rem; }
+  .level-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 700;
+    padding: 2px 9px; border-radius: 12px; margin-left: 8px;
+    border: 1.5px solid var(--border); white-space: nowrap; line-height: 1.5;
+  }
+  .level-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .level-stat {
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 7px 12px; font-size: 0.8rem; text-align: center; min-width: 82px; flex: 1 1 82px;
+  }
+  .level-stat b { display: block; font-size: 1.35rem; line-height: 1.3; }
+  .fc-level { font-size: 0.95rem; margin-top: 8px; }
+  body.hide-vi .word-card .meaning,
+  body.hide-vi .example .ex-vi {
+    filter: blur(6px); cursor: pointer; transition: filter 0.2s;
+  }
+  body.hide-vi .word-card .meaning:hover,
+  body.hide-vi .example .ex-vi:hover { filter: none; }
+  footer {
+    margin-top: 48px; text-align: center;
+    color: var(--muted); font-size: 0.85rem;
+    border-top: 1px solid var(--border); padding-top: 16px;
+  }
+  .grammar-note {
+    background: var(--card);
+    border: 1px dashed var(--gold);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🇨🇳 Tiếng Trung</h1>
+  <p>Tra từ điển · Tạo bộ sưu tập của riêng anh · Luyện 4 kỹ năng &amp; lên cấp</p>
+  <div id="profileBar"></div>
+  <div style="margin-top:8px"><button id="voiceToggle" class="coll-mini">🗣️ Giọng đọc: …</button></div>
+  <div style="margin-top:10px">
+    <a href="hoc-tieng-anh.html" style="display:inline-block;margin:0 5px;color:var(--gold);text-decoration:none;font-weight:700;font-size:0.9rem;border:1.5px solid var(--gold);border-radius:16px;padding:4px 14px">🇬🇧 Chuyển sang Tiếng Anh</a>
+    <a href="index.html" style="display:inline-block;margin:0 5px;color:var(--muted);text-decoration:none;font-weight:600;font-size:0.9rem;border:1px solid var(--border);border-radius:16px;padding:4px 12px">🏠 Trang chủ</a>
+  </div>
+</header>
+<script>
+// ===== Hồ sơ người học: tách dữ liệu theo từng người (namespace localStorage). Chạy TRƯỚC mọi script khác. =====
+(function () {
+  var PKEY = 'hsk_profiles', AKEY = 'hsk_active_profile', SKEY = 'hsk_profile_seq';
+  var NS_KEYS = ['hsk_collections', 'hsk_active_coll', 'hsk_coll_seq', 'hsk_collection', 'hsk_prog_v2', 'hsk_levels_v1', 'hsk_testmode', 'hsk_notify'];
+  function ld(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
+  function loadProfiles() { try { return JSON.parse(localStorage.getItem(PKEY)) || []; } catch (e) { return []; } }
+  function saveProfiles(l) { try { localStorage.setItem(PKEY, JSON.stringify(l)); } catch (e) {} }
+  function nextPid() { var n = parseInt(ld(SKEY, '0'), 10) || 0; n++; try { localStorage.setItem(SKEY, String(n)); } catch (e) {} return 'p' + n; }
+
+  var profs = loadProfiles();
+  if (!profs.length) {
+    var pid0 = nextPid();
+    profs = [{ id: pid0, name: 'Người học 1' }];
+    saveProfiles(profs);
+    try { localStorage.setItem(AKEY, pid0); } catch (e) {}
+    // Chuyển dữ liệu cũ (trước khi có hồ sơ) vào "Người học 1"
+    NS_KEYS.forEach(function (k) {
+      try {
+        var v = localStorage.getItem(k);
+        if (v != null && localStorage.getItem('u:' + pid0 + ':' + k) == null) localStorage.setItem('u:' + pid0 + ':' + k, v);
+      } catch (e) {}
+    });
+  }
+  var active = ld(AKEY, null);
+  if (!active || !profs.some(function (p) { return p.id === active; })) {
+    active = profs[0].id;
+    try { localStorage.setItem(AKEY, active); } catch (e) {}
+  }
+  window.ACTIVE_PID = active;
+  window.uk = function (name) { return 'u:' + active + ':' + name; };
+
+  function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function render() {
+    var bar = document.getElementById('profileBar');
+    if (!bar) return;
+    var list = loadProfiles();
+    bar.innerHTML = '👤 Người học: ' +
+      '<select id="profSelect">' + list.map(function (p) {
+        return '<option value="' + p.id + '"' + (p.id === active ? ' selected' : '') + '>' + esc(p.name) + '</option>';
+      }).join('') + '</select>' +
+      ' <button class="coll-mini" id="profAdd">➕ Thêm</button>' +
+      ' <button class="coll-mini" id="profRen">✏️ Đổi tên</button>' +
+      ' <button class="coll-mini" id="profDel">🗑 Xóa</button>';
+    document.getElementById('profSelect').addEventListener('change', function () {
+      try { localStorage.setItem(AKEY, this.value); } catch (e) {}
+      location.reload();
+    });
+    document.getElementById('profAdd').addEventListener('click', function () {
+      var name = prompt('Tên người học mới:', '');
+      if (!name || !name.trim()) return;
+      var l = loadProfiles(), id = nextPid();
+      l.push({ id: id, name: name.trim() }); saveProfiles(l);
+      try { localStorage.setItem(AKEY, id); } catch (e) {}
+      location.reload();
+    });
+    document.getElementById('profRen').addEventListener('click', function () {
+      var l = loadProfiles(), cur = l.filter(function (p) { return p.id === active; })[0];
+      var name = prompt('Tên mới:', cur ? cur.name : '');
+      if (!name || !name.trim()) return;
+      l.forEach(function (p) { if (p.id === active) p.name = name.trim(); });
+      saveProfiles(l); render();
+    });
+    document.getElementById('profDel').addEventListener('click', function () {
+      var l = loadProfiles();
+      if (l.length <= 1) { alert('Phải còn ít nhất 1 người học. Hãy tạo người khác trước khi xóa.'); return; }
+      if (!confirm('Xóa người học "' + (l.filter(function (p) { return p.id === active; })[0] || {}).name + '" cùng TOÀN BỘ dữ liệu học của họ? Không hoàn tác được.')) return;
+      NS_KEYS.forEach(function (k) { try { localStorage.removeItem('u:' + active + ':' + k); } catch (e) {} });
+      l = l.filter(function (p) { return p.id !== active; }); saveProfiles(l);
+      try { localStorage.setItem(AKEY, l[0].id); } catch (e) {}
+      location.reload();
+    });
+  }
+  if (document.getElementById('profileBar')) render();
+  else document.addEventListener('DOMContentLoaded', render);
+})();
+</script>
+
+<nav class="toc" id="tabBar">
+  <button class="tab-btn" data-tab="luyentap">🎯 Luyện tập</button>
+  <button class="tab-btn" data-tab="tudien">📖 Từ điển</button>
+  <button class="tab-btn" data-tab="nguphap">📘 Ngữ pháp</button>
+  <button class="tab-btn" data-tab="baisuutap">⭐ Bộ sưu tập</button>
+  <button class="tab-btn" data-tab="hoithoai">💬 Hội thoại</button>
+  <button class="tab-btn" data-tab="luyenviet">✍️ Luyện viết</button>
+</nav>
+
+<!-- ============ TỪ ĐIỂN ============ -->
+<section class="lesson" id="tudien">
+<h2>📖 Từ điển Trung – Việt</h2>
+<p style="color:var(--muted);font-size:0.9rem;margin-bottom:12px">Gõ <strong>chữ Hán</strong>, <strong>pinyin</strong> (vd: <em>nihao</em>) hoặc <strong>nghĩa tiếng Việt</strong> để tra. Chọn <strong>bộ sưu tập</strong> muốn lưu vào, rồi bấm <strong>➕ Lưu</strong> ở từ phù hợp. (~26.000 từ, nguồn mở CC BY-SA.)</p>
+<div class="dict-search">
+  <input id="dictInput" type="text" autocomplete="off" spellcheck="false" placeholder="Tra từ: 你好 / nihao / xin chào…">
+  <button class="pr-btn" id="dictBtn">🔍 Tra</button>
+</div>
+<div id="dictSuggest"></div>
+<div class="dict-collbar">
+  <span>💾 Lưu vào:</span>
+  <select id="dictCollSelect"></select>
+  <button class="coll-mini" id="dictCollNew">➕ Bộ mới</button>
+  <button class="coll-mini" id="dictCreateBtn">✍️ Tự tạo từ</button>
+</div>
+<div id="dictCreate"></div>
+<div id="dictResults" style="margin-top:14px"></div>
+</section>
+
+<!-- ============ BỘ SƯU TẬP ============ -->
+<section class="lesson" id="baisuutap">
+<h2>⭐ Bộ sưu tập của tôi <span id="collCount" style="font-size:0.9rem;color:var(--muted);font-weight:400"></span></h2>
+<p style="color:var(--muted);font-size:0.9rem;margin-bottom:12px">Tạo nhiều bộ, tự đặt tên để sắp xếp từ anh tra được. Khi luyện tập, tất cả từ trong mọi bộ được <strong>gộp chung</strong> vào kho học (chọn bài "⭐ Bộ sưu tập của tôi" để luyện riêng các từ đã lưu). Thêm/xóa từ xong nhớ bấm 🔄 Tải lại.</p>
+<div class="coll-create">
+  <input id="collNewName" type="text" autocomplete="off" placeholder="Tên bộ mới, vd: Từ công việc, Ôn thi HSK2…">
+  <button class="pr-btn" id="collCreateBtn">➕ Tạo bộ sưu tập</button>
+</div>
+<div class="sent-add">
+  <strong>🗣️ Thêm câu để luyện nói</strong> <span style="color:var(--muted);font-size:0.85rem">— câu có đầy đủ tính năng như từ (4 kỹ năng + lên cấp)</span>
+  <select id="sentColl"></select>
+  <input id="sentHanzi" class="cn-input" type="text" autocomplete="off" placeholder="Câu chữ Hán, vd: 你好，我叫大卫。">
+  <div class="sent-py-row">
+    <input id="sentPy" type="text" autocomplete="off" placeholder="Pinyin (bấm ✨ Tạo pinyin hoặc tự gõ)">
+    <button class="coll-mini" id="sentPyBtn">✨ Tạo pinyin</button>
+  </div>
+  <input id="sentMean" type="text" autocomplete="off" placeholder="Nghĩa tiếng Việt của câu">
+  <button class="pr-btn" id="sentSave">➕ Lưu câu vào bộ</button>
+</div>
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+  <input id="collSearch" type="text" autocomplete="off" placeholder="🔍 Tìm nhanh trong từ đã lưu (gõ chữ Hán, pinyin hoặc nghĩa)…"
+         style="flex:1;padding:10px 13px;border:1.5px solid var(--gold);border-radius:10px;font-size:1rem;background:var(--card);color:var(--ink)">
+  <button class="coll-mini" id="collSearchClear" title="Xóa ô tìm kiếm">✖ Xóa</button>
+</div>
+<div id="collList"></div>
+</section>
+<script>
+// ===== Kho bộ sưu tập (nhiều bộ, tự đặt tên) — chạy sớm để hệ thống học nhận được =====
+window.CollStore = (function () {
+  var K = window.uk || function (n) { return n; };
+  var KEY = K('hsk_collections'), ACT = K('hsk_active_coll'), SEQ = K('hsk_coll_seq');
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+  function save(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
+  function nextId() {
+    var n = 0; try { n = parseInt(localStorage.getItem(SEQ) || '0', 10) || 0; } catch (e) {}
+    n++; try { localStorage.setItem(SEQ, String(n)); } catch (e) {}
+    return 'c' + n;
+  }
+  // Chuyển dữ liệu cũ (một bộ phẳng hsk_collection) sang bộ mặc định
+  (function migrate() {
+    if (load().length) return;
+    try {
+      var old = JSON.parse(localStorage.getItem(K('hsk_collection')));
+      if (old && old.length) {
+        save([{ id: nextId(), name: 'Bộ sưu tập của tôi', words: old }]);
+        localStorage.removeItem(K('hsk_collection'));
+      }
+    } catch (e) {}
+  })();
+  return {
+    all: load,
+    create: function (name) {
+      name = (name || '').trim(); if (!name) return null;
+      var list = load(), id = nextId();
+      list.push({ id: id, name: name, words: [] }); save(list);
+      this.setActive(id); return id;
+    },
+    rename: function (id, name) {
+      name = (name || '').trim(); if (!name) return;
+      var list = load(); list.forEach(function (c) { if (c.id === id) c.name = name; }); save(list);
+    },
+    remove: function (id) { save(load().filter(function (c) { return c.id !== id; })); },
+    addWord: function (id, word) {
+      var list = load(), ok = false;
+      list.forEach(function (c) {
+        if (c.id === id && !c.words.some(function (w) { return w.hanzi === word.hanzi; })) { c.words.push(word); ok = true; }
+      });
+      save(list); return ok;
+    },
+    setImg: function (id, hanzi, url) {
+      var list = load();
+      list.forEach(function (c) {
+        if (c.id === id) c.words.forEach(function (w) { if (w.hanzi === hanzi) { if (url) w.img = url; else delete w.img; } });
+      });
+      save(list);
+    },
+    removeWord: function (id, hanzi) {
+      var list = load();
+      list.forEach(function (c) { if (c.id === id) c.words = c.words.filter(function (w) { return w.hanzi !== hanzi; }); });
+      save(list);
+    },
+    getActive: function () {
+      var list = load(); if (!list.length) return null;
+      var a = null; try { a = localStorage.getItem(ACT); } catch (e) {}
+      return (a && list.some(function (c) { return c.id === a; })) ? a : list[0].id;
+    },
+    setActive: function (id) { try { localStorage.setItem(ACT, id); } catch (e) {} }
+  };
+})();
+</script>
+<script>
+// ===== Giao diện quản lý bộ sưu tập =====
+(function () {
+  var listEl = document.getElementById('collList');
+  var countEl = document.getElementById('collCount');
+  var createBtn = document.getElementById('collCreateBtn');
+  var nameInput = document.getElementById('collNewName');
+  if (!listEl) return;
+  var esc = function (s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+  var bar = null;
+  function markChanged() {
+    if (bar) return;
+    bar = document.createElement('div');
+    bar.style.cssText = 'position:sticky;bottom:8px;margin-top:14px;background:var(--gold);color:#fff;padding:12px 16px;border-radius:10px;text-align:center;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,0.2)';
+    bar.innerHTML = 'Bộ sưu tập đã thay đổi. <button class="pr-btn" style="background:#fff;color:var(--red);margin-left:8px" onclick="location.reload()">🔄 Tải lại để cập nhật bài học</button>';
+    listEl.parentNode.appendChild(bar);
+  }
+  function render() {
+    var list = CollStore.all();
+    var total = list.reduce(function (s, c) { return s + c.words.length; }, 0);
+    if (countEl) countEl.textContent = list.length ? '(' + list.length + ' bộ · ' + total + ' mục)' : '';
+    fillSentColl();
+    if (!list.length) {
+      listEl.innerHTML = '<p style="color:var(--muted)">Chưa có bộ nào. Gõ tên rồi bấm ➕ Tạo bộ sưu tập để bắt đầu.</p>';
+      return;
+    }
+    var searchEl = document.getElementById('collSearch');
+    var q = ((searchEl && searchEl.value) || '').trim().toLowerCase();
+    var nHit = 0;
+    listEl.innerHTML = (q ? '<div id="collSearchInfo" style="color:var(--muted);font-size:0.88rem;margin-bottom:8px"></div>' : '') + list.map(function (c) {
+      var wlist = q ? c.words.filter(function (w) {
+        return ((w.hanzi || '').toLowerCase().indexOf(q) !== -1)
+          || ((w.pinyin || '').toLowerCase().indexOf(q) !== -1)
+          || ((w.meaning || '').toLowerCase().indexOf(q) !== -1);
+      }) : c.words;
+      nHit += wlist.length;
+      if (q && !wlist.length) return '';            // đang tìm: ẩn bộ không có kết quả
+      var words = wlist.length
+        ? wlist.map(function (w) {
+            var isS = w.type === 'sentence';
+            return '<div class="coll-word' + (isS ? ' is-sentence' : '') + '" data-h="' + esc(w.hanzi) + '">' +
+              (w.img ? '<img class="cw-thumb" src="' + esc(w.img) + '" alt="">' : '') +
+              (isS ? '<span class="sent-tag">🗣️ Câu</span>' : '') +
+              '<span class="cw-hanzi" title="Nghe">' + esc(w.hanzi) + '</span>' +
+              '<span class="cw-py">' + esc(w.pinyin) + '</span>' +
+              (w.pos && !isS ? '<span class="cw-pos">(' + esc(w.pos) + ')</span>' : '') +
+              '<span class="cw-mean">' + esc(w.meaning) + '</span>' +
+              '<button class="coll-mini cw-img" title="Thêm/đổi ảnh minh họa">🖼️</button>' +
+              '<button class="cw-del" title="Xóa khỏi bộ này">✖</button>' +
+            '</div>';
+          }).join('')
+        : '<p style="color:var(--muted);font-size:0.88rem;margin:4px 0">Bộ trống — lưu từ ở 📖 Từ điển hoặc thêm câu ở trên.</p>';
+      return '<div class="coll-box" data-id="' + c.id + '">' +
+        '<div class="coll-box-head"><span class="cb-name">⭐ ' + esc(c.name) + '</span>' +
+        '<span class="cb-count">' + wlist.length + ' từ</span>' +
+        '<span class="cb-actions"><button class="coll-mini cb-rename">✏️ Đổi tên</button>' +
+        '<button class="coll-mini cb-del">🗑 Xóa bộ</button></span></div>' + words + '</div>';
+    }).join('');
+    var infoEl = document.getElementById('collSearchInfo');
+    if (infoEl) infoEl.innerHTML = nHit
+      ? '🔍 Tìm thấy <strong>' + nHit + '</strong> mục khớp “' + esc(q) + '”'
+      : '🔍 Không tìm thấy mục nào khớp “' + esc(q) + '” — anh thử gõ ngắn hơn nhé.';
+    listEl.querySelectorAll('.coll-box').forEach(function (box2) {
+      var id = box2.getAttribute('data-id');
+      box2.querySelector('.cb-rename').addEventListener('click', function () {
+        var name = prompt('Tên mới cho bộ sưu tập:', '');
+        if (name && name.trim()) { CollStore.rename(id, name.trim()); render(); }
+      });
+      box2.querySelector('.cb-del').addEventListener('click', function () {
+        if (confirm('Xóa bộ sưu tập này? Các từ trong bộ sẽ bị gỡ khỏi bài học.')) { CollStore.remove(id); render(); markChanged(); }
+      });
+      box2.querySelectorAll('.coll-word').forEach(function (row) {
+        var h = row.getAttribute('data-h');
+        row.querySelector('.cw-hanzi').addEventListener('click', function () { if (window.speakChinese) speakChinese(h, null); });
+        row.querySelector('.cw-del').addEventListener('click', function () { CollStore.removeWord(id, h); render(); markChanged(); });
+        row.querySelector('.cw-img').addEventListener('click', function () { openPicker(id, h, row); });
+      });
+    });
+  }
+
+  // ----- Tìm & chọn ảnh minh họa (Openverse, ảnh trên mạng) -----
+  // Tìm ảnh từ 3 nguồn, xếp tranh minh họa ARASAAC (rõ nghĩa nhất) lên đầu
+  function searchImages(term, cb) {
+    if (!term) { cb([]); return; }
+    var t = encodeURIComponent(term);
+    var aPic = [], bPhoto = [], cWiki = [], pending = 3;
+    function finish() { if (--pending <= 0) cb(aPic.concat(bPhoto, cWiki)); }
+    // 1) ARASAAC — tranh minh họa chuyên cho học ngôn ngữ
+    fetch('https://api.arasaac.org/api/pictograms/en/search/' + t)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (Array.isArray(d)) d.slice(0, 8).forEach(function (x) {
+          if (x && x._id) aPic.push('https://static.arasaac.org/pictograms/' + x._id + '/' + x._id + '_300.png');
+        });
+      })
+      .catch(function () {}).then(finish);
+    // 2) Openverse — ảnh thật
+    fetch('https://api.openverse.org/v1/images/?q=' + t + '&page_size=8&mature=false')
+      .then(function (r) { return r.json(); })
+      .then(function (d) { (d.results || []).forEach(function (x) { var u = x.thumbnail || x.url; if (u) bPhoto.push(u); }); })
+      .catch(function () {}).then(finish);
+    // 3) Wikimedia Commons — ảnh thật bổ sung
+    fetch('https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url&iiurlwidth=300&gsrsearch=' + t)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var pages = (d.query && d.query.pages) || {};
+        Object.keys(pages).forEach(function (k) {
+          var ii = pages[k].imageinfo && pages[k].imageinfo[0];
+          if (ii && ii.thumburl) cWiki.push(ii.thumburl);
+        });
+      })
+      .catch(function () {}).then(finish);
+  }
+  // Đọc ảnh từ máy → thu nhỏ & nén lại (tránh làm đầy bộ nhớ trình duyệt)
+  function fileToSmallDataUrl(file, cb) {
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      var img = new Image();
+      img.onload = function () {
+        var MAX = 400, w = img.width, h = img.height;
+        if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        else if (h >= w && h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        try {
+          var cv = document.createElement('canvas');
+          cv.width = w; cv.height = h;
+          cv.getContext('2d').drawImage(img, 0, 0, w, h);
+          cb(cv.toDataURL('image/jpeg', 0.82));
+        } catch (e) { cb(ev.target.result); }
+      };
+      img.onerror = function () { cb(''); };
+      img.src = ev.target.result;
+    };
+    reader.onerror = function () { cb(''); };
+    reader.readAsDataURL(file);
+  }
+  // Nhờ AI (Ollama) nghĩ từ khóa hình ảnh CỤ THỂ bằng tiếng Anh
+  function aiImageKeyword(word, meaning, cb) {
+    var mdl = 'qwen2.5:7b';
+    try { mdl = localStorage.getItem((window.uk || function (n) { return n; })('hsk_ollama_model')) || mdl; } catch (e) {}
+    var p = 'Học viên đang học từ tiếng Trung "' + word + '"' + (meaning ? ' (nghĩa tiếng Việt: ' + meaning + ')' : '') + '. '
+      + 'Hãy nghĩ ra MỘT cụm từ khóa TIẾNG ANH ngắn (2-5 từ) mô tả một CẢNH CỤ THỂ có thể chụp ảnh hoặc vẽ được, giúp minh họa và ghi nhớ từ này. '
+      + 'Ví dụ: 谦虚 -> "person bowing politely"; 节约 -> "coins in piggy bank". '
+      + 'Chỉ trả về JSON: {"keyword":"<cụm từ khóa tiếng Anh>"}';
+    fetch('http://localhost:11434/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: mdl, keep_alive: '30m', stream: false, format: 'json', messages: [{ role: 'user', content: p }] })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var c = (d && d.message && d.message.content) || '', k = '';
+        try { k = (JSON.parse(c).keyword || '').trim(); } catch (e) {}
+        cb(k);
+      })
+      .catch(function () { cb(''); });
+  }
+  function openPicker(collId, hanzi, rowEl) {
+    var old = document.getElementById('imgPicker');
+    if (old) old.parentNode.removeChild(old);
+    var word = null;
+    CollStore.all().forEach(function (c) { if (c.id === collId) c.words.forEach(function (w) { if (w.hanzi === hanzi) word = w; }); });
+    if (!word) return;
+    var term = word.english || '';   // chỉ dùng từ tiếng Anh; chữ Hán/nghĩa Việt tìm ảnh không ra
+    var box = document.createElement('div');
+    box.className = 'img-picker'; box.id = 'imgPicker';
+    box.innerHTML =
+      '<div class="ip-row"><input id="ipTerm" type="text" value="' + esc(term) + '" placeholder="Từ khóa tiếng Anh — hoặc bấm ✨ để AI gợi ý">' +
+      '<button class="pr-btn" id="ipSearch">🔍 Tìm ảnh</button>' +
+      (['localhost', '127.0.0.1'].indexOf(location.hostname) === -1 ? '' : '<button class="coll-mini" id="ipAI" title="Từ trừu tượng khó tìm ảnh? Nhờ AI nghĩ ra cảnh cụ thể để minh họa">✨ AI gợi ý từ khóa</button>') +
+      '<label class="coll-mini" style="cursor:pointer" title="Dùng ảnh có sẵn trong máy anh">📁 Ảnh từ máy<input id="ipFile" type="file" accept="image/*" style="display:none"></label>' +
+      (word.img ? '<button class="coll-mini" id="ipRemove">🚫 Gỡ ảnh</button>' : '') +
+      '<button class="coll-mini" id="ipClose">Đóng</button></div>' +
+      '<div class="img-grid" id="ipGrid"><span style="color:var(--muted);font-size:0.85rem">Đang tìm ảnh…</span></div>';
+    rowEl.parentNode.insertBefore(box, rowEl.nextSibling);
+    var grid = box.querySelector('#ipGrid');
+    function doSearch() {
+      grid.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">⏳ Đang tìm ảnh trên mạng…</span>';
+      searchImages(box.querySelector('#ipTerm').value.trim(), function (urls) {
+        if (urls === null) { grid.innerHTML = '<span style="color:var(--red);font-size:0.85rem">⚠️ Không tải được ảnh (cần internet). Thử lại sau nhé.</span>'; return; }
+        if (!urls.length) { grid.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">Không thấy ảnh nào. Anh thử từ khóa khác (tiếng Anh).</span>'; return; }
+        grid.innerHTML = urls.map(function (u) { return '<img src="' + esc(u) + '" loading="lazy" alt="">'; }).join('');
+        grid.querySelectorAll('img').forEach(function (im) {
+          im.addEventListener('click', function () { CollStore.setImg(collId, hanzi, im.getAttribute('src')); render(); markChanged(); });
+        });
+      });
+    }
+    box.querySelector('#ipSearch').addEventListener('click', doSearch);
+    box.querySelector('#ipTerm').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
+    var fileInp = box.querySelector('#ipFile');
+    if (fileInp) fileInp.addEventListener('change', function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      if (!/^image\//.test(f.type)) { alert('Anh chọn file ảnh nhé (jpg, png, webp…).'); return; }
+      grid.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">⏳ Đang xử lý ảnh từ máy…</span>';
+      fileToSmallDataUrl(f, function (url) {
+        if (!url) { grid.innerHTML = '<span style="color:var(--red);font-size:0.85rem">⚠️ Không đọc được ảnh này. Anh thử ảnh khác nhé.</span>'; return; }
+        CollStore.setImg(collId, hanzi, url);
+        var ok = false;
+        CollStore.all().forEach(function (c) { if (c.id === collId) c.words.forEach(function (w) { if (w.hanzi === hanzi && w.img === url) ok = true; }); });
+        if (!ok) { alert('⚠️ Bộ nhớ trình duyệt đã đầy nên chưa lưu được ảnh.\nAnh thử gỡ bớt ảnh ở vài từ khác rồi làm lại nhé.'); return; }
+        render(); markChanged();
+      });
+    });
+    var aiBtn = box.querySelector('#ipAI');
+    if (aiBtn) aiBtn.addEventListener('click', function () {
+      aiBtn.disabled = true; aiBtn.textContent = '⏳ AI đang nghĩ…';
+      grid.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">✨ AI đang nghĩ từ khóa hình ảnh cho “' + esc(word.hanzi) + '”…</span>';
+      aiImageKeyword(word.hanzi, word.meaning, function (k) {
+        aiBtn.disabled = false; aiBtn.textContent = '✨ AI gợi ý từ khóa';
+        if (!k) { grid.innerHTML = '<span style="color:var(--red);font-size:0.85rem">⚠️ Chưa nhờ được AI (cần Ollama đang chạy). Anh tự gõ từ khóa tiếng Anh nhé.</span>'; return; }
+        box.querySelector('#ipTerm').value = k;
+        doSearch();
+      });
+    });
+    box.querySelector('#ipClose').addEventListener('click', function () { box.parentNode.removeChild(box); });
+    var rm = box.querySelector('#ipRemove');
+    if (rm) rm.addEventListener('click', function () { CollStore.setImg(collId, hanzi, ''); render(); markChanged(); });
+    if (term) doSearch();
+    else grid.innerHTML = '<span style="color:var(--muted);font-size:0.85rem">Từ này chưa có bản tiếng Anh nên chưa tìm được ảnh. Anh bấm <strong>✨ AI gợi ý từ khóa</strong> để AI nghĩ giúp, hoặc tự gõ từ khóa tiếng Anh rồi bấm 🔍.</span>';
+  }
+  createBtn.addEventListener('click', function () {
+    var name = (nameInput.value || '').trim();
+    if (!name) { alert('Anh nhập tên bộ sưu tập nhé.'); nameInput.focus(); return; }
+    CollStore.create(name); nameInput.value = ''; render();
+    if (window.fillDictCollSelect) window.fillDictCollSelect();
+  });
+  nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') createBtn.click(); });
+
+  // ----- Thêm câu -----
+  var sentColl = document.getElementById('sentColl');
+  var sentHanzi = document.getElementById('sentHanzi');
+  var sentPy = document.getElementById('sentPy');
+  var sentMean = document.getElementById('sentMean');
+  function fillSentColl() {
+    if (!sentColl) return;
+    var list = CollStore.all(), act = CollStore.getActive();
+    if (!list.length) { sentColl.innerHTML = '<option value="">(tạo bộ trước)</option>'; return; }
+    var cur = sentColl.value;
+    sentColl.innerHTML = list.map(function (c) {
+      return '<option value="' + c.id + '"' + ((cur && c.id === cur) || (!cur && c.id === act) ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+    }).join('');
+  }
+  if (document.getElementById('sentPyBtn')) {
+    document.getElementById('sentPyBtn').addEventListener('click', function () {
+      var h = (sentHanzi.value || '').trim();
+      if (!h) { alert('Anh nhập câu chữ Hán trước nhé.'); sentHanzi.focus(); return; }
+      var b = this; b.textContent = '⏳…'; b.disabled = true;
+      if (window.ensureDict) {
+        window.ensureDict(function () {
+          sentPy.value = window.dictPinyin(h);
+          b.textContent = '✨ Tạo pinyin'; b.disabled = false;
+        });
+      } else {
+        b.textContent = '✨ Tạo pinyin'; b.disabled = false;
+        alert('Chưa tải được từ điển để tạo pinyin — anh tự gõ pinyin nhé.');
+      }
+    });
+  }
+  if (document.getElementById('sentSave')) {
+    document.getElementById('sentSave').addEventListener('click', function () {
+      var cid = sentColl.value;
+      var h = (sentHanzi.value || '').trim();
+      var py = (sentPy.value || '').trim();
+      var mean = (sentMean.value || '').trim();
+      if (!cid) { alert('Anh chọn (hoặc tạo) một bộ sưu tập trước nhé.'); return; }
+      if (!h) { alert('Anh nhập câu chữ Hán.'); sentHanzi.focus(); return; }
+      if (!mean) { alert('Anh nhập nghĩa tiếng Việt của câu.'); sentMean.focus(); return; }
+      var ok = CollStore.addWord(cid, { hanzi: h, pinyin: py, meaning: mean, type: 'sentence' });
+      if (!ok) { alert('Câu này đã có trong bộ rồi.'); return; }
+      sentHanzi.value = ''; sentPy.value = ''; sentMean.value = '';
+      render(); markChanged();
+      if (window.fillDictCollSelect) window.fillDictCollSelect();
+    });
+  }
+
+  // ----- Ô tìm kiếm trong từ đã lưu -----
+  (function () {
+    var se = document.getElementById('collSearch'), sc = document.getElementById('collSearchClear');
+    if (se) se.addEventListener('input', function () { render(); });
+    if (sc) sc.addEventListener('click', function () { if (se) { se.value = ''; se.focus(); } render(); });
+  })();
+  window.renderCollections = render;
+  render();
+})();
+</script>
+
+<!-- ============ LUYỆN TẬP ============ -->
+<section class="lesson" id="luyentap">
+<h2>🎯 Luyện tập ghi nhớ</h2>
+<p style="color:var(--muted);font-size:0.9rem;margin-bottom:12px">Mỗi từ có 5 cấp độ. Muốn <strong>lên 1 cấp</strong>, từ phải vượt đủ <strong>4 kỹ năng</strong> (Đọc · Nghĩa · Nghe · Viết, mỗi kỹ năng 4 lần). Lên cấp xong, từ được <strong>hẹn lịch ôn</strong> theo lịch ngắt quãng (1 → 3 → 7 → 16 ngày); chưa tới ngày thì từ bị khóa, không luyện lên cấp. <strong>Sai 3 lần</strong> trong một vòng thì tụt 1 cấp. (Flashcard &amp; nút 📝 Nghĩa chỉ để ôn thêm, không đổi cấp độ.)</p>
+<div id="dueSummary" style="background:var(--card);border:1.5px solid var(--gold);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.9rem"></div>
+<div id="levelStats" class="level-stats"></div>
+<div class="practice-controls">
+  <button class="pr-btn" id="btnOld" title="Ôn lại các từ đã đến hạn">📚 Học bài cũ</button>
+  <button class="pr-btn" id="btnNew" title="Học các từ chưa học">🆕 Học từ mới</button>
+</div>
+<!-- Các điều khiển cũ: ẩn khỏi giao diện, giữ lại để phần luyện tập hoạt động -->
+<div style="display:none" aria-hidden="true">
+  <select id="lessonSelect"><option value="all">📚 Tất cả các bài</option></select>
+  <select id="levelSelect" title="Lọc từ theo cấp độ / lịch ôn">
+    <option value="all">⭐ Mọi cấp độ</option>
+    <option value="due">⏰ Đến hạn ôn hôm nay</option>
+    <option value="new">🆕 Chỉ từ mới (Lv 0)</option>
+    <option value="weak">🔴 Cần ôn gấp (Lv 0–2)</option>
+    <option value="unfinished">📈 Chưa thuộc lòng (Lv 0–4)</option>
+    <option value="strong">✅ Đã thuộc (Lv 4–5)</option>
+  </select>
+  <button class="pr-btn" id="btnDrill" title="Luyện đủ 4 kỹ năng cho từng từ — qua hết mới lên 1 cấp độ (chỉ hiện từ mới + đến hạn)">🎯 Luyện 4 kỹ năng (lên cấp)</button>
+  <button class="pr-btn" id="btnFlash">🃏 Flashcard (ôn)</button>
+  <button class="pr-btn" id="btnQuiz">📝 Nghĩa (ôn)</button>
+  <button class="pr-btn no" id="btnHide" title="Làm mờ nghĩa tiếng Việt trong danh sách từ vựng để tự kiểm tra — di chuột vào để xem đáp án">🙈 Che nghĩa tiếng Việt</button>
+  <button class="pr-btn no" id="btnNotify" title="Bật thông báo trên máy tính khi có từ đến hạn ôn">🔔 Bật nhắc học</button>
+  <button class="pr-btn no" id="btnTest" title="Chế độ test: đổi 1 ngày = 10 giây để kiểm tra cơ chế lên cấp nhanh">🧪 Test nhanh: TẮT</button>
+  <button class="pr-btn no" id="btnResetLv" title="Xóa toàn bộ tiến độ level, đưa mọi từ về Lv 0">♻️ Đặt lại tiến độ</button>
+</div>
+<div id="practiceArea"></div>
+</section>
+
+<footer>
+  Sổ tay học tiếng Trung · Tra từ điển ~26.000 từ, tự tạo bộ sưu tập &amp; luyện tập lên cấp.
+</footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<script>
+// ===== Phát âm (Web Speech API, giọng zh-CN) =====
+var zhVoice = null;
+var SPEAK_RATE_NORMAL = 0.9, SPEAK_RATE_SLOW = 0.5;
+// Giới tính giọng đọc (nút Nam/Nữ)
+var GKEY = 'zh_voice_gender', GENDER = 'female';
+try { GENDER = localStorage.getItem(GKEY) || 'female'; } catch (e) {}
+var FEMALE_V = /tingting|婷婷|meijia|美佳|sinji|善怡|samantha|karen|moira|tessa|fiona|victoria|zoe|ava|allison|susan|kate|serena|amelie|ling|xiaoxiao|晓|huihui|慧/;
+var MALE_V = /daniel|alex|tom|aaron|nathan|evan|arthur|gordon|oliver|thomas|rishi|yu-?shu|li-?mu|kangkang|yunyang|云扬/;
+// Loại các giọng máy móc / hiệu ứng / cách điệu — không dùng làm giọng đọc
+var JUNK_V = /albert|fred|ralph|junior|bruce|kathy|princess|agnes|vicki|bad news|good news|bahh|bells|boing|bubbles|cellos|wobble|jester|organ|superstar|zarvox|trinoids|whisper|deranged|hysterical|eddy|flo|reed|rocko|sandy|shelley|grandma|grandpa/;
+function voiceGender(name) { name = (name || '').toLowerCase(); if (MALE_V.test(name)) return 'm'; if (FEMALE_V.test(name)) return 'f'; return ''; }
+// Chấm điểm giọng để chọn giọng tiếng Trung chuẩn & tự nhiên nhất có trên máy
+function scoreZhVoice(v) {
+  var name = (v.name || '').toLowerCase();
+  if (JUNK_V.test(name)) return -1;                    // loại giọng máy móc/hiệu ứng/cách điệu
+  var lang = (v.lang || '').toLowerCase().replace('_', '-');
+  var s;
+  if (lang === 'zh-cn' || lang === 'zh') s = 10;       // giọng phổ thông đại lục
+  else if (lang.indexOf('zh') === 0) s = 4;            // zh khác (Đài/Hồng Kông)
+  else return -1;                                      // không phải tiếng Trung
+  if (name.indexOf('google') !== -1) s += 9;           // Google 普通话 — rất tự nhiên (cần mạng)
+  if (name.indexOf('siri') !== -1) s += 6;
+  if (name.indexOf('premium') !== -1 || name.indexOf('enhanced') !== -1 || name.indexOf('natural') !== -1) s += 6;
+  if (/ting|婷|meijia|美佳|yaoyao|瑶|xiaoxiao|晓|huihui|慧|yue|sinji/.test(name)) s += 3;
+  if (v.localService === false) s += 2;                // giọng mạng thường mượt hơn
+  var g = voiceGender(name);                           // ưu tiên mạnh theo giới tính đang chọn
+  if (GENDER === 'male') { if (g === 'm') s += 100; else if (g === 'f') s -= 100; }
+  else { if (g === 'f') s += 100; else if (g === 'm') s -= 100; }
+  return s;
+}
+function pickZhVoice() {
+  var voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+  var best = null, bestScore = -1;
+  voices.forEach(function (v) {
+    var sc = scoreZhVoice(v);
+    if (sc > bestScore) { bestScore = sc; best = v; }
+  });
+  zhVoice = best;
+}
+if ('speechSynthesis' in window) {
+  pickZhVoice();
+  speechSynthesis.onvoiceschanged = pickZhVoice;
+}
+// Nút chuyển giọng Nam / Nữ
+(function () {
+  var vt = document.getElementById('voiceToggle');
+  if (!vt) return;
+  function refresh() { vt.textContent = '🗣️ Giọng đọc: ' + (GENDER === 'male' ? 'Nam ♂' : 'Nữ ♀'); }
+  refresh();
+  vt.addEventListener('click', function () {
+    GENDER = (GENDER === 'male') ? 'female' : 'male';
+    try { localStorage.setItem(GKEY, GENDER); } catch (e) {}
+    refresh();
+    pickZhVoice();
+    var okG = zhVoice && voiceGender(zhVoice.name) === (GENDER === 'male' ? 'm' : 'f');
+    speakChinese('你好，我是你的老师。', null);
+    if (GENDER === 'male' && !okG) {
+      alert('Máy chưa có giọng NAM tiếng Trung mà Chrome dùng được.\n\nĐể có giọng nam chuẩn, hãy tải thêm:\nSystem Settings → Accessibility → Spoken Content → System Voice → Manage Voices → mục Tiếng Trung → tải một giọng NAM (ví dụ giọng Siri nam, hoặc "Yu-shu").\n\nTải xong, F5 lại trang rồi bấm nút này lần nữa.');
+    }
+  });
+})();
+function speakChinese(text, btn, rate) {
+  if (!('speechSynthesis' in window)) {
+    alert('Trình duyệt này không hỗ trợ đọc văn bản. Anh thử Chrome, Edge hoặc Safari nhé.');
+    return;
+  }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = rate || SPEAK_RATE_NORMAL;
+  u.pitch = 1;
+  if (!zhVoice) pickZhVoice();
+  if (zhVoice) u.voice = zhVoice;
+  if (btn) {
+    btn.classList.add('speaking');
+    u.onend = u.onerror = function () { btn.classList.remove('speaking'); };
+  }
+  speechSynthesis.speak(u);
+}
+function speakSlow(text, btn) { speakChinese(text, btn, SPEAK_RATE_SLOW); }
+function makeSpeakBtn(text, title) {
+  var b = document.createElement('button');
+  b.className = 'speak-btn';
+  b.textContent = '🔊';
+  b.title = title || 'Nghe phát âm chuẩn';
+  b.addEventListener('click', function () { speakChinese(text, b); });
+  return b;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.word-card').forEach(function (card) {
+    var head = card.querySelector('.word-head');
+    var hanziEl = card.querySelector('.hanzi');
+    if (!head || !hanziEl) return;
+
+    // Nút phát âm cho từ vựng (đặt ngay sau pinyin)
+    var pinyinEl = head.querySelector('.pinyin');
+    var wordBtn = makeSpeakBtn(hanziEl.textContent.trim(), 'Nghe phát âm từ này');
+    if (pinyinEl) pinyinEl.after(wordBtn); else hanziEl.after(wordBtn);
+
+    // Nút phát âm cho câu ví dụ
+    var exCn = card.querySelector('.example .ex-cn');
+    if (exCn) {
+      var exText = exCn.textContent.replace(/[AB]：/g, '').trim();
+      exCn.appendChild(document.createTextNode(' '));
+      exCn.appendChild(makeSpeakBtn(exText, 'Nghe cả câu ví dụ'));
+    }
+    var chars = Array.from(hanziEl.textContent.trim()).filter(function (c) {
+      return /[一-鿿]/.test(c);
+    });
+    if (!chars.length) return;
+
+    var btn = document.createElement('button');
+    btn.className = 'stroke-btn';
+    btn.textContent = '✍️ Cách viết';
+    head.appendChild(btn);
+
+    var panel = null;
+    btn.addEventListener('click', function () {
+      if (panel) {
+        var showing = panel.style.display !== 'none';
+        panel.style.display = showing ? 'none' : 'flex';
+        btn.classList.toggle('active', !showing);
+        return;
+      }
+      panel = document.createElement('div');
+      panel.className = 'stroke-panel';
+      card.insertBefore(panel, card.querySelector('.example'));
+      btn.classList.add('active');
+
+      if (typeof HanziWriter === 'undefined') {
+        panel.innerHTML = '<div class="stroke-offline">⚠️ Cần kết nối Internet để xem hoạt hình thứ tự nét.</div>';
+        return;
+      }
+
+      chars.forEach(function (ch) {
+        var wrap = document.createElement('div');
+        wrap.className = 'stroke-item';
+        var box = document.createElement('div');
+        box.className = 'stroke-box';
+        box.title = 'Bấm để xem lại từ đầu';
+        var label = document.createElement('div');
+        label.className = 'stroke-label';
+        label.textContent = ch;
+        wrap.appendChild(box);
+        wrap.appendChild(label);
+        panel.appendChild(wrap);
+
+        var writer = HanziWriter.create(box, ch, {
+          width: 110, height: 110, padding: 8,
+          strokeColor: '#c0392b',
+          outlineColor: '#e0d5c0',
+          strokeAnimationSpeed: 1,
+          delayBetweenStrokes: 300,
+          delayBetweenLoops: 1800,
+          showOutline: true,
+          onLoadCharDataError: function () {
+            box.style.cursor = 'default';
+            box.innerHTML = '<div style="line-height:110px;text-align:center;font-size:2.2rem;">' + ch + '</div>';
+          }
+        });
+        writer.loopCharacterAnimation();
+        box.addEventListener('click', function () {
+          writer.animateCharacter();
+        });
+      });
+
+      var hint = document.createElement('div');
+      hint.className = 'stroke-hint';
+      hint.textContent = 'Hoạt hình vẽ theo đúng thứ tự nét (bút thuận). Bấm vào ô chữ để xem lại từ đầu.';
+      panel.appendChild(hint);
+    });
+  });
+});
+</script>
+<script>
+// ===== Luyện tập: flashcard + trắc nghiệm =====
+document.addEventListener('DOMContentLoaded', function () {
+  var VOCAB = [];
+  document.querySelectorAll('section.lesson').forEach(function (sec) {
+    if (!/^(bai\d+|baisuutap)$/.test(sec.id)) return;
+    sec.querySelectorAll('.word-card').forEach(function (card) {
+      var h = card.querySelector('.hanzi'), p = card.querySelector('.pinyin'), m = card.querySelector('.meaning');
+      if (!h || !p || !m) return;
+      var exCn = card.querySelector('.example .ex-cn'), exVi = card.querySelector('.example .ex-vi');
+      VOCAB.push({
+        lesson: sec.id,
+        hanzi: h.textContent.trim(),
+        pinyin: p.textContent.trim(),
+        meaning: m.textContent.replace(/^—\s*/, '').trim(),
+        exCn: exCn ? exCn.textContent.replace(/🔊/g, '').trim() : '',
+        exVi: exVi ? exVi.textContent.trim() : '',
+        _el: card
+      });
+    });
+  });
+
+  // Nạp từ trong các bộ sưu tập vào kho luyện tập chung (gộp mọi bộ, khử trùng theo chữ Hán)
+  if (window.CollStore) {
+    var seenHanzi = {};
+    VOCAB.forEach(function (w) { seenHanzi[w.hanzi] = true; });
+    CollStore.all().forEach(function (c) {
+      c.words.forEach(function (wd) {
+        if (seenHanzi[wd.hanzi]) return;
+        seenHanzi[wd.hanzi] = true;
+        VOCAB.push({ lesson: 'baisuutap', hanzi: wd.hanzi, pinyin: wd.pinyin, meaning: wd.meaning, exCn: wd.ex ? wd.ex.c : '', exVi: wd.ex ? wd.ex.p : '', _el: null, isSentence: wd.type === 'sentence', img: wd.img || '' });
+      });
+    });
+  }
+
+  var sel = document.getElementById('lessonSelect');
+  document.querySelectorAll('section.lesson').forEach(function (sec) {
+    if (!/^(bai\d+|baisuutap)$/.test(sec.id)) return;
+    var o = document.createElement('option');
+    o.value = sec.id;
+    o.textContent = (sec.querySelector('h2') || { textContent: sec.id }).textContent;
+    sel.appendChild(o);
+  });
+
+  var area = document.getElementById('practiceArea');
+  var levelSel = document.getElementById('levelSelect');
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  // ===== Hệ thống 5 cấp độ ghi nhớ (lưu localStorage) =====
+  var LEVEL_META = [
+    { icon: '🆕', name: 'Từ mới',     color: '#9e9e9e' },
+    { icon: '🌱', name: 'Mới biết',   color: '#8bc34a' },
+    { icon: '🌿', name: 'Đang nhớ',   color: '#4caf50' },
+    { icon: '🪴', name: 'Khá thuộc',  color: '#00acc1' },
+    { icon: '🌳', name: 'Thuộc tốt',  color: '#3f51b5' },
+    { icon: '⭐', name: 'Thuộc lòng', color: '#e0a800' }
+  ];
+  // ===== Lịch ôn lặp lại ngắt quãng (spaced repetition) =====
+  var K = window.uk || function (n) { return n; };
+  var LS_KEY = K('hsk_prog_v2');
+  var TESTMODE_KEY = K('hsk_testmode');
+  var DAY_MS = 24 * 60 * 60 * 1000;
+  var TEST_MS = 10 * 1000;                                 // chế độ test: 1 "ngày" = 10 giây
+  var INTERVAL_DAYS = { 1: 1, 2: 3, 3: 7, 4: 16, 5: 3650 }; // 1·3·7·16 ngày; Lv5 = thuộc lòng
+  var PROG = {}, TEST_MODE = false;
+  try { PROG = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { PROG = {}; }
+  try { TEST_MODE = localStorage.getItem(TESTMODE_KEY) === '1'; } catch (e) {}
+  // Chuyển dữ liệu cũ (chỉ có số level) sang cấu trúc mới nếu có
+  try {
+    var oldLv = JSON.parse(localStorage.getItem(K('hsk_levels_v1')));
+    if (oldLv && !Object.keys(PROG).length) {
+      Object.keys(oldLv).forEach(function (k) { PROG[k] = { lv: oldLv[k], due: 0 }; });
+    }
+  } catch (e) {}
+
+  function keyOf(w) { return w.lesson + '|' + w.hanzi; }
+  function now() { return Date.now(); }
+  function unitMs() { return TEST_MODE ? TEST_MS : DAY_MS; }
+  function getRec(w) { return PROG[keyOf(w)] || { lv: 0, due: 0 }; }
+  function getLevel(w) { return getRec(w).lv; }
+  function getDue(w) { return getRec(w).due || 0; }
+  function saveProg() { try { localStorage.setItem(LS_KEY, JSON.stringify(PROG)); } catch (e) {} }
+  // Trạng thái: 'new' (Lv0), 'due' (đến hạn), 'locked' (đang chờ), 'mastered' (Lv5)
+  function statusOf(w) {
+    var r = getRec(w);
+    if (r.lv >= 5) return 'mastered';
+    if (r.lv === 0) return 'new';
+    return now() >= (r.due || 0) ? 'due' : 'locked';
+  }
+  function daysLeft(w) {
+    var ms = getDue(w) - now();
+    return ms <= 0 ? 0 : Math.ceil(ms / unitMs());
+  }
+  function isLearnable(w) { var s = statusOf(w); return s === 'new' || s === 'due'; }
+
+  function setLevel(w, lv, due) {
+    lv = Math.max(0, Math.min(5, lv));
+    PROG[keyOf(w)] = { lv: lv, due: due || 0 };
+    saveProg();
+    updateBadge(w);
+    renderStats();
+  }
+  // Lên/xuống cấp KÈM đặt lịch ôn theo cấp số nhân
+  function bumpLevel(w, delta) {
+    var before = getLevel(w);
+    var after = Math.max(0, Math.min(5, before + delta));
+    var due = 0;
+    if (delta < 0) due = now();                            // tụt cấp → cho ôn lại ngay
+    else if (after >= 1) due = now() + (INTERVAL_DAYS[after] || 2) * unitMs();
+    setLevel(w, after, due);
+    return { before: before, after: after };
+  }
+  function styleBadge(el, w) {
+    var lv = getLevel(w), m = LEVEL_META[lv], s = statusOf(w), extra = '', tip;
+    if (s === 'due') { extra = ' · 🔔'; tip = 'đến hạn ôn'; }
+    else if (s === 'locked') { extra = ' · ⏳' + daysLeft(w) + (TEST_MODE ? 'đv' : 'n'); tip = 'còn ' + daysLeft(w) + (TEST_MODE ? ' đơn vị test' : ' ngày') + ' nữa mới ôn'; }
+    else if (s === 'mastered') { extra = ' · ⭐'; tip = 'đã thuộc lòng'; }
+    else { tip = 'từ mới, học ngay'; }
+    el.textContent = m.icon + ' Lv' + lv + extra;
+    el.style.color = m.color;
+    el.style.borderColor = m.color;
+    el.title = 'Cấp độ: ' + m.name + ' (Lv' + lv + ') — ' + tip;
+  }
+  function updateBadge(w) { if (w._badge) styleBadge(w._badge, w); }
+  function renderStats() {
+    var box = document.getElementById('levelStats');
+    if (box) {
+      var counts = [0, 0, 0, 0, 0, 0];
+      VOCAB.forEach(function (w) { counts[getLevel(w)]++; });
+      box.innerHTML = LEVEL_META.map(function (m, lv) {
+        return '<div class="level-stat" style="border-color:' + m.color + '">' +
+               '<b style="color:' + m.color + '">' + counts[lv] + '</b>' + m.icon + ' ' + m.name + '</div>';
+      }).join('');
+    }
+    var due = document.getElementById('dueSummary');
+    if (due) {
+      var nNew = 0, nDue = 0, nLock = 0, nMaster = 0;
+      VOCAB.forEach(function (w) {
+        var s = statusOf(w);
+        if (s === 'new') nNew++; else if (s === 'due') nDue++; else if (s === 'locked') nLock++; else nMaster++;
+      });
+      due.innerHTML = 'Hôm nay: <strong style="color:var(--red)">🔔 ' + nDue + '</strong> đến hạn ôn · <strong>🆕 ' + nNew + '</strong> từ mới · ⏳ ' + nLock + ' đang chờ · ⭐ ' + nMaster + ' thuộc lòng' +
+        (TEST_MODE ? ' &nbsp;<span style="color:var(--red);font-weight:700">(🧪 TEST: 1 ngày = 10 giây)</span>' : '');
+    }
+    if (typeof refreshMainBtns === 'function') refreshMainBtns();
+  }
+
+  // Gắn huy hiệu level vào mỗi thẻ từ vựng trong danh sách
+  VOCAB.forEach(function (w) {
+    var head = w._el ? w._el.querySelector('.word-head') : null;
+    if (!head) return;
+    var badge = document.createElement('span');
+    badge.className = 'level-badge';
+    var sb = head.querySelector('.stroke-btn');
+    if (sb) head.insertBefore(badge, sb); else head.appendChild(badge);
+    w._badge = badge;
+    styleBadge(badge, w);
+  });
+  renderStats();
+
+  function filterVocab() {
+    var v = sel.value;
+    var base = v === 'all' ? VOCAB.slice() : VOCAB.filter(function (w) { return w.lesson === v; });
+    var lv = levelSel ? levelSel.value : 'all';
+    if (lv === 'all') return base;
+    return base.filter(function (w) {
+      var L = getLevel(w);
+      if (lv === 'new') return L === 0;
+      if (lv === 'due') return statusOf(w) === 'due';
+      if (lv === 'weak') return L <= 2;
+      if (lv === 'unfinished') return L < 5;
+      if (lv === 'strong') return L >= 4;
+      return true;
+    });
+  }
+  function emptyMsg() {
+    return '<p style="color:var(--muted)">Không có từ nào khớp bộ lọc hiện tại. Anh thử đổi <strong>bài</strong> hoặc <strong>cấp độ</strong> ở trên nhé.</p>';
+  }
+
+  // ----- Flashcard -----
+  function startFlash() {
+    var deck = shuffle(filterVocab());
+    if (!deck.length) { area.innerHTML = emptyMsg(); return; }
+    var again = [], idx = 0, total = deck.length;
+    function next() { idx++; render(); }
+    function render() {
+      if (idx >= deck.length) {
+        if (again.length) { deck = shuffle(again); again = []; idx = 0; }
+        else {
+          area.innerHTML = '<div class="flash-done">🎉 Tuyệt vời! Anh đã nhớ hết <strong>' + total + '</strong> từ trong lượt này.<br><button class="pr-btn" id="fcRestart">🔄 Học lại từ đầu</button></div>';
+          document.getElementById('fcRestart').addEventListener('click', startFlash);
+          return;
+        }
+      }
+      var w = deck[idx];
+      area.innerHTML =
+        '<div class="flash-progress">Còn lại: ' + (deck.length - idx) + ' thẻ' + (again.length ? ' · Sẽ ôn lại: ' + again.length + ' thẻ' : '') + '</div>' +
+        '<div class="flashcard" id="fc"><div><div class="fc-hanzi">' + w.hanzi + '</div><div class="fc-tip">👆 Bấm vào thẻ để xem đáp án</div></div></div>' +
+        '<div class="flash-actions">' +
+          '<button class="pr-btn" id="fcSpeak">🔊 Nghe</button>' +
+          '<button class="pr-btn ok" id="fcOk">✅ Nhớ rồi</button>' +
+          '<button class="pr-btn no" id="fcNo">🔁 Chưa nhớ</button>' +
+        '</div>';
+      var flipped = false;
+      document.getElementById('fc').addEventListener('click', function () {
+        if (flipped) return;
+        flipped = true;
+        var m = LEVEL_META[getLevel(w)];
+        this.innerHTML = '<div>' + (w.img ? '<img class="fc-img" src="' + w.img + '" alt="">' : '') +
+          '<div class="fc-hanzi">' + w.hanzi + '</div>' +
+          '<div class="fc-pinyin">' + w.pinyin + '</div>' +
+          '<div class="fc-meaning">' + w.meaning + '</div>' +
+          '<div class="fc-ex">' + w.exCn + '<br><span>' + w.exVi + '</span></div>' +
+          '<div class="fc-level" style="color:' + m.color + '">' + m.icon + ' ' + m.name + ' (Lv' + getLevel(w) + ')</div></div>';
+      });
+      document.getElementById('fcSpeak').addEventListener('click', function () { speakChinese(w.hanzi, this); });
+      document.getElementById('fcOk').addEventListener('click', next);
+      document.getElementById('fcNo').addEventListener('click', function () { again.push(w); next(); });
+    }
+    render();
+  }
+
+  // ----- Trắc nghiệm -----
+  function startQuiz() {
+    var pool = filterVocab();
+    if (!pool.length) { area.innerHTML = emptyMsg(); return; }
+    var qs = shuffle(pool).slice(0, Math.min(10, pool.length)), qi = 0, score = 0;
+    function render() {
+      if (qi >= qs.length) {
+        var msg = score === qs.length ? '🏆 Xuất sắc!' : score >= qs.length * 0.7 ? '👍 Rất tốt!' : '💪 Cố lên, ôn thêm bằng flashcard nhé!';
+        area.innerHTML = '<div class="flash-done">Kết quả: <strong>' + score + '/' + qs.length + '</strong> câu đúng — ' + msg + '<br><button class="pr-btn" id="qzRestart">🔄 Làm đề khác</button></div>';
+        document.getElementById('qzRestart').addEventListener('click', startQuiz);
+        return;
+      }
+      var w = qs[qi];
+      var askMeaning = Math.random() < 0.5;
+      var wrong = shuffle(VOCAB.filter(function (x) { return x.hanzi !== w.hanzi; })).slice(0, 3);
+      var opts = shuffle([w].concat(wrong));
+      var html = '<div class="flash-progress">Câu ' + (qi + 1) + '/' + qs.length + ' · Đúng: ' + score + '</div>';
+      if (askMeaning) {
+        html += '<div class="quiz-q"><span class="fc-hanzi">' + w.hanzi + '</span> <span class="fc-pinyin">(' + w.pinyin + ')</span> — nghĩa là gì?</div>';
+      } else {
+        html += '<div class="quiz-q">Từ nào có nghĩa là: <strong>“' + w.meaning + '”</strong>?</div>';
+      }
+      html += '<div class="quiz-opts">' + opts.map(function (o, i) {
+        return '<button class="quiz-opt" data-i="' + i + '">' + (askMeaning ? o.meaning : o.hanzi + ' (' + o.pinyin + ')') + '</button>';
+      }).join('') + '</div>';
+      area.innerHTML = html;
+      area.querySelectorAll('.quiz-opt').forEach(function (btn, i) {
+        btn.addEventListener('click', function () {
+          if (opts[i].hanzi === w.hanzi) score++;
+          area.querySelectorAll('.quiz-opt').forEach(function (b, j) {
+            b.disabled = true;
+            if (opts[j].hanzi === w.hanzi) b.classList.add('right');
+            else if (j === i) b.classList.add('wrong');
+          });
+          speakChinese(w.hanzi, null);
+          var nx = document.createElement('button');
+          nx.className = 'pr-btn';
+          nx.textContent = (qi + 1 >= qs.length) ? '🏁 Xem kết quả' : 'Câu tiếp theo ▶';
+          nx.addEventListener('click', function () { qi++; render(); });
+          area.appendChild(nx);
+        });
+      });
+    }
+    render();
+  }
+
+  // ===== 🎯 Luyện 4 kỹ năng gộp: Đọc → Nghe → Viết → Phát âm =====
+  // Qua đủ 4 kỹ năng: từ +1 cấp. Sai không hiện đáp án, phải làm lại. Sai 3 lần: tụt -1 cấp.
+  var MAX_MISTAKES = 3;
+  var REPS_PER_SKILL = 4; // mỗi kỹ năng phải trả lời đúng 4 lần mới xong (4 kỹ năng = 16 lượt)
+  var SKILLS = [
+    { key: 'read',    label: '📖 Đọc' },
+    { key: 'meaning', label: '💡 Nghĩa' },
+    { key: 'listen',  label: '🎧 Nghe' },
+    { key: 'write',   label: '✍️ Viết' }
+    // { key: 'speak', label: '🎤 Phát âm' }  // TẠM BỎ theo yêu cầu — thêm lại khi cần
+  ];
+  function drillPyVariants(p) {
+    return p.split('/').map(function (v) {
+      return v.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+    });
+  }
+  function drillAcceptSpeak(transcript, w) {
+    var t = transcript.replace(/[\s，。！？、,.!?]/g, '');
+    if (t.indexOf(w.hanzi) !== -1) return true;
+    var targets = drillPyVariants(w.pinyin);
+    return VOCAB.some(function (x) {
+      return t.indexOf(x.hanzi) !== -1 && drillPyVariants(x.pinyin).some(function (v) {
+        return targets.indexOf(v) !== -1;
+      });
+    });
+  }
+  // Chấm 3 mức cho phát âm dựa trên danh sách kết quả nhận dạng của máy.
+  // 'correct' = đúng ở kết quả số 1; 'close' = đúng ở kết quả phụ hoặc trùng >= 1/2 số chữ; 'wrong' = không giống.
+  function gradeSpeak(alts, w) {
+    var norm = alts.map(function (t) { return t.replace(/[\s，。！？、,.!?]/g, ''); })
+                   .filter(function (t) { return t.length; });
+    if (!norm.length) return { level: 'silent', heard: '' };
+    var targetChars = Array.from(w.hanzi).filter(function (c) { return /[一-鿿]/.test(c); });
+    var N = targetChars.length || 1;
+    var bestRatio = 0;
+    norm.forEach(function (t) {
+      var m = 0;
+      targetChars.forEach(function (ch) { if (t.indexOf(ch) !== -1) m++; });
+      if (m / N > bestRatio) bestRatio = m / N;
+    });
+    // CÂU: chấm theo tỉ lệ chữ đúng — ≥85% đạt, ≥60% gần đúng
+    if (w.isSentence) {
+      if (bestRatio >= 0.85) return { level: 'correct', heard: alts[0], ratio: bestRatio };
+      if (bestRatio >= 0.6) return { level: 'close', heard: alts[0], ratio: bestRatio };
+      return { level: 'wrong', heard: alts[0] || '', ratio: bestRatio };
+    }
+    // TỪ: đúng chữ/đồng âm ở kết quả số 1 → chuẩn; ở kết quả phụ hoặc ≥1/2 chữ → gần đúng
+    if (drillAcceptSpeak(norm[0], w)) return { level: 'correct', heard: alts[0] };
+    for (var i = 1; i < norm.length; i++) {
+      if (drillAcceptSpeak(norm[i], w)) return { level: 'close', heard: alts[0] };
+    }
+    if (N >= 2 && bestRatio >= 0.5) return { level: 'close', heard: alts[0] };
+    return { level: 'wrong', heard: alts[0] || '' };
+  }
+
+  function startDrill() {
+    // Chỉ luyện từ MỚI + từ ĐẾN HẠN ôn; bỏ qua từ đang khóa (chưa tới ngày) và từ đã thuộc lòng
+    var pool = filterVocab().filter(isLearnable);
+    if (!pool.length) {
+      var lockedN = filterVocab().filter(function (w) { return statusOf(w) === 'locked'; }).length;
+      area.innerHTML = '<div class="flash-done">🎉 <strong>Không có từ nào đến hạn ôn!</strong><br>' +
+        (lockedN ? '⏳ ' + lockedN + ' từ đang chờ tới ngày ôn — quay lại sau nhé.<br>' : '') +
+        'Anh có thể chọn <strong>bài khác</strong>, hoặc học <strong>từ mới</strong> ở bộ lọc cấp độ.<br>' +
+        '<span style="font-size:0.85rem;color:var(--muted)">(Muốn xem cơ chế ngay, bật 🧪 Test nhanh rồi ♻️ đặt lại tiến độ.)</span></div>';
+      return;
+    }
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var BATCH_SIZE = 4;                                  // trộn 4 từ một nhóm
+    var TOTAL_REPS = SKILLS.length * REPS_PER_SKILL;     // số lượt để hoàn thành 1 từ
+    var deck = shuffle(pool), deckPos = 0, batchNum = 0, upCount = 0, downCount = 0;
+    var batch = [], queue = [], ti = 0, w = null;
+
+    function summary() {
+      area.innerHTML = '<div class="flash-done">🏁 <strong>Xong vòng luyện!</strong><br>' +
+        '⬆️ Lên cấp: <strong>' + upCount + '</strong> từ &nbsp;·&nbsp; ⬇️ Tụt cấp: <strong>' + downCount + '</strong> từ<br>' +
+        '<button class="pr-btn" id="drAgain">🔄 Luyện tiếp</button></div>';
+      document.getElementById('drAgain').addEventListener('click', startDrill);
+    }
+    function skillLabel(key) {
+      for (var i = 0; i < SKILLS.length; i++) if (SKILLS[i].key === key) return SKILLS[i].label;
+      return key;
+    }
+    function remainingReps() { var n = 0; batch.forEach(function (x) { if (!x._done) n += x._rem; }); return n; }
+    function doneWords() { var n = 0; batch.forEach(function (x) { if (x._done) n++; }); return n; }
+
+    function header() {
+      return '<div class="flash-progress">Nhóm ' + batchNum +
+        ' · Đã xong ' + doneWords() + '/' + batch.length + ' từ · Còn ' + remainingReps() + ' lượt' +
+        ' · ' + skillLabel(queue[ti].s) + ' · Lỗi từ này: ' + w._mis + '/' + MAX_MISTAKES + '</div>' +
+        '<div class="word-ctrl"><button class="coll-mini" id="wcSkip">⏭ Bỏ qua từ này</button> <button class="coll-mini" id="wcDel">🗑 Xóa từ này</button></div>';
+    }
+    // Sang câu kế trong nhóm (bỏ qua từ đã xong); hết nhóm thì sang nhóm 4 từ tiếp theo
+    function proceed() {
+      ti++;
+      while (ti < queue.length && queue[ti].w._done) ti++;
+      if (ti >= queue.length) { startBatch(); return; }
+      renderTask();
+    }
+    // Sai 1 câu (cho từ hiện tại). Trả true nếu từ đó tụt cấp & kết thúc.
+    function registerFail() {
+      w._mis++;
+      if (w._mis >= MAX_MISTAKES) {
+        w._done = true;
+        var res = bumpLevel(w, -1);
+        downCount++;
+        area.innerHTML = '<div class="flash-done">❌ Sai ' + MAX_MISTAKES + ' lần rồi.<br>' +
+          'Từ <span class="fc-hanzi">' + w.hanzi + '</span> (' + w.pinyin + ') tụt xuống ' +
+          LEVEL_META[res.after].icon + ' Lv' + res.after + '.<br>' +
+          '<button class="pr-btn" id="drNext">➡️ Tiếp tục</button></div>';
+        document.getElementById('drNext').addEventListener('click', proceed);
+        return true;
+      }
+      return false;
+    }
+    // Đúng 1 câu của từ hiện tại; đủ số lượt = xong từ đó → +1 cấp (màn hình chúc mừng)
+    function taskDone() {
+      w._rem--;
+      if (w._rem <= 0) {
+        w._done = true;
+        var res = bumpLevel(w, +1);
+        upCount++;
+        area.innerHTML = '<div class="flash-done">🎉 <strong>Hoàn thành từ này!</strong><br>' +
+          'Từ <span class="fc-hanzi">' + w.hanzi + '</span> (' + w.pinyin + ') lên ' +
+          LEVEL_META[res.after].icon + ' Lv' + res.after + '.<br>' +
+          '<button class="pr-btn" id="drNext">➡️ Tiếp tục</button></div>';
+        document.getElementById('drNext').addEventListener('click', proceed);
+        return;
+      }
+      proceed();
+    }
+    function renderTask() {
+      w = queue[ti].w;
+      var s = queue[ti].s;
+      if (s === 'read') renderRead();
+      else if (s === 'meaning') renderMeaning();
+      else if (s === 'listen') renderListen();
+      else if (s === 'write') renderWrite();
+      else renderSpeak();
+      attachWordControls();
+    }
+    function attachWordControls() {
+      var sk = document.getElementById('wcSkip'), dl = document.getElementById('wcDel');
+      if (sk) sk.addEventListener('click', function () { w._done = true; proceed(); });
+      if (dl) dl.addEventListener('click', function () {
+        if (confirm('Xóa "' + w.hanzi + '" khỏi bộ sưu tập? Không hoàn tác được.')) { deleteWordEverywhere(w); w._done = true; proceed(); }
+      });
+    }
+    function deleteWordEverywhere(x) {
+      if (!window.CollStore) return;
+      CollStore.all().forEach(function (c) { CollStore.removeWord(c.id, x.hanzi); });
+      if (window.renderCollections) window.renderCollections();
+    }
+    // Thẻ giới thiệu từ mới: Học ngay / Học sau / Không học
+    function showIntro(x, cb) {
+      var exHtml = x.exCn ? '<div class="fc-ex" style="margin-top:10px">📝 ' + x.exCn + (x.exVi ? ' <span style="color:var(--muted)">(' + x.exVi + ')</span>' : '') + '</div>' : '';
+      area.innerHTML = '<div class="flash-done">' +
+        '<div style="color:var(--muted);font-size:0.9rem;margin-bottom:8px">🆕 Từ mới — anh muốn học không?</div>' +
+        (x.img ? '<img class="fc-img" src="' + x.img + '" alt="">' : '') +
+        '<div class="fc-hanzi">' + x.hanzi + '</div>' +
+        '<div class="fc-pinyin">' + x.pinyin + '</div>' +
+        '<div class="fc-meaning">' + x.meaning + '</div>' + exHtml +
+        '<div class="flash-actions" style="justify-content:center;margin-top:16px">' +
+          '<button class="pr-btn ok" id="inLearn">✅ Học ngay</button>' +
+          '<button class="pr-btn" id="inLater">⏭ Học sau</button>' +
+          '<button class="pr-btn no" id="inDel">🗑 Không học</button>' +
+        '</div></div>';
+      document.getElementById('inLearn').addEventListener('click', function () { if (window.speakChinese) speakChinese(x.hanzi, null); cb('learn'); });
+      document.getElementById('inLater').addEventListener('click', function () { cb('later'); });
+      document.getElementById('inDel').addEventListener('click', function () {
+        if (confirm('Xóa "' + x.hanzi + '" khỏi bộ sưu tập? Không hoàn tác được.')) cb('delete');
+      });
+    }
+    // Gom cho ĐỦ BATCH_SIZE từ "Học ngay": bỏ qua/xóa thì kéo từ kế tiếp lên thay
+    function collectBatch(acc, done) {
+      if (acc.length >= BATCH_SIZE) { done(acc); return; }   // đã đủ 4
+      if (deckPos >= deck.length) { done(acc); return; }     // hết từ trong deck
+      var x = deck[deckPos++];
+      if (statusOf(x) !== 'new') { acc.push(x); collectBatch(acc, done); return; } // từ ôn lại: tự tính vào nhóm
+      showIntro(x, function (choice) {
+        if (choice === 'learn') acc.push(x);
+        else if (choice === 'delete') deleteWordEverywhere(x);
+        // 'later' → bỏ qua cả buổi này, không thêm
+        collectBatch(acc, done);                              // kéo từ khác lên cho đủ 4
+      });
+    }
+    function startBatch() {
+      collectBatch([], function (chosen) {
+        if (!chosen.length) { summary(); return; }            // hết từ để học
+        batchNum++;
+        batch = chosen;
+        batch.forEach(function (x) { x._rem = TOTAL_REPS; x._mis = 0; x._done = false; });
+        queue = [];
+        batch.forEach(function (x) {
+          SKILLS.forEach(function (s) { for (var k = 0; k < REPS_PER_SKILL; k++) queue.push({ w: x, s: s.key }); });
+        });
+        queue = shuffle(queue);
+        ti = 0;
+        renderTask();
+      });
+    }
+
+      // ----- Trắc nghiệm dùng chung cho Đọc & Nghe -----
+      function renderMC(promptHtml, optLabel, onShow, sameGroup) {
+        var wrong = shuffle(VOCAB.filter(function (x) { return x !== w && !sameGroup(x, w); })).slice(0, 3);
+        var opts = shuffle([w].concat(wrong));
+        area.innerHTML = header() +
+          '<div class="quiz-q" id="drQ">' + promptHtml + '</div>' +
+          '<div class="quiz-opts">' + opts.map(function (o, i) {
+            return '<button class="quiz-opt" data-i="' + i + '">' + optLabel(o) + '</button>';
+          }).join('') + '</div>' +
+          '<div class="flash-progress" id="drMsg" style="margin-top:10px"></div>';
+        if (onShow) onShow();
+        area.querySelectorAll('.quiz-opt').forEach(function (btn, i) {
+          btn.addEventListener('click', function () {
+            if (opts[i] === w) {
+              area.querySelectorAll('.quiz-opt').forEach(function (b) { b.disabled = true; });
+              btn.classList.add('right');
+              speakChinese(w.hanzi, null);
+              document.getElementById('drMsg').innerHTML = '✅ Chính xác!' + (w.img ? '<img class="drill-img" src="' + w.img + '" alt="">' : '');
+              setTimeout(taskDone, w.img ? 1500 : 700);   // có ảnh thì dừng lâu hơn để kịp nhìn
+            } else {
+              btn.classList.add('wrong');
+              btn.disabled = true;
+              if (registerFail()) return;
+              document.getElementById('drMsg').innerHTML = '❌ Chưa đúng — thử lại nhé (không hiện đáp án). Lỗi: ' + w._mis + '/' + MAX_MISTAKES;
+              setTimeout(renderTask, 750); // làm lại kỹ năng này, xáo lại đáp án
+            }
+          });
+        });
+      }
+      function renderRead() {
+        renderMC(
+          '<span class="fc-hanzi">' + w.hanzi + '</span> — từ này đọc như thế nào?',
+          function (o) { return o.pinyin; },
+          null,
+          function (x, ww) { return x.pinyin === ww.pinyin; }
+        );
+      }
+      function renderMeaning() {
+        renderMC(
+          '<span class="fc-hanzi">' + w.hanzi + '</span> <span class="fc-pinyin">' + w.pinyin + '</span> — nghĩa là gì?',
+          function (o) { return o.meaning; },
+          null,
+          function (x, ww) { return x.meaning === ww.meaning; }
+        );
+      }
+      function renderListen() {
+        renderMC(
+          '🎧 Nghe và chọn từ đúng: ' +
+            '<button class="pr-btn" id="drReplay" style="margin-left:8px">🔊 Nghe lại</button> ' +
+            '<button class="pr-btn no" id="drReplaySlow">🐢 Nghe chậm</button>',
+          function (o) { return '<span style="font-size:1.4rem">' + o.hanzi + '</span>'; },
+          function () {
+            speakChinese(w.hanzi, null);
+            var rp = document.getElementById('drReplay');
+            if (rp) rp.addEventListener('click', function () { speakChinese(w.hanzi, rp); });
+            var rps = document.getElementById('drReplaySlow');
+            if (rps) rps.addEventListener('click', function () { speakSlow(w.hanzi, rps); });
+          },
+          function (x, ww) { return x.pinyin === ww.pinyin; }
+        );
+      }
+
+      // ----- Viết: gõ chữ Hán bằng bàn phím (sai không hiện đáp án) -----
+      function renderWrite() {
+        var stripW = function (s) { return (s || '').replace(/[\s，。！？、,.!?；;：:""''「」（）()]/g, ''); };
+        var target = stripW(w.hanzi);
+        area.innerHTML = header() +
+          '<div class="quiz-q">⌨️ Gõ chữ Hán cho: <span class="fc-pinyin">' + w.pinyin + '</span> — ' + w.meaning +
+          (w.img ? '<img class="drill-img" src="' + w.img + '" alt="">' : '') + '</div>' +
+          '<div class="flash-actions" style="align-items:center">' +
+            '<input id="drWInput" class="write-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh" placeholder="Gõ chữ Hán…">' +
+            '<button class="pr-btn" id="drWCheck">Kiểm tra</button>' +
+            '<button class="pr-btn no" id="drWSpeak">🔊 Nghe</button>' +
+          '</div>' +
+          '<div class="flash-progress" id="drMsg" style="margin-top:10px">Dùng bộ gõ tiếng Trung: gõ pinyin rồi chọn đúng chữ. Nhấn Enter để kiểm tra.</div>';
+        var input = document.getElementById('drWInput');
+        var msg = document.getElementById('drMsg');
+        document.getElementById('drWSpeak').addEventListener('click', function () { speakChinese(w.hanzi, this); });
+        if (input) input.focus();
+
+        function check() {
+          var val = stripW(input.value);
+          if (!val) { msg.innerHTML = '✍️ Anh gõ chữ Hán vào ô rồi bấm Kiểm tra nhé.'; return; }
+          if (val === target) {
+            input.disabled = true;
+            speakChinese(w.hanzi, null);
+            msg.innerHTML = '✅ Chính xác!';
+            setTimeout(taskDone, 700);
+          } else {
+            if (registerFail()) return;
+            input.value = '';
+            input.focus();
+            msg.innerHTML = '❌ Chưa đúng — thử lại nhé (không hiện đáp án). Lỗi: ' + w._mis + '/' + MAX_MISTAKES;
+          }
+        }
+        document.getElementById('drWCheck').addEventListener('click', check);
+        // Enter để kiểm tra, nhưng BỎ QUA phím Enter khi đang chọn chữ trong bộ gõ (composing)
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); check(); }
+        });
+      }
+
+      // ----- Phát âm (đọc đúng mới qua; máy nghe nhầm/không rõ không tính lỗi) -----
+      function renderSpeak() {
+        if (!SR) {
+          area.innerHTML = header() + '<div class="quiz-q">🎤 Nhận dạng giọng nói cần Chrome/Edge + Internet. Tạm bỏ qua.<br><button class="pr-btn" id="drSkipS">Tiếp tục ➡️</button></div>';
+          document.getElementById('drSkipS').addEventListener('click', taskDone);
+          return;
+        }
+        area.innerHTML = header() +
+          '<div class="quiz-q">🎤 Hãy đọc to: <span class="fc-hanzi">' + w.hanzi + '</span> <span class="fc-pinyin">' + w.pinyin + '</span>' +
+          (w.img ? '<img class="drill-img" src="' + w.img + '" alt="">' : '') + '</div>' +
+          '<div class="flash-actions">' +
+            '<button class="pr-btn" id="drSListen">🔊 Nghe mẫu</button>' +
+            '<button class="pr-btn no" id="drSListenSlow">🐢 Nghe chậm</button>' +
+            '<button class="pr-btn ok" id="drMic">🎤 Bấm rồi đọc</button>' +
+          '</div>' +
+          '<div class="flash-progress" id="drMsg" style="margin-top:10px">Bấm 🔊 nghe mẫu (hoặc 🐢 chậm), rồi bấm 🎤 đọc — đúng mới qua.</div>';
+        document.getElementById('drSListen').addEventListener('click', function () { speakChinese(w.hanzi, this); });
+        document.getElementById('drSListenSlow').addEventListener('click', function () { speakSlow(w.hanzi, this); });
+        var micBtn = document.getElementById('drMic');
+        var msg = document.getElementById('drMsg');
+
+        function judge(alts) {
+          var res = gradeSpeak(alts, w);
+          var pct = res.ratio != null ? ' (khớp ' + Math.round(res.ratio * 100) + '%)' : '';
+          if (res.level === 'correct') {
+            msg.innerHTML = '✅ <strong>Chuẩn!</strong>' + pct + ' Máy nghe được: “' + res.heard + '”.';
+            setTimeout(taskDone, 900);
+          } else if (res.level === 'close') {
+            msg.innerHTML = '🟡 <strong>Gần đúng rồi!</strong>' + pct + ' Máy nghe: “' + res.heard + '”. Bấm 🎤 đọc lại rõ hơn nhé — <em>chưa trừ điểm</em>.';
+          } else if (res.level === 'silent') {
+            msg.innerHTML = '🤫 Chưa nghe rõ tiếng — bấm 🎤 đọc lại to, rõ hơn nhé (không tính lỗi).';
+          } else {
+            if (registerFail()) return;
+            msg.innerHTML = '❌ <strong>Sai rồi.</strong>' + pct + ' Máy nghe: “' + (res.heard || '(không rõ)') + '” — chưa đạt. Đã tính 1 lỗi (' + w._mis + '/' + MAX_MISTAKES + ').';
+          }
+        }
+
+        micBtn.addEventListener('click', function () {
+          speechSynthesis.cancel();
+          var charCount = (w.hanzi.match(/[一-鿿]/g) || []).length || 1;
+          var durCap = w.isSentence ? 20000 : 9000; // câu dài cần nhiều thời gian hơn
+          var duration = Math.min(durCap, Math.max(3000, 2500 + 1200 * charCount)); // thời gian thu theo độ dài
+          var r = new SR();
+          r.lang = 'zh-CN'; r.interimResults = true; r.maxAlternatives = 10; r.continuous = false;
+          var finalAlts = null, lastInterim = '', handled = false;
+          micBtn.disabled = true; micBtn.classList.add('speaking');
+
+          var remain = Math.ceil(duration / 1000);
+          msg.innerHTML = '<div id="drStatus">🎙 <strong>Đang nghe…</strong> (' + remain + 's) — đọc ngay!</div>' +
+                          '<div id="drLive" style="margin-top:4px;color:var(--muted)">Máy đang nghe…</div>';
+          var statusEl = document.getElementById('drStatus');
+          var liveEl = document.getElementById('drLive');
+          var countdown = setInterval(function () {
+            remain--;
+            if (statusEl) statusEl.innerHTML = remain > 0
+              ? '🎙 <strong>Đang nghe…</strong> (' + remain + 's) — đọc ngay!'
+              : '⏳ Đang chốt kết quả…';
+            if (remain <= 0) { clearInterval(countdown); try { r.stop(); } catch (e) {} }
+          }, 1000);
+
+          r.onresult = function (e) {
+            var interim = '', finals = [];
+            for (var i = 0; i < e.results.length; i++) {
+              if (e.results[i].isFinal) {
+                for (var j = 0; j < e.results[i].length; j++) finals.push(e.results[i][j].transcript);
+              } else {
+                interim += e.results[i][0].transcript;
+              }
+            }
+            if (interim) { lastInterim = interim; if (liveEl) liveEl.innerHTML = '👂 ' + interim; }
+            if (finals.length) finalAlts = finals;
+          };
+          r.onerror = function (ev) {
+            handled = true;
+            clearInterval(countdown);
+            if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+              msg.innerHTML = '⚠️ Anh cần <strong>cho phép micro</strong> (bấm 🔒 cạnh thanh địa chỉ) rồi thử lại.';
+            } else if (ev.error === 'no-speech') {
+              msg.innerHTML = '🤫 Không nghe thấy tiếng — bấm 🎤 đọc to hơn nhé (không tính lỗi).';
+            } else if (ev.error !== 'aborted') {
+              msg.innerHTML = '⚠️ Lỗi nhận dạng (' + ev.error + ') — thử lại (không tính lỗi). Cần Chrome + Internet.';
+            }
+          };
+          r.onend = function () {
+            clearInterval(countdown);
+            micBtn.disabled = false; micBtn.classList.remove('speaking');
+            if (handled) return;
+            handled = true;
+            if (finalAlts && finalAlts.length) judge(finalAlts);
+            else if (lastInterim) judge([lastInterim]);
+            else judge([]);
+          };
+          try {
+            r.start();
+          } catch (e) {
+            clearInterval(countdown);
+            micBtn.disabled = false; micBtn.classList.remove('speaking');
+            msg.innerHTML = '⚠️ Không khởi động được micro — bấm 🎤 thử lại nhé.';
+          }
+        });
+      }
+
+    startBatch();
+  }
+
+  document.getElementById('btnDrill').addEventListener('click', startDrill);
+
+  // ----- 2 nút chính: 📚 Học bài cũ (đến hạn) · 🆕 Học từ mới -----
+  var btnOld = document.getElementById('btnOld'), btnNew = document.getElementById('btnNew');
+  function refreshMainBtns() {
+    if (!btnOld || !btnNew) return;
+    var nDue = 0, nNew = 0;
+    VOCAB.forEach(function (w) { var s = statusOf(w); if (s === 'due') nDue++; else if (s === 'new') nNew++; });
+    btnOld.textContent = '📚 Học bài cũ (' + nDue + ')';
+    btnNew.textContent = '🆕 Học từ mới (' + nNew + ')';
+    btnOld.disabled = !nDue; btnOld.style.opacity = nDue ? '' : '0.45';
+    btnNew.disabled = !nNew; btnNew.style.opacity = nNew ? '' : '0.45';
+  }
+  if (btnOld) btnOld.addEventListener('click', function () { sel.value = 'all'; if (levelSel) levelSel.value = 'due'; startDrill(); });
+  if (btnNew) btnNew.addEventListener('click', function () { sel.value = 'all'; if (levelSel) levelSel.value = 'new'; startDrill(); });
+  refreshMainBtns();
+  document.getElementById('btnFlash').addEventListener('click', startFlash);
+  document.getElementById('btnQuiz').addEventListener('click', startQuiz);
+  document.getElementById('btnHide').addEventListener('click', function () {
+    document.body.classList.toggle('hide-vi');
+    this.classList.toggle('active');
+    this.textContent = document.body.classList.contains('hide-vi') ? '👀 Hiện nghĩa tiếng Việt' : '🙈 Che nghĩa tiếng Việt';
+  });
+  document.getElementById('btnResetLv').addEventListener('click', function () {
+    if (!confirm('Đặt lại toàn bộ tiến độ (cấp độ + lịch ôn) về Lv 0? Thao tác này không hoàn tác được.')) return;
+    PROG = {};
+    saveProg();
+    VOCAB.forEach(function (w) { updateBadge(w); });
+    renderStats();
+    area.innerHTML = '<p style="color:var(--muted)">♻️ Đã đặt lại toàn bộ về Lv 0. Anh bắt đầu luyện lại từ đầu nhé!</p>';
+  });
+  // Nút test nhanh: đổi 1 ngày = 10 giây để kiểm tra cơ chế lên cấp
+  var btnTest = document.getElementById('btnTest');
+  function refreshTestBtn() {
+    btnTest.textContent = TEST_MODE ? '🧪 Test nhanh: BẬT' : '🧪 Test nhanh: TẮT';
+    btnTest.classList.toggle('active', TEST_MODE);
+  }
+  refreshTestBtn();
+  btnTest.addEventListener('click', function () {
+    TEST_MODE = !TEST_MODE;
+    try { localStorage.setItem(TESTMODE_KEY, TEST_MODE ? '1' : '0'); } catch (e) {}
+    refreshTestBtn();
+    VOCAB.forEach(function (w) { updateBadge(w); });
+    renderStats();
+    alert(TEST_MODE
+      ? '🧪 ĐÃ BẬT chế độ test: từ giờ 1 "ngày" = 10 giây.\n\nĐể thấy rõ cơ chế: bấm ♻️ Đặt lại tiến độ, rồi luyện 1 từ lên Lv1 — sau ~10 giây (1 "ngày") từ đó sẽ đến hạn ôn để lên Lv2.'
+      : '✅ Đã TẮT chế độ test, quay lại lịch theo ngày thật.');
+  });
+  // ===== Nhắc học bằng thông báo trình duyệt =====
+  var NOTIFY_KEY = K('hsk_notify');
+  var notifyOn = true;                                   // LUÔN BẬT nhắc học (đã bỏ nút bật/tắt)
+  try { localStorage.setItem(NOTIFY_KEY, '1'); } catch (e) {}
+  // Chrome bắt buộc phải có thao tác của người dùng mới xin được quyền → xin ở lần bấm chuột đầu tiên
+  if ('Notification' in window && Notification.permission === 'default') {
+    var askPerm = function () {
+      document.removeEventListener('click', askPerm);
+      try { Notification.requestPermission(); } catch (e) {}
+    };
+    document.addEventListener('click', askPerm);
+  }
+  var lastNotifiedDue = 0, lastNotifyTs = 0;
+  var btnNotify = document.getElementById('btnNotify');
+  function notifyRepeatMs() { return TEST_MODE ? 20000 : 30 * 60 * 1000; } // nhắc lại tối đa mỗi 30 phút
+  function countDue() {
+    var n = 0;
+    VOCAB.forEach(function (w) { if (statusOf(w) === 'due') n++; });
+    return n;
+  }
+  function refreshNotifyBtn() {
+    if (!('Notification' in window)) { btnNotify.textContent = '🔔 Nhắc học (không hỗ trợ)'; btnNotify.disabled = true; return; }
+    var on = notifyOn && Notification.permission === 'granted';
+    btnNotify.textContent = on ? '🔔 Nhắc học: BẬT' : '🔔 Bật nhắc học';
+    btnNotify.classList.toggle('active', on);
+  }
+  function showDueNotification(n) {
+    try {
+      var note = new Notification('📚 Đến giờ ôn tiếng Trung!', {
+        body: 'Có ' + n + ' từ đến hạn ôn. Bấm để mở bài học nhé!',
+        tag: 'hsk-due', renotify: true
+      });
+      note.onclick = function () { window.focus(); note.close(); };
+    } catch (e) {}
+  }
+  function checkDueNotify() {
+    if (!notifyOn || !('Notification' in window) || Notification.permission !== 'granted') return;
+    var n = countDue();
+    if (n === 0) { lastNotifiedDue = 0; return; }
+    var t = now();
+    if (n > lastNotifiedDue || (t - lastNotifyTs) >= notifyRepeatMs()) {
+      showDueNotification(n);
+      lastNotifyTs = t;
+      lastNotifiedDue = n;
+    }
+  }
+  refreshNotifyBtn();
+  btnNotify.addEventListener('click', function () {
+    if (!('Notification' in window)) { alert('Trình duyệt này không hỗ trợ thông báo. Anh dùng Chrome/Edge nhé.'); return; }
+    if (notifyOn && Notification.permission === 'granted') {
+      notifyOn = false;
+      try { localStorage.setItem(NOTIFY_KEY, '0'); } catch (e) {}
+      refreshNotifyBtn();
+      alert('Đã TẮT nhắc học bằng thông báo.');
+      return;
+    }
+    Notification.requestPermission().then(function (perm) {
+      if (perm === 'granted') {
+        notifyOn = true;
+        try { localStorage.setItem(NOTIFY_KEY, '1'); } catch (e) {}
+        refreshNotifyBtn();
+        var n = countDue();
+        try {
+          new Notification('🔔 Đã bật nhắc học tiếng Trung', {
+            body: n > 0 ? ('Hiện có ' + n + ' từ đến hạn ôn!') : 'Khi có từ đến hạn ôn, anh sẽ được nhắc ngay tại đây.'
+          });
+        } catch (e) {}
+        lastNotifyTs = now(); lastNotifiedDue = n;
+        alert('✅ Đã BẬT nhắc học!\n\nKhi có từ đến hạn ôn, anh sẽ nhận thông báo góc màn hình.\nLưu ý: cần giữ tab này mở (có thể để ở nền/thu nhỏ) thì thông báo mới chạy.');
+      } else {
+        alert('⚠️ Anh chưa cho phép thông báo.\nBấm biểu tượng 🔒 cạnh thanh địa chỉ → Notifications → Allow, rồi bật lại nhé.');
+      }
+    });
+  });
+
+  // Cập nhật huy hiệu/đếm ngược + kiểm tra nhắc học định kỳ
+  setInterval(function () {
+    VOCAB.forEach(function (w) { updateBadge(w); });
+    renderStats();
+    checkDueNotify();
+  }, 2500);
+});
+</script>
+<script>
+// ===== Từ điển Trung–Việt: tra & lưu vào bộ sưu tập =====
+(function () {
+  var input = document.getElementById('dictInput');
+  var btn = document.getElementById('dictBtn');
+  var out = document.getElementById('dictResults');
+  var collSel = document.getElementById('dictCollSelect');
+  var collNew = document.getElementById('dictCollNew');
+  if (!input || !btn || !out) return;
+  var DICT = null, loading = false, lastQuery = '';
+  var esc = function (s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+  function toneless(s) { return (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim(); }
+  function hasCJK(s) { return /[一-鿿]/.test(s); }
+
+  // Chữ Hán trong bài học có sẵn (để đánh dấu "đã có" — thêm cũng vô ích vì bị gộp trùng)
+  var lessonSet = {};
+  document.querySelectorAll('.word-card .hanzi').forEach(function (el) { lessonSet[el.textContent.trim()] = true; });
+  function activeSet() {
+    var m = {};
+    if (!window.CollStore) return m;
+    var a = CollStore.getActive();
+    var c = CollStore.all().filter(function (x) { return x.id === a; })[0];
+    if (c) c.words.forEach(function (w) { m[w.hanzi] = true; });
+    return m;
+  }
+
+  function fillCollSelect() {
+    if (!collSel) return;
+    var list = window.CollStore ? CollStore.all() : [];
+    if (!list.length) { collSel.innerHTML = '<option value="">(chưa có bộ nào — bấm ➕ Bộ mới)</option>'; return; }
+    var act = CollStore.getActive();
+    collSel.innerHTML = list.map(function (c) {
+      return '<option value="' + c.id + '"' + (c.id === act ? ' selected' : '') + '>' + esc(c.name) + ' (' + c.words.length + ')</option>';
+    }).join('');
+  }
+  window.fillDictCollSelect = fillCollSelect;
+  fillCollSelect();
+
+  if (collSel) collSel.addEventListener('change', function () {
+    if (window.CollStore && collSel.value) CollStore.setActive(collSel.value);
+    if (lastQuery) search(lastQuery);
+  });
+  if (collNew) collNew.addEventListener('click', function () {
+    var name = prompt('Tên bộ sưu tập mới:', '');
+    if (name && name.trim() && window.CollStore) {
+      CollStore.create(name.trim());
+      fillCollSelect();
+      if (window.renderCollections) window.renderCollections();
+      if (lastQuery) search(lastQuery);
+    }
+  });
+
+  // ----- Tự tạo từ (khi từ điển không có, hoặc muốn ghi nghĩa riêng) -----
+  var createBox = document.getElementById('dictCreate');
+  var createBtn = document.getElementById('dictCreateBtn');
+  function openCreate(prefill) {
+    if (!createBox) return;
+    if (createBox.dataset.open === '1') { createBox.innerHTML = ''; createBox.dataset.open = ''; return; }
+    createBox.dataset.open = '1';
+    createBox.innerHTML =
+      '<div class="sent-add" style="margin-top:12px">' +
+      '<strong>✍️ Tự tạo từ (ghi nghĩa của riêng anh)</strong>' +
+      '<input id="dcHanzi" class="cn-input" type="text" autocomplete="off" placeholder="Chữ Hán, vd: 加油" value="' + esc(prefill || '') + '">' +
+      '<div class="sent-py-row"><input id="dcPy" type="text" autocomplete="off" placeholder="Pinyin (bấm ✨ hoặc tự gõ)"><button class="coll-mini" id="dcPyBtn">✨ Tạo pinyin</button></div>' +
+      '<input id="dcMean" type="text" autocomplete="off" placeholder="Nghĩa tiếng Việt (anh tự ghi)">' +
+      '<div style="display:flex;gap:8px"><button class="pr-btn" id="dcSave">➕ Lưu vào bộ</button><button class="coll-mini" id="dcClose">Đóng</button></div>' +
+      '</div>';
+    var dcHanzi = document.getElementById('dcHanzi');
+    var dcPy = document.getElementById('dcPy');
+    var dcMean = document.getElementById('dcMean');
+    if (prefill && hasCJK(prefill) && window.ensureDict) {
+      window.ensureDict(function () { if (!dcPy.value) dcPy.value = window.dictPinyin(prefill); });
+    }
+    dcHanzi.focus();
+    document.getElementById('dcPyBtn').addEventListener('click', function () {
+      var h = (dcHanzi.value || '').trim();
+      if (!h) { alert('Anh nhập chữ Hán trước nhé.'); dcHanzi.focus(); return; }
+      var b = this; b.textContent = '⏳…'; b.disabled = true;
+      if (window.ensureDict) window.ensureDict(function () { dcPy.value = window.dictPinyin(h); b.textContent = '✨ Tạo pinyin'; b.disabled = false; });
+      else { b.textContent = '✨ Tạo pinyin'; b.disabled = false; }
+    });
+    document.getElementById('dcClose').addEventListener('click', function () { createBox.innerHTML = ''; createBox.dataset.open = ''; });
+    document.getElementById('dcSave').addEventListener('click', function () {
+      var h = (dcHanzi.value || '').trim(), py = (dcPy.value || '').trim(), mean = (dcMean.value || '').trim();
+      if (!window.CollStore || !CollStore.all().length) { alert('Anh hãy tạo một bộ sưu tập trước — bấm ➕ Bộ mới.'); return; }
+      if (!h) { alert('Anh nhập chữ Hán.'); dcHanzi.focus(); return; }
+      if (!mean) { alert('Anh nhập nghĩa tiếng Việt.'); dcMean.focus(); return; }
+      var act = collSel && collSel.value ? collSel.value : CollStore.getActive();
+      var ok = CollStore.addWord(act, { hanzi: h, pinyin: py, meaning: mean });
+      if (!ok) { alert('Từ này đã có trong bộ rồi.'); return; }
+      createBox.innerHTML = '<p style="color:#2e7d32;margin:8px 0">✅ Đã lưu "' + esc(h) + '" vào bộ sưu tập!</p>';
+      createBox.dataset.open = '';
+      fillCollSelect();
+      if (window.renderCollections) window.renderCollections();
+      showReload();
+    });
+  }
+  if (createBtn) createBtn.addEventListener('click', function () { openCreate(hasCJK(lastQuery) ? lastQuery : ''); });
+
+  function loadDict(cb) {
+    if (DICT) { cb(); return; }
+    if (loading) return;
+    loading = true;
+    out.innerHTML = '<p style="color:var(--muted)">⏳ Đang tải từ điển (~2MB, chỉ tải 1 lần)…</p>';
+    fetch('dict.json?v=ex1').then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (data) {
+      DICT = data;
+      DICT.forEach(function (e) { e._py = toneless(e.p); e._vi = (e.v || []).join(' ; ').toLowerCase(); });
+      loading = false; cb();
+    }).catch(function (err) {
+      loading = false;
+      out.innerHTML = '<p style="color:var(--red)">⚠️ Không tải được từ điển (' + err.message + ').<br>Hãy mở trang qua <strong>localhost</strong> (chạy file <em>Hoc-tieng-Trung.command</em>), đừng mở trực tiếp bằng file://.</p>';
+    });
+  }
+
+  // ===== Cho phần "Thêm câu" tạo pinyin tự động =====
+  var PYMAP = null;
+  function buildPymap() { PYMAP = {}; DICT.forEach(function (e) { if (!PYMAP[e.s]) PYMAP[e.s] = e.p; }); }
+  window.ensureDict = function (cb) { loadDict(function () { if (!PYMAP) buildPymap(); cb(); }); };
+  window.dictPinyin = function (text) {
+    if (!PYMAP) return '';
+    var res = [], i = 0, n = text.length, MAXW = 6;
+    while (i < n) {
+      var ch = text[i];
+      if (!/[一-鿿]/.test(ch)) { if (ch.trim()) res.push(ch); i++; continue; } // giữ dấu câu, bỏ khoảng trắng thừa
+      var found = null, flen = 0;
+      for (var L = Math.min(MAXW, n - i); L >= 1; L--) {
+        var sub = text.substr(i, L);
+        if (PYMAP[sub]) { found = PYMAP[sub]; flen = L; break; }
+      }
+      if (found) { res.push(found); i += flen; } else { res.push(ch); i++; }
+    }
+    return res.join(' ').replace(/\s+([，。！？、,.!?])/g, '$1').replace(/\s+/g, ' ').trim();
+  };
+
+  function search(q) {
+    q = (q || '').trim();
+    lastQuery = q;
+    if (!q) { out.innerHTML = ''; return; }
+    loadDict(function () {
+      var res = [];
+      if (hasCJK(q)) {
+        DICT.forEach(function (e) {
+          if (e.s === q) res.push([0, e]);
+          else if (e.s.indexOf(q) === 0) res.push([1, e]);
+          else if (e.s.indexOf(q) !== -1) res.push([2, e]);
+        });
+      } else {
+        var ql = toneless(q), qv = q.toLowerCase();
+        DICT.forEach(function (e) {
+          if (e._py === ql) res.push([0, e]);
+          else if (e._py.replace(/ /g, '') === ql.replace(/ /g, '')) res.push([1, e]);
+          else if (e._py.indexOf(ql) === 0) res.push([2, e]);
+          else if (e._vi.indexOf(qv) !== -1) res.push([3, e]);
+          else if (e._py.indexOf(ql) !== -1) res.push([4, e]);
+        });
+      }
+      res.sort(function (a, b) { return a[0] - b[0] || a[1].s.length - b[1].s.length; });
+      render(res.slice(0, 50).map(function (x) { return x[1]; }), res.length);
+    });
+  }
+
+  function render(list, total) {
+    if (!list.length) {
+      out.innerHTML = '<p style="color:var(--muted)">Không tìm thấy từ nào khớp.<br>Anh có thể <strong>tự tạo từ</strong> và ghi nghĩa của mình:</p>' +
+        '<button class="pr-btn" id="dictCreateFromEmpty">✍️ Tự tạo từ' + (hasCJK(lastQuery) ? ' "' + esc(lastQuery) + '"' : '') + '</button>';
+      var b = document.getElementById('dictCreateFromEmpty');
+      if (b) b.addEventListener('click', function () {
+        if (createBox && createBox.dataset.open === '1') { createBox.dataset.open = ''; }
+        openCreate(hasCJK(lastQuery) ? lastQuery : '');
+      });
+      return;
+    }
+    var act = activeSet();
+    var html = '<p style="color:var(--muted);font-size:0.85rem">' + Math.min(list.length, 50) + (total > 50 ? ' / ' + total : '') + ' kết quả:</p>';
+    html += list.map(function (e, i) {
+      var vi = (e.v || []).slice(0, 5).join(' · ');
+      var en = e.e ? '<span class="d-en">(' + esc(e.e.join('; ')) + ')</span>' : '';
+      var have = lessonSet[e.s] ? 'lesson' : (act[e.s] ? 'coll' : '');
+      var btnHtml = have === 'lesson'
+        ? '<button class="pr-btn d-save saved" disabled title="Đã có trong bài học">✓ Có sẵn</button>'
+        : (have === 'coll'
+          ? '<button class="pr-btn d-save saved" disabled>✓ Đã lưu</button>'
+          : '<button class="coll-mini d-edit" data-i="' + i + '" title="Sửa nghĩa rồi lưu">✏️ Sửa nghĩa</button>' +
+            '<button class="pr-btn d-save" data-i="' + i + '">➕ Lưu</button>');
+      return '<div class="dict-entry" data-row="' + i + '">' +
+        '<span class="d-hanzi" data-i="' + i + '" title="Nghe">' + esc(e.s) + '</span>' +
+        '<span class="d-py">' + esc(e.p) + '</span>' +
+        (e.t ? '<span class="d-pos">(' + esc(e.t) + ')</span>' : '') +
+        '<span class="d-vi">' + esc(vi) + ' ' + en + '</span>' + btnHtml +
+        (e.ex ? '<div class="d-ex">📝 ' + esc(e.ex.c) + ' <span class="d-ex-py">(' + esc(e.ex.p) + ')</span></div>' : '') + '</div>';
+    }).join('');
+    out.innerHTML = html;
+    out.querySelectorAll('.d-hanzi').forEach(function (el) {
+      el.addEventListener('click', function () { if (window.speakChinese) speakChinese(list[+el.getAttribute('data-i')].s, null); });
+    });
+    out.querySelectorAll('.d-save').forEach(function (bt) {
+      if (bt.disabled) return;
+      bt.addEventListener('click', function () {
+        var e = list[+bt.getAttribute('data-i')];
+        var r = saveWord(e);
+        if (r === 'none') return;
+        markSaved(+bt.getAttribute('data-i'), r);
+      });
+    });
+    out.querySelectorAll('.d-edit').forEach(function (bt) {
+      bt.addEventListener('click', function () { openMeaningEdit(+bt.getAttribute('data-i'), list); });
+    });
+  }
+
+  function markSaved(i, r) {
+    var row = out.querySelector('.dict-entry[data-row="' + i + '"]');
+    if (row) {
+      var sv = row.querySelector('.d-save'); if (sv) { sv.textContent = r ? '✓ Đã lưu' : '✓ Đã có'; sv.classList.add('saved'); sv.disabled = true; }
+      var ed = row.querySelector('.d-edit'); if (ed) ed.remove();
+    }
+    fillCollSelect();
+    if (window.renderCollections) window.renderCollections();
+    if (r) showReload();
+  }
+
+  function defaultMeaning(e) { return (e.v || []).slice(0, 4).join('; '); }
+
+  function openMeaningEdit(i, list) {
+    var e = list[i];
+    var row = out.querySelector('.dict-entry[data-row="' + i + '"]');
+    if (!row) return;
+    var exist = document.getElementById('dictEdit' + i);
+    if (exist) { exist.remove(); return; } // bấm lại = đóng
+    var other = out.querySelector('.dict-edit-row'); if (other) other.remove();
+    var box = document.createElement('div');
+    box.className = 'dict-edit-row'; box.id = 'dictEdit' + i;
+    box.innerHTML = '<input class="de-input" type="text" value="' + esc(defaultMeaning(e)) + '" placeholder="Nghĩa của anh (tự sửa)">' +
+      '<button class="pr-btn de-save">💾 Lưu nghĩa của tôi</button>' +
+      '<button class="coll-mini de-cancel">Hủy</button>';
+    row.parentNode.insertBefore(box, row.nextSibling);
+    var inp = box.querySelector('.de-input'); inp.focus(); inp.select();
+    box.querySelector('.de-save').addEventListener('click', function () {
+      var m = (inp.value || '').trim();
+      if (!m) { alert('Anh nhập nghĩa nhé.'); inp.focus(); return; }
+      var r = saveWord(e, m);
+      if (r === 'none') return;
+      box.remove();
+      markSaved(i, r);
+    });
+    box.querySelector('.de-cancel').addEventListener('click', function () { box.remove(); });
+    inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') box.querySelector('.de-save').click(); });
+  }
+
+  // trả về: 'none' nếu chưa có bộ nào; true nếu vừa thêm; false nếu bộ đã có từ đó
+  function saveWord(e, meaningOverride) {
+    if (!window.CollStore || !CollStore.all().length) {
+      alert('Anh hãy tạo một bộ sưu tập trước — bấm ➕ Bộ mới cạnh ô "Lưu vào", đặt tên rồi lưu nhé.');
+      return 'none';
+    }
+    var act = CollStore.getActive();
+    var meaning = (meaningOverride != null && meaningOverride !== '') ? meaningOverride : defaultMeaning(e);
+    return CollStore.addWord(act, { hanzi: e.s, pinyin: e.p, meaning: meaning, english: (e.e && e.e[0]) || '', pos: e.t || '', ex: e.ex || null });
+  }
+
+  var reloadBar = null;
+  function showReload() {
+    if (reloadBar) return;
+    reloadBar = document.createElement('div');
+    reloadBar.style.cssText = 'position:sticky;bottom:8px;margin-top:16px;background:var(--gold);color:#fff;padding:12px 16px;border-radius:10px;text-align:center;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,0.2)';
+    reloadBar.innerHTML = 'Đã thêm từ mới vào ⭐ Bộ sưu tập. <button class="pr-btn" id="dictReload" style="background:#fff;color:var(--red);margin-left:8px">🔄 Tải lại để đưa vào bài học</button>';
+    out.parentNode.appendChild(reloadBar);
+    document.getElementById('dictReload').addEventListener('click', function () { location.reload(); });
+  }
+
+  btn.addEventListener('click', function () { search(input.value); });
+  input.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' && !ev.isComposing && ev.keyCode !== 229) { ev.preventDefault(); hideSug(); search(input.value); }
+    else if (ev.key === 'Escape') hideSug();
+  });
+
+  // ===== Gợi ý tức thì khi gõ (autocomplete) =====
+  var sugBox = document.getElementById('dictSuggest');
+  var sugTimer = null;
+  function hideSug() { if (sugBox) { sugBox.style.display = 'none'; sugBox.innerHTML = ''; } }
+  function renderSuggest(q) {
+    q = (q || '').trim();
+    if (!sugBox || q.length < 1) { hideSug(); return; }
+    loadDict(function () {
+      var pref = [], other = [], i, e;
+      if (hasCJK(q)) {
+        for (i = 0; i < DICT.length && pref.length < 8; i++) { e = DICT[i]; if (e.s.indexOf(q) === 0) pref.push(e); }
+        if (pref.length < 8) for (i = 0; i < DICT.length && pref.length + other.length < 8; i++) { e = DICT[i]; if (e.s.indexOf(q) !== -1 && e.s.indexOf(q) !== 0) other.push(e); }
+      } else {
+        var ql = toneless(q).replace(/ /g, ''), qv = q.toLowerCase();
+        for (i = 0; i < DICT.length && pref.length < 8; i++) { e = DICT[i]; if (e._py.replace(/ /g, '').indexOf(ql) === 0) pref.push(e); }
+        if (pref.length < 8) for (i = 0; i < DICT.length && pref.length + other.length < 8; i++) { e = DICT[i]; if (pref.indexOf(e) === -1 && e._vi.indexOf(qv) !== -1) other.push(e); }
+      }
+      var res = pref.concat(other).slice(0, 8);
+      if (!res.length) { hideSug(); return; }
+      sugBox.innerHTML = res.map(function (e) {
+        return '<div class="sug-item" data-w="' + esc(e.s) + '"><span class="sug-hz">' + esc(e.s) + '</span><span class="sug-py">' + esc(e.p) + '</span><span class="sug-vi">' + esc((e.v || []).slice(0, 2).join(' · ')) + '</span></div>';
+      }).join('');
+      sugBox.style.display = 'block';
+      sugBox.querySelectorAll('.sug-item').forEach(function (it) {
+        it.addEventListener('click', function () { input.value = it.getAttribute('data-w'); hideSug(); search(input.value); });
+      });
+    });
+  }
+  input.addEventListener('input', function () {
+    var q = input.value;
+    clearTimeout(sugTimer);
+    sugTimer = setTimeout(function () { renderSuggest(q); }, 140);
+  });
+  document.addEventListener('click', function (ev) {
+    if (ev.target !== input && sugBox && !sugBox.contains(ev.target)) hideSug();
+  });
+})();
+</script>
+
+<!-- ============ HỘI THOẠI VỚI AI ============ -->
+<style>
+  #hoithoai .hoi-intro { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5; }
+  #hoithoai .hoi-setup { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  #hoithoai .hoi-setup label { font-size: 0.9rem; color: var(--muted); }
+  #hoithoai .hoi-setup select, #hoithoai .hoi-setup input {
+    padding: 8px 10px; border: 1px solid #d8cfc4; border-radius: 8px; font-size: 0.95rem; background: #fff;
+  }
+  #hoithoai .hoi-setup input#hoiModel { width: 130px; }
+  #hoiStatus { margin-top: 8px; font-size: 0.88rem; line-height: 1.55; }
+  .hoi-guide { background: #fff8e6; border: 1px solid #f0d98a; border-radius: 10px; padding: 12px 14px; }
+  .hoi-guide code { background: #2d2a26; color: #ffd; padding: 2px 7px; border-radius: 5px; font-size: 0.85em; }
+  #hoiChat { margin-top: 6px; }
+  .hoi-msgs {
+    border: 1px solid #e6ddd2; border-radius: 12px; background: #fbf7f1;
+    padding: 14px; min-height: 260px; max-height: 460px; overflow-y: auto; margin-bottom: 12px;
+  }
+  .hoi-row { display: flex; margin-bottom: 12px; }
+  .hoi-row.ai { justify-content: flex-start; }
+  .hoi-row.user { justify-content: flex-end; }
+  .hoi-bubble { max-width: 82%; padding: 10px 13px; border-radius: 14px; line-height: 1.5; }
+  .hoi-bubble.ai { background: #fff; border: 1px solid #e2d8cc; border-bottom-left-radius: 4px; }
+  .hoi-bubble.user { background: var(--red); color: #fff; border-bottom-right-radius: 4px; }
+  .hoi-han { font-size: 1.35rem; letter-spacing: 1px; }
+  .hoi-tools { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .hoi-mini {
+    font-size: 0.8rem; padding: 4px 9px; border: 1px solid #d8cfc4; border-radius: 999px;
+    background: #f3ece2; cursor: pointer; color: #4a4137;
+  }
+  .hoi-mini:hover { background: #e9dfd0; }
+  .hoi-mini.speaking { background: var(--red); color: #fff; }
+  .hoi-reveal { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2d8cc; }
+  .hoi-py { color: #8a5a00; font-size: 0.95rem; }
+  .hoi-vi { color: var(--muted); font-size: 0.92rem; margin-top: 3px; }
+  .hoi-typing { color: var(--muted); font-style: italic; }
+  .hoi-correct {
+    max-width: 88%; margin: 0 auto 12px; background: #fff8e6; border: 1px solid #f0d98a;
+    border-radius: 10px; padding: 9px 12px; font-size: 0.92rem;
+  }
+  .hoi-correct-han { font-size: 1.15rem; letter-spacing: 1px; margin: 0 6px; }
+  .hoi-correct-vi { color: var(--muted); margin-top: 4px; }
+  .hoi-error { max-width: 92%; margin: 0 auto 12px; background: #fdeaea; border: 1px solid #e6a6a6; border-radius: 10px; padding: 10px 13px; font-size: 0.88rem; line-height: 1.5; }
+  .hoi-micbig { display: block; width: 100%; padding: 16px; font-size: 1.15rem; font-weight: 600; background: var(--red); color: #fff; border: none; border-radius: 12px; cursor: pointer; }
+  .hoi-micbig:hover { filter: brightness(1.05); }
+  .hoi-micbig:disabled { opacity: .5; cursor: default; }
+  .hoi-micbig.speaking { background: #8a1a1a; animation: hoipulse 1.1s ease-in-out infinite; }
+  @keyframes hoipulse { 0%,100% { box-shadow: 0 0 0 0 rgba(138,26,26,.55); } 50% { box-shadow: 0 0 0 12px rgba(138,26,26,0); } }
+  .hoi-fallback { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+  #hoiInput { flex: 1; padding: 9px 12px; border: 1px solid #d8cfc4; border-radius: 9px; font-size: 0.95rem; }
+  #hoiSend { padding: 9px 15px; border: 1px solid #d8cfc4; border-radius: 9px; cursor: pointer; font-size: 0.95rem; background: #f3ece2; color: #4a4137; }
+  #hoiSend:disabled { opacity: .5; cursor: default; }
+  #hoiEnd { margin-top: 10px; background: none; border: 1px solid #d8cfc4; color: var(--muted); padding: 7px 13px; border-radius: 8px; cursor: pointer; }
+</style>
+<section class="lesson" id="hoithoai">
+<h2>💬 Hội thoại với AI</h2>
+<p class="hoi-intro">
+  Trò chuyện thật với AI bằng tiếng Trung. AI đóng vai theo chủ đề, nói câu ngắn dễ hiểu, tự <strong>sửa lỗi</strong> câu của anh.
+  Mỗi câu AI có 🔊 nghe · 👁 xem pinyin/nghĩa · ➕ lưu vào bộ sưu tập. Anh trả lời bằng cách <strong>gõ</strong> hoặc 🎤 <strong>nói</strong>.
+  <br>Cần cài <strong>Ollama</strong> chạy trên máy (miễn phí) — xem hướng dẫn khi bấm Bắt đầu.
+</p>
+<div class="hoi-setup">
+  <label>🤖 Model: <input id="hoiModel" type="text" value="qwen2.5:7b" spellcheck="false"></label>
+  <label>🎭 Chủ đề:
+    <select id="hoiScene"></select>
+  </label>
+  <button class="pr-btn" id="hoiStart">▶️ Bắt đầu</button>
+</div>
+<div id="hoiStatus"></div>
+<div id="hoiChat" style="display:none">
+  <div class="hoi-msgs" id="hoiMsgs"></div>
+  <button id="hoiMic" class="hoi-micbig" title="Nói câu trả lời">🎤 Nhấn để nói</button>
+  <div class="hoi-fallback">
+    <input id="hoiInput" type="text" autocomplete="off" placeholder="…hoặc gõ ở đây nếu mic nghe sai">
+    <button id="hoiSend">Gửi</button>
+  </div>
+  <button id="hoiEnd">⏹ Kết thúc hội thoại</button>
+</div>
+</section>
+<script>
+// ===== Hội thoại với AI qua Ollama (localhost:11434) =====
+(function () {
+  var OLLAMA = 'http://localhost:11434';
+  var MKEY = (window.uk || function (n) { return n; })('hsk_ollama_model');
+  var SCENES = [
+    { id: 'free', name: '🆓 Trò chuyện tự do', role: 'một người bạn Trung Quốc thân thiện đang tán gẫu', open: '你好！很高兴认识你。你叫什么名字？', openvi: 'Xin chào! Rất vui được làm quen. Bạn tên là gì?' },
+    { id: 'restaurant', name: '🍜 Gọi món ở nhà hàng', role: 'nhân viên phục vụ trong một nhà hàng', open: '欢迎光临！请问您想吃什么？', openvi: 'Hoan nghênh quý khách! Xin hỏi anh muốn ăn gì ạ?' },
+    { id: 'shopping', name: '🛒 Mua sắm ở cửa hàng', role: 'người bán hàng trong một cửa hàng', open: '欢迎光临！您想买什么？', openvi: 'Mời vào! Anh muốn mua gì ạ?' },
+    { id: 'friend', name: '🧑‍🤝‍🧑 Làm quen bạn mới', role: 'một người bạn vừa gặp lần đầu', open: '嗨！我叫小明。你是哪国人？', openvi: 'Chào! Mình tên Tiểu Minh. Bạn là người nước nào?' },
+    { id: 'direction', name: '🧭 Hỏi đường', role: 'một người qua đường tốt bụng', open: '你好，有什么可以帮你的吗？', openvi: 'Xin chào, có gì tôi giúp được không?' }
+  ];
+
+  var modelInput = document.getElementById('hoiModel');
+  var sceneSel = document.getElementById('hoiScene');
+  var startBtn = document.getElementById('hoiStart');
+  var statusEl = document.getElementById('hoiStatus');
+  var chatBox = document.getElementById('hoiChat');
+  var setupWrap = document.querySelector('#hoithoai .hoi-setup');
+  var msgs = document.getElementById('hoiMsgs');
+  var input = document.getElementById('hoiInput');
+  var micBtn = document.getElementById('hoiMic');
+  var sendBtn = document.getElementById('hoiSend');
+  var endBtn = document.getElementById('hoiEnd');
+  if (!sceneSel) return;
+
+  SCENES.forEach(function (s, i) { var o = document.createElement('option'); o.value = i; o.textContent = s.name; sceneSel.appendChild(o); });
+  try { var mv = localStorage.getItem(MKEY); if (mv === 'qwen2.5:3b') { mv = 'qwen2.5:7b'; localStorage.setItem(MKEY, mv); } if (mv) modelInput.value = mv; } catch (e) {}
+
+  var history = [], curScene = null, busy = false, typing = null;
+
+  function el(tag, cls) { var e = document.createElement(tag); if (cls) e.className = cls; return e; }
+  function mbtn(txt, title) { var b = document.createElement('button'); b.className = 'hoi-mini'; b.textContent = txt; if (title) b.title = title; return b; }
+  function scrollBottom() { msgs.scrollTop = msgs.scrollHeight; }
+
+  function myVocab() {
+    var out = [], seen = {};
+    if (window.CollStore) {
+      CollStore.all().forEach(function (c) {
+        (c.words || []).forEach(function (w) {
+          if (!w || w.type === 'sentence' || !w.hanzi) return; // chỉ lấy TỪ, bỏ câu
+          if (seen[w.hanzi]) return; seen[w.hanzi] = 1;
+          out.push(w.hanzi + (w.meaning ? '(' + w.meaning + ')' : ''));
+        });
+      });
+    }
+    return out;
+  }
+
+  function sysPrompt(scene) {
+    var vocab = myVocab(), vline;
+    if (vocab.length) {
+      vline = 'Học viên hiện chỉ biết CHÍNH XÁC những từ sau (định dạng chữ Hán(nghĩa)): ' + vocab.slice(0, 90).join('、') + '. '
+        + 'BẮT BUỘC ưu tiên tuyệt đối dùng đúng những từ này để đặt câu. Chỉ khi thật cần thiết mới thêm một vài từ HSK1 cực kỳ cơ bản (như 你/我/的/是/吗/什么/好). TUYỆT ĐỐI tránh từ khó ngoài danh sách để học viên hiểu được. ';
+    } else {
+      vline = 'Học viên chưa lưu từ nào, hãy chỉ dùng từ vựng HSK1 cơ bản nhất. ';
+    }
+    return 'Bạn là giáo viên tiếng Trung thân thiện, đang đóng vai ' + scene.role + '. '
+      + vline
+      + 'Hãy trò chuyện với học viên BẰNG TIẾNG TRUNG GIẢN THỂ, dùng câu NGẮN và ĐƠN GIẢN (1 câu mỗi lượt). '
+      + 'NHIỆM VỤ QUAN TRỌNG NHẤT: BẠN phải là người DẪN DẮT cuộc trò chuyện và HỎI HỌC VIÊN THẬT NHIỀU để họ phải nói (luyện phản xạ). Mỗi lượt: phản hồi ngắn gọn câu vừa rồi của họ, RỒI hỏi một câu hỏi MỚI — hoặc hỏi sâu hơn về điều họ vừa nói, hoặc hỏi sang một thông tin mới liên quan chủ đề (tên, tuổi, quê quán, sở thích, gia đình, công việc, hôm nay làm gì, thích ăn gì...). Luôn để HỌC VIÊN là người nói nhiều nhất; câu của bạn BẮT BUỘC luôn kết thúc bằng một câu hỏi. '
+      + 'QUY TẮC BẮT BUỘC: (1) KHÔNG lặp lại y nguyên câu của học viên — hãy ĐÁP LẠI ý của họ rồi hỏi tiếp. '
+      + '(2) Trường "reply" CHỈ chứa chữ Hán giản thể. (3) Trường "vi" PHẢI viết bằng TIẾNG VIỆT, TUYỆT ĐỐI không chứa chữ Hán. '
+      + 'Chỉ trả về DUY NHẤT một đối tượng JSON hợp lệ, không kèm chữ nào khác, theo đúng dạng:\n'
+      + '{"reply":"<câu của bạn bằng chữ Hán>","vi":"<nghĩa tiếng Việt của câu reply>","correction":<null hoặc {"fix":"<câu chữ Hán đã sửa>","vi":"<giải thích tiếng Việt>"}>}\n'
+      + 'Ví dụ đúng: {"reply":"好的，你要喝水吗？","vi":"Được rồi, anh có muốn uống nước không?","correction":null}\n'
+      + 'Trường "correction": nếu câu vừa rồi của học viên có lỗi ngữ pháp/dùng từ thì đưa bản sửa; nếu đã đúng hoặc chỉ là chào hỏi thì để null.';
+  }
+
+  function askAI(cb, errcb) {
+    var body = {
+      model: (modelInput.value.trim() || 'qwen2.5:7b'),
+      keep_alive: '30m', // giữ model trong RAM 30 phút để câu sau không phải nạp lại
+      messages: [{ role: 'system', content: sysPrompt(curScene) }].concat(history),
+      stream: false, format: 'json', options: { temperature: 0.6 }
+    };
+    fetch(OLLAMA + '/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        var content = data && data.message && data.message.content || '';
+        var obj; try { obj = JSON.parse(content); } catch (e) { obj = { reply: content || '（AI trả lời không hợp lệ）', vi: '', correction: null }; }
+        if (!obj.reply) obj.reply = '……';
+        cb(obj);
+      })
+      .catch(errcb);
+  }
+
+  // ----- render -----
+  function bubbleUser(text) {
+    var row = el('div', 'hoi-row user'); var b = el('div', 'hoi-bubble user'); b.textContent = text;
+    row.appendChild(b); msgs.appendChild(row); scrollBottom();
+  }
+  function noteCorrection(c) {
+    var row = el('div', 'hoi-row'); var n = el('div', 'hoi-correct');
+    var head = el('div'); head.innerHTML = '✏️ <strong>Gợi ý sửa câu:</strong>';
+    var han = el('span', 'hoi-correct-han'); han.textContent = c.fix;
+    var sp = mbtn('🔊', 'Nghe câu đúng'); sp.addEventListener('click', function () { if (window.speakChinese) speakChinese(c.fix, sp); });
+    head.appendChild(han); head.appendChild(sp);
+    var vi = el('div', 'hoi-correct-vi'); vi.textContent = c.vi || '';
+    n.appendChild(head); n.appendChild(vi);
+    row.appendChild(n); msgs.appendChild(row); scrollBottom();
+  }
+  function bubbleAI(obj) {
+    var row = el('div', 'hoi-row ai'); var b = el('div', 'hoi-bubble ai');
+    var han = el('div', 'hoi-han'); han.textContent = obj.reply;
+    var tools = el('div', 'hoi-tools');
+    var sp = mbtn('🔊 Nghe', 'Nghe phát âm'); sp.addEventListener('click', function () { if (window.speakChinese) speakChinese(obj.reply, sp); });
+    var eye = mbtn('👁 Pinyin / nghĩa', '');
+    var save = mbtn('➕ Lưu câu', 'Lưu vào bộ sưu tập'); save.addEventListener('click', function () { saveSentence(obj.reply, obj.vi || ''); });
+    var rev = el('div', 'hoi-reveal'); rev.style.display = 'none';
+    var py = el('div', 'hoi-py'); py.textContent = '…';
+    var vi = el('div', 'hoi-vi'); vi.textContent = obj.vi || '';
+    rev.appendChild(py); rev.appendChild(vi);
+    eye.addEventListener('click', function () {
+      if (rev.style.display === 'none') {
+        rev.style.display = ''; eye.textContent = '🙈 Ẩn';
+        if (py.getAttribute('data-done') !== '1' && window.ensureDict) {
+          window.ensureDict(function () { py.textContent = window.dictPinyin(obj.reply) || ''; py.setAttribute('data-done', '1'); });
+        }
+      } else { rev.style.display = 'none'; eye.textContent = '👁 Pinyin / nghĩa'; }
+    });
+    tools.appendChild(sp); tools.appendChild(eye); tools.appendChild(save);
+    b.appendChild(han); b.appendChild(tools); b.appendChild(rev);
+    row.appendChild(b); msgs.appendChild(row); scrollBottom();
+  }
+  function addAI(obj, autoSpeak) {
+    if (obj.correction && obj.correction.fix) noteCorrection(obj.correction);
+    bubbleAI(obj);
+    if (autoSpeak && window.speakChinese) speakChinese(obj.reply, null);
+  }
+  function showTyping() { typing = el('div', 'hoi-row ai'); var b = el('div', 'hoi-bubble ai hoi-typing'); b.textContent = '正在输入…'; typing.appendChild(b); msgs.appendChild(typing); scrollBottom(); }
+  function hideTyping() { if (typing) { typing.parentNode && typing.parentNode.removeChild(typing); typing = null; } }
+  function addError(err) {
+    var row = el('div', 'hoi-row'); var n = el('div', 'hoi-error');
+    n.textContent = '⚠️ Không nhận được trả lời từ AI. Kiểm tra Ollama còn chạy và model đã tải. (' + String(err && err.message || err) + ')';
+    row.appendChild(n); msgs.appendChild(row); scrollBottom();
+  }
+
+  function saveSentence(hanzi, vi) {
+    if (!window.CollStore || !CollStore.all().length) { alert('Anh hãy tạo một bộ sưu tập trước ở tab ⭐ Bộ sưu tập.'); return; }
+    var act = CollStore.getActive();
+    var doSave = function (py) {
+      var ok = CollStore.addWord(act, { hanzi: hanzi, pinyin: py, meaning: vi, type: 'sentence' });
+      if (window.renderCollections) renderCollections();
+      alert(ok ? '✅ Đã lưu câu vào bộ sưu tập! (F5 để đưa vào luyện tập)' : 'Câu này đã có trong bộ rồi.');
+    };
+    if (window.ensureDict) window.ensureDict(function () { doSave(window.dictPinyin(hanzi) || ''); });
+    else doSave('');
+  }
+
+  function setBusy(v) { busy = v; sendBtn.disabled = v; if (micBtn) micBtn.disabled = v; }
+
+  function send() {
+    var text = input.value.trim();
+    if (!text || busy) return;
+    bubbleUser(text);
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    setBusy(true); showTyping();
+    askAI(function (obj) {
+      hideTyping();
+      history.push({ role: 'assistant', content: obj.reply });
+      addAI(obj, true);
+      setBusy(false);
+    }, function (err) { hideTyping(); addError(err); setBusy(false); });
+  }
+
+  function micReset() { micBtn.classList.remove('speaking'); micBtn.textContent = '🎤 Nhấn để nói'; }
+  function micTalk() {
+    if (busy) return;
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { alert('Trình duyệt không hỗ trợ thu âm. Anh dùng Chrome nhé.'); return; }
+    try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {} // dừng AI đang đọc để nghe rõ
+    var r = new SR(); r.lang = 'zh-CN'; r.interimResults = false; r.maxAlternatives = 1;
+    micBtn.classList.add('speaking'); micBtn.textContent = '🔴 Đang nghe… (anh nói đi)';
+    r.onresult = function (e) { input.value = e.results[0][0].transcript; };
+    r.onend = function () { micReset(); if (input.value.trim()) send(); };
+    r.onerror = function () { micReset(); };
+    try { r.start(); } catch (e) { micReset(); }
+  }
+
+  function guideHTML(extra) {
+    return '<div class="hoi-guide">' + (extra || '') +
+      '<strong>Cách cài Ollama (làm 1 lần):</strong><br>' +
+      '1. Tải & cài Ollama cho Mac: <code>https://ollama.com/download</code><br>' +
+      '2. Mở <strong>Terminal</strong>, tải model tiếng Trung: <code>ollama pull qwen2.5</code><br>' +
+      '&nbsp;&nbsp;&nbsp;(Máy yếu RAM thì dùng bản nhẹ: <code>ollama pull qwen2.5:3b</code> — rồi điền <em>qwen2.5:3b</em> vào ô Model.)<br>' +
+      '3. Đảm bảo Ollama đang chạy (biểu tượng 🦙 trên thanh menu, hoặc gõ <code>ollama serve</code>).<br>' +
+      '4. Bấm <strong>▶️ Bắt đầu</strong> lại.' +
+      '</div>';
+  }
+
+  // Làm nóng model (nạp vào RAM) để câu đầu không phải chờ ~18s
+  function warmUp() {
+    var row = el('div', 'hoi-row'); var n = el('div', 'hoi-error');
+    n.style.background = '#eef6ff'; n.style.borderColor = '#b9d6f2';
+    n.textContent = '⏳ Đang khởi động AI vào bộ nhớ (lần đầu ~15-20 giây, các câu sau sẽ nhanh hơn)…';
+    row.appendChild(n); msgs.appendChild(row); scrollBottom();
+    fetch(OLLAMA + '/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: (modelInput.value.trim() || 'qwen2.5:7b'), keep_alive: '30m', stream: false, messages: [{ role: 'user', content: '你好' }] })
+    }).then(function () { if (row.parentNode) row.parentNode.removeChild(row); })
+      .catch(function () { if (row.parentNode) row.parentNode.removeChild(row); });
+  }
+  function begin() {
+    var m = modelInput.value.trim() || 'qwen2.5:7b';
+    try { localStorage.setItem(MKEY, m); } catch (e) {}
+    curScene = SCENES[+sceneSel.value] || SCENES[0];
+    statusEl.innerHTML = '<span style="color:var(--muted)">⏳ Đang kết nối Ollama…</span>';
+    fetch(OLLAMA + '/api/tags')
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) {
+        var names = (d.models || []).map(function (x) { return x.name; });
+        var base = m.split(':')[0], resolved = null;
+        for (var i = 0; i < names.length; i++) { var n = names[i]; if (n === m || n.indexOf(m + ':') === 0 || n.split(':')[0] === base) { resolved = n; break; } }
+        if (!names.length) { statusEl.innerHTML = guideHTML('⚠️ Ollama đang chạy nhưng <strong>chưa có model nào</strong>.<br><br>'); return; }
+        if (!resolved) { statusEl.innerHTML = guideHTML('⚠️ Chưa tải model <strong>' + m + '</strong>. Các model đang có: <em>' + names.join(', ') + '</em>.<br>Gõ: <code>ollama pull ' + m + '</code><br><br>'); return; }
+        m = resolved; modelInput.value = resolved; try { localStorage.setItem(MKEY, resolved); } catch (e) {} // dùng ĐÚNG tên model đang cài, tránh 404
+        // OK -> mở chat
+        statusEl.innerHTML = '';
+        if (setupWrap) setupWrap.style.display = 'none';
+        chatBox.style.display = '';
+        history = []; msgs.innerHTML = '';
+        addAI({ reply: curScene.open, vi: curScene.openvi, correction: null }, true);
+        history.push({ role: 'assistant', content: curScene.open });
+        input.focus();
+        warmUp();
+      })
+      .catch(function () {
+        statusEl.innerHTML = guideHTML('⚠️ <strong>Chưa kết nối được Ollama</strong> (localhost:11434). Có thể Ollama chưa cài hoặc chưa chạy.<br><br>');
+      });
+  }
+
+  function endChat() {
+    chatBox.style.display = 'none';
+    if (setupWrap) setupWrap.style.display = '';
+    statusEl.innerHTML = '';
+    msgs.innerHTML = ''; history = []; input.value = '';
+  }
+
+  startBtn.addEventListener('click', begin);
+  sendBtn.addEventListener('click', send);
+  micBtn.addEventListener('click', micTalk);
+  endBtn.addEventListener('click', endChat);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); send(); } });
+})();
+</script>
+<!-- ============ NGỮ PHÁP (tài liệu tra cứu) ============ -->
+<style>
+  #nguphap .np-intro { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5; }
+  #nguphap .np-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  #nguphap .np-lv { padding: 7px 14px; border: 1.5px solid #d8cfc4; border-radius: 999px; background: #f3ece2; cursor: pointer; font-size: 0.9rem; color: #4a4137; }
+  #nguphap .np-lv.active { background: var(--red); color: #fff; border-color: var(--red); }
+  #npSearch { flex: 1 1 260px; padding: 10px 13px; border: 1.5px solid var(--gold); border-radius: 10px; font-size: 1rem; background: var(--card); color: var(--ink); }
+  .np-stat { color: var(--muted); font-size: 0.86rem; margin-bottom: 10px; }
+  .np-card { border: 1.5px solid #e6ddd2; border-left: 5px solid var(--gold); border-radius: 10px; background: var(--card); margin-bottom: 8px; overflow: hidden; }
+  .np-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 14px; cursor: pointer; }
+  .np-row:hover { background: #f7f1e8; }
+  .np-arrow { color: var(--muted); font-size: 0.75rem; width: 13px; flex: 0 0 auto; }
+  .np-badge { background: var(--red); color: #fff; font-size: 0.74rem; padding: 2px 8px; border-radius: 999px; font-weight: 700; flex: 0 0 auto; }
+  .np-name { font-weight: 700; font-size: 1.02rem; color: var(--ink); }
+  .np-pat-mini { font-family: "SF Mono", Menlo, monospace; background: #f3ece2; border: 1px solid #e2d8cc; border-radius: 6px; padding: 2px 8px; font-size: 0.84rem; color: #7a4a12; margin-left: auto; }
+  .np-body { padding: 10px 14px 12px; border-top: 1px dashed #e6ddd2; }
+  .np-exp { font-size: 0.94rem; line-height: 1.55; margin-bottom: 8px; }
+  .np-ex { background: var(--example-bg); border-radius: 8px; padding: 7px 11px; margin-bottom: 6px; }
+  .np-ex-c { font-size: 1.12rem; letter-spacing: .5px; }
+  .np-ex-p { color: var(--gold); font-style: italic; font-size: 0.9rem; }
+  .np-ex-v { color: var(--muted); font-size: 0.9rem; }
+  .np-note { margin-top: 8px; background: #fff8e6; border: 1px solid #f0d98a; border-radius: 8px; padding: 7px 11px; font-size: 0.9rem; line-height: 1.5; }
+  .np-spk { border: 1px solid #d8cfc4; background: #fff; border-radius: 999px; cursor: pointer; font-size: 0.78rem; padding: 2px 8px; margin-left: 6px; }
+  .np-spk.speaking { background: var(--red); color: #fff; }
+</style>
+<section class="lesson" id="nguphap">
+<h2>📘 Ngữ pháp <span id="npCount" style="font-size:0.9rem;color:var(--muted);font-weight:400"></span></h2>
+<p class="np-intro">
+  Tài liệu tra cứu ngữ pháp tiếng Trung theo cấp HSK. Mỗi điểm có <strong>công thức</strong>, <strong>giải thích</strong>,
+  <strong>ví dụ</strong> (chữ Hán · pinyin · nghĩa Việt, bấm 🔊 để nghe) và <strong>lưu ý dễ sai</strong>.
+  Lọc theo cấp hoặc gõ tìm nhanh (tiếng Việt, chữ Hán, hay tên cấu trúc đều được).
+</p>
+<div class="np-bar">
+  <button class="np-lv active" data-lv="all">Tất cả</button>
+  <button class="np-lv" data-lv="1">HSK1</button>
+  <button class="np-lv" data-lv="2">HSK2</button>
+  <button class="np-lv" data-lv="3">HSK3</button>
+  <button class="np-lv" data-lv="4">HSK4</button>
+  <button class="np-lv" data-lv="5">HSK5</button>
+  <input id="npSearch" type="text" autocomplete="off" placeholder="🔍 Tìm: so sánh, 把, câu hỏi…">
+  <button class="np-lv" id="npCollapse" title="Thu gọn hết các điểm đang mở">🔽 Thu gọn tất cả</button>
+</div>
+<div class="np-stat" id="npStat"></div>
+<div id="npList"></div>
+</section>
+<script>
+// ===== Ngữ pháp: tài liệu tra cứu (nạp từ nguphap.json) =====
+(function () {
+  var DATA = null, curLv = 'all';
+  var listEl = document.getElementById('npList');
+  var statEl = document.getElementById('npStat');
+  var cntEl = document.getElementById('npCount');
+  var searchEl = document.getElementById('npSearch');
+  if (!listEl) return;
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function render() {
+    if (!DATA) return;
+    var q = ((searchEl && searchEl.value) || '').trim().toLowerCase();
+    var rows = DATA.filter(function (g) {
+      if (curLv !== 'all' && String(g.lv) !== String(curLv)) return false;
+      if (!q) return true;
+      var hay = (g.name + ' ' + g.pattern + ' ' + g.explain + ' ' + (g.note || '') + ' ' +
+        (g.ex || []).map(function (e) { return e.c + ' ' + e.p + ' ' + e.v; }).join(' ')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    statEl.innerHTML = rows.length
+      ? 'Đang hiện <strong>' + rows.length + '</strong> điểm ngữ pháp' + (q ? ' khớp “' + esc(q) + '”' : '')
+      : 'Không tìm thấy điểm nào' + (q ? ' khớp “' + esc(q) + '”' : '') + '.';
+    var openAll = !!q;                       // đang tìm kiếm thì mở sẵn kết quả cho tiện
+    listEl.innerHTML = rows.map(function (g, i) {
+      var exs = (g.ex || []).map(function (e, j) {
+        return '<div class="np-ex">' +
+          '<div class="np-ex-c">' + esc(e.c) + '<button class="np-spk" data-i="' + i + '" data-j="' + j + '" title="Nghe câu này">🔊</button></div>' +
+          '<div class="np-ex-p">' + esc(e.p) + '</div>' +
+          '<div class="np-ex-v">' + esc(e.v) + '</div></div>';
+      }).join('');
+      return '<div class="np-card">' +
+        '<div class="np-row">' +
+          '<span class="np-arrow">' + (openAll ? '▼' : '▶') + '</span>' +
+          '<span class="np-badge">HSK' + g.lv + '</span>' +
+          '<span class="np-name">' + esc(g.name) + '</span>' +
+          '<span class="np-pat-mini">' + esc(g.pattern) + '</span>' +
+        '</div>' +
+        '<div class="np-body"' + (openAll ? '' : ' style="display:none"') + '>' +
+          '<div class="np-exp">' + esc(g.explain) + '</div>' + exs +
+          (g.note ? '<div class="np-note">⚠️ ' + esc(g.note) + '</div>' : '') +
+        '</div></div>';
+    }).join('');
+    // Bấm vào dòng tiêu đề để mở / thu gọn (mở được nhiều cái cùng lúc)
+    listEl.querySelectorAll('.np-row').forEach(function (row) {
+      row.addEventListener('click', function () {
+        var body = row.nextElementSibling, ar = row.querySelector('.np-arrow');
+        if (!body) return;
+        var isHidden = body.style.display === 'none';
+        body.style.display = isHidden ? '' : 'none';
+        if (ar) ar.textContent = isHidden ? '▼' : '▶';
+      });
+    });
+    listEl.querySelectorAll('.np-spk').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var g = rows[+b.getAttribute('data-i')], e = g && g.ex[+b.getAttribute('data-j')];
+        if (e && window.speakChinese) speakChinese(e.c, b);
+      });
+    });
+  }
+  function collapseAll() {
+    listEl.querySelectorAll('.np-body').forEach(function (b) { b.style.display = 'none'; });
+    listEl.querySelectorAll('.np-arrow').forEach(function (a) { a.textContent = '▶'; });
+  }
+
+  document.querySelectorAll('#nguphap .np-lv').forEach(function (b) {
+    b.addEventListener('click', function () {
+      curLv = b.getAttribute('data-lv');
+      document.querySelectorAll('#nguphap .np-lv').forEach(function (x) { x.classList.toggle('active', x === b); });
+      render();
+    });
+  });
+  if (searchEl) searchEl.addEventListener('input', render);
+  var collapseBtn = document.getElementById('npCollapse');
+  if (collapseBtn) collapseBtn.addEventListener('click', collapseAll);
+
+  function load() {
+    listEl.innerHTML = '<p style="color:var(--muted)">⏳ Đang tải tài liệu ngữ pháp…</p>';
+    fetch('nguphap.json?v=1')
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) {
+        DATA = d || [];
+        var lvs = {};
+        DATA.forEach(function (g) { lvs[g.lv] = (lvs[g.lv] || 0) + 1; });
+        if (cntEl) cntEl.textContent = '(' + DATA.length + ' điểm · ' + Object.keys(lvs).map(function (k) { return 'HSK' + k + ': ' + lvs[k]; }).join(' · ') + ')';
+        render();
+      })
+      .catch(function () {
+        listEl.innerHTML = '<p style="color:var(--red)">⚠️ Không tải được <code>nguphap.json</code>. Anh nhớ mở trang qua <strong>http://localhost:8123</strong> (không mở trực tiếp file).</p>';
+      });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
+})();
+</script>
+
+<!-- ============ LUYỆN VIẾT CHỮ HÁN ============ -->
+<style>
+  #luyenviet .lv-intro { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5; }
+  #luyenviet .lv-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  #luyenviet .lv-bar label, #luyenviet .lv-bar span { font-size: 0.9rem; color: var(--muted); }
+  #luyenviet .lv-bar select, #luyenviet .lv-bar input {
+    padding: 8px 10px; border: 1px solid #d8cfc4; border-radius: 8px; font-size: 1rem; background: #fff;
+  }
+  #luyenviet .lv-bar input#lvInput { width: 150px; font-size: 1.15rem; }
+  .lv-chars { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .lv-chip {
+    position: relative; min-width: 46px; height: 46px; line-height: 44px; text-align: center;
+    font-size: 1.5rem; border: 1.5px solid #d8cfc4; border-radius: 8px; background: #fff; cursor: pointer; padding: 0 4px;
+  }
+  .lv-chip:hover { border-color: var(--red); }
+  .lv-chip.done { background: #eaf7ee; border-color: #7fc496; }
+  .lv-chip.done::after { content: '✓'; position: absolute; top: -6px; right: -5px; background: #2e9e5b; color: #fff; font-size: .68rem; line-height: 15px; width: 16px; height: 16px; border-radius: 50%; }
+  .lv-chip.cur { border-color: var(--red); box-shadow: 0 0 0 3px rgba(192,57,43,.18); }
+  .lv-stage { text-align: center; }
+  .lv-cur { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; }
+  .lv-cur b { color: var(--ink); font-size: 1.05rem; }
+  .lv-modes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 12px; }
+  .lv-modes button { padding: 8px 14px; border: 1.5px solid #d8cfc4; border-radius: 999px; background: #f3ece2; cursor: pointer; font-size: 0.92rem; color: #4a4137; }
+  .lv-modes button.active { background: var(--red); color: #fff; border-color: var(--red); }
+  .lv-box {
+    width: 320px; height: 320px; max-width: 92vw; margin: 0 auto; border: 2px solid var(--gold); border-radius: 10px; background: #fff;
+    background-image:
+      linear-gradient(to right, transparent calc(50% - 1px), #ece0cc calc(50% - 1px), #ece0cc calc(50% + 1px), transparent calc(50% + 1px)),
+      linear-gradient(to bottom, transparent calc(50% - 1px), #ece0cc calc(50% - 1px), #ece0cc calc(50% + 1px), transparent calc(50% + 1px));
+    touch-action: none; cursor: crosshair; transition: box-shadow .12s, border-color .12s;
+  }
+  .lv-box.pen-down { border-color: var(--red); box-shadow: 0 0 0 4px rgba(192,57,43,.28); }
+  .lv-pen { margin: 4px auto 8px; font-size: 0.92rem; min-height: 22px; }
+  .lv-pen.down { color: var(--red); font-weight: 700; }
+  .lv-msg { margin-top: 10px; font-size: 0.95rem; min-height: 24px; }
+  .lv-nav { margin-top: 12px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .lv-nav button { padding: 8px 14px; border: 1px solid #d8cfc4; border-radius: 8px; background: #f3ece2; cursor: pointer; color: #4a4137; }
+  .lv-nav button:hover { background: #e9dfd0; }
+  .lv-stat { margin-top: 10px; font-size: 0.86rem; color: var(--muted); }
+</style>
+<section class="lesson" id="luyenviet">
+<h2>✍️ Luyện viết chữ Hán</h2>
+<p class="lv-intro">
+  Viết chữ Hán bằng <strong>chuột / trackpad / màn cảm ứng</strong> — máy chấm <strong>từng nét</strong> ngay lập tức.
+  Học theo 3 mức: 👀 <strong>Xem mẫu</strong> (hoạt hình thứ tự nét) → ✏️ <strong>Tô theo nét</strong> (có chữ mờ làm nền) → 🧠 <strong>Viết từ trí nhớ</strong> (ô trống).
+  Chữ viết đúng sẽ được <strong>đánh dấu ✓</strong> để anh biết chữ nào đã thuộc. <em>(Cần Internet để tải dữ liệu nét chữ.)</em>
+</p>
+<div class="lv-bar">
+  <label>📚 Lấy chữ từ: <select id="lvColl"></select></label>
+  <span>hoặc gõ chữ Hán:</span>
+  <input id="lvInput" type="text" autocomplete="off" placeholder="你好">
+  <button class="pr-btn" id="lvGo">✍️ Luyện chữ vừa gõ</button>
+</div>
+<div class="lv-chars" id="lvChars"></div>
+<div class="lv-stat" id="lvStat"></div>
+
+<div class="lv-stage" id="lvStage" style="display:none">
+  <div class="lv-cur" id="lvCur"></div>
+  <div class="lv-modes">
+    <button id="lvM1">👀 Xem mẫu</button>
+    <button id="lvM2">✏️ Tô theo nét</button>
+    <button id="lvM3">🧠 Viết từ trí nhớ</button>
+  </div>
+  <div class="lv-modes">
+    <span style="color:var(--muted);font-size:0.85rem;align-self:center">Cách viết:</span>
+    <button id="lvMouse">🖱 Chuột</button>
+    <button id="lvTouch">🖐 Touchpad</button>
+  </div>
+  <div class="lv-pen" id="lvPen"></div>
+  <div class="lv-box" id="lvBox"></div>
+  <div class="lv-msg" id="lvMsg"></div>
+  <div class="lv-nav">
+    <button id="lvPrev">⬅️ Chữ trước</button>
+    <button id="lvRedo">🔄 Viết lại</button>
+    <button id="lvNext">Chữ sau ➡️</button>
+  </div>
+</div>
+</section>
+<script>
+// ===== Luyện viết chữ Hán (HanziWriter quiz) =====
+(function () {
+  var K = window.uk || function (n) { return n; };
+  var WKEY = K('hsk_write_prog');
+  var collSel = document.getElementById('lvColl');
+  var input = document.getElementById('lvInput');
+  var goBtn = document.getElementById('lvGo');
+  var charsEl = document.getElementById('lvChars');
+  var statEl = document.getElementById('lvStat');
+  var stage = document.getElementById('lvStage');
+  var curEl = document.getElementById('lvCur');
+  var box = document.getElementById('lvBox');
+  var msg = document.getElementById('lvMsg');
+  if (!collSel) return;
+
+  var list = [], idx = 0, mode = 'view', writer = null, meta = {};
+
+  function loadWP() { try { return JSON.parse(localStorage.getItem(WKEY)) || {}; } catch (e) { return {}; } }
+  function saveWP(p) { try { localStorage.setItem(WKEY, JSON.stringify(p)); } catch (e) {} }
+  function isCJK(c) { return /[一-鿿]/.test(c); }
+
+  // Gom chữ Hán (kèm pinyin/nghĩa nếu có) từ bộ sưu tập
+  function charsFromColl(collId) {
+    var out = [], seen = {};
+    meta = {};
+    if (!window.CollStore) return out;
+    CollStore.all().forEach(function (c) {
+      if (collId !== '__all' && c.id !== collId) return;
+      (c.words || []).forEach(function (w) {
+        var h = w.hanzi || '';
+        for (var i = 0; i < h.length; i++) {
+          var ch = h[i];
+          if (!isCJK(ch) || seen[ch]) continue;
+          seen[ch] = 1; out.push(ch);
+          if (h.length === 1) meta[ch] = { p: w.pinyin || '', m: w.meaning || '' };
+          else if (!meta[ch]) meta[ch] = { p: '', m: 'trong “' + h + '”' + (w.meaning ? ' — ' + w.meaning : '') };
+        }
+      });
+    });
+    return out;
+  }
+
+  function fillCollSelect() {
+    collSel.innerHTML = '';
+    var o = document.createElement('option'); o.value = '__all'; o.textContent = '⭐ Tất cả bộ sưu tập'; collSel.appendChild(o);
+    if (window.CollStore) CollStore.all().forEach(function (c) {
+      var op = document.createElement('option'); op.value = c.id; op.textContent = c.name + ' (' + (c.words || []).length + ')';
+      collSel.appendChild(op);
+    });
+  }
+
+  function renderChars() {
+    var wp = loadWP();
+    charsEl.innerHTML = '';
+    if (!list.length) {
+      charsEl.innerHTML = '<span style="color:var(--muted);font-size:0.9rem">Chưa có chữ nào — anh lưu từ vào ⭐ Bộ sưu tập, hoặc gõ chữ Hán vào ô trên rồi bấm ✍️.</span>';
+      statEl.textContent = '';
+      return;
+    }
+    var done = 0;
+    list.forEach(function (ch, i) {
+      if (wp[ch] && wp[ch].done) done++;
+      var b = document.createElement('div');
+      b.className = 'lv-chip' + (wp[ch] && wp[ch].done ? ' done' : '') + (i === idx && stage.style.display !== 'none' ? ' cur' : '');
+      b.textContent = ch;
+      b.title = (wp[ch] && wp[ch].done) ? 'Đã viết đúng ' + wp[ch].n + ' lần' : 'Bấm để luyện chữ này';
+      b.addEventListener('click', function () { idx = i; openStage(); });
+      charsEl.appendChild(b);
+    });
+    statEl.innerHTML = '📊 Đã viết đúng <strong>' + done + '/' + list.length + '</strong> chữ';
+  }
+
+  function charInfo(ch) {
+    var m = meta[ch] || {};
+    var wp = loadWP()[ch];
+    var s = '<b>' + ch + '</b>';
+    if (m.p) s += ' · ' + m.p;
+    if (m.m) s += ' · ' + m.m;
+    if (wp && wp.done) s += ' &nbsp;<span style="color:#2e9e5b">✓ đã viết đúng ' + wp.n + ' lần</span>';
+    return s;
+  }
+
+  function setModeBtns() {
+    document.getElementById('lvM1').classList.toggle('active', mode === 'view');
+    document.getElementById('lvM2').classList.toggle('active', mode === 'trace');
+    document.getElementById('lvM3').classList.toggle('active', mode === 'memory');
+  }
+
+  function mount() {
+    var ch = list[idx];
+    if (!ch) return;
+    penDown = false; if (typeof updatePenUI === 'function') updatePenUI();   // đặt lại trạng thái bút khi đổi chữ / đổi mức
+    curEl.innerHTML = charInfo(ch) + ' &nbsp;<span style="color:var(--muted)">(' + (idx + 1) + '/' + list.length + ')</span>';
+    setModeBtns();
+    box.innerHTML = '';
+    msg.innerHTML = (mode === 'view' ? 'Xem kỹ thứ tự nét, rồi chuyển sang ✏️ hoặc 🧠 để tự viết.'
+      : (mode === 'trace' ? '✏️ Tô theo nét mờ. Sai 1 lần sẽ hiện gợi ý nét.' : '🧠 Ô trống — anh tự viết từ trí nhớ. Sai 3 lần mới hiện gợi ý.'));
+    if (typeof HanziWriter === 'undefined') {
+      msg.innerHTML = '⚠️ Chưa tải được thư viện viết chữ — anh cần <strong>bật Internet</strong> rồi F5 lại trang.';
+      return;
+    }
+    var quizMode = (mode !== 'view');
+    writer = HanziWriter.create(box, ch, {
+      width: 320, height: 320, padding: 14,
+      strokeColor: '#c0392b',
+      outlineColor: '#e6d9c4',
+      drawingColor: '#1f7a3f',
+      drawingWidth: 12,                    // nét vẽ dày hơn (mặc định 4) — dễ nhìn khi viết bằng trackpad
+      highlightColor: '#e8b84b',
+      strokeAnimationSpeed: 1,
+      delayBetweenStrokes: 250,
+      delayBetweenLoops: 1600,
+      showCharacter: !quizMode,
+      showOutline: (mode !== 'memory'),
+      onLoadCharDataError: function () {
+        msg.innerHTML = '⚠️ Không tải được dữ liệu nét của chữ “' + ch + '” (cần Internet, hoặc chữ này chưa có dữ liệu).';
+      }
+    });
+    if (!quizMode) { writer.loopCharacterAnimation(); return; }
+    var miss = 0;
+    writer.quiz({
+      leniency: 1.5,                       // dễ tính hơn (mặc định 1) — viết trackpad run tay vẫn chấp nhận
+      showHintAfterMisses: (mode === 'trace' ? 1 : 3),
+      onMistake: function () { miss++; msg.innerHTML = '✏️ Nét này chưa đúng — thử lại nhé. <span style="color:var(--muted)">(sai ' + miss + ' nét)</span>'; },
+      onCorrectStroke: function (d) { msg.innerHTML = '✅ Đúng nét thứ <strong>' + (d.strokeNum + 1) + '</strong> — còn <strong>' + d.strokesRemaining + '</strong> nét nữa.'; },
+      onComplete: function (sum) {
+        var p = loadWP();
+        var rec = p[ch] || { done: false, n: 0, miss: 0 };
+        rec.done = true; rec.n = (rec.n || 0) + 1; rec.miss = sum.totalMistakes;
+        p[ch] = rec; saveWP(p);
+        msg.innerHTML = '🎉 <strong>Xong chữ “' + ch + '”!</strong> Sai tổng cộng <strong>' + sum.totalMistakes + '</strong> nét.' +
+          (sum.totalMistakes === 0 ? ' Hoàn hảo! 👏' : '') + '<br><span style="color:var(--muted)">Bấm 🔄 để viết lại, hoặc ➡️ sang chữ sau.</span>';
+        renderChars();
+        curEl.innerHTML = charInfo(ch) + ' &nbsp;<span style="color:var(--muted)">(' + (idx + 1) + '/' + list.length + ')</span>';
+      }
+    });
+  }
+
+  function openStage() { stage.style.display = ''; mount(); renderChars(); try { stage.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {} }
+
+  // ----- 2 chế độ nhập: 🖱 Chuột (giữ & rê) · 🖐 Touchpad (bấm hạ bút → rê tự do → bấm nhấc bút) -----
+  var INKEY = K('hsk_write_input');
+  var inputMode = 'touchpad', penDown = false;
+  try { var im0 = localStorage.getItem(INKEY); if (im0 === 'mouse' || im0 === 'touchpad') inputMode = im0; } catch (e) {}
+  var mouseBtn = document.getElementById('lvMouse'), touchBtn = document.getElementById('lvTouch'), penEl = document.getElementById('lvPen');
+
+  function updatePenUI() {
+    var touch = inputMode === 'touchpad';
+    if (box) box.classList.toggle('pen-down', touch && penDown);
+    if (!penEl) return;
+    if (!touch) { penEl.className = 'lv-pen'; penEl.innerHTML = '🖱 Nhấn giữ chuột rồi rê để vẽ; nhả ra là kết thúc nét.'; return; }
+    penEl.className = 'lv-pen' + (penDown ? ' down' : '');
+    penEl.innerHTML = penDown
+      ? '🖊 ĐANG VẼ — rê tự do (KHÔNG cần giữ), bấm lần nữa để NHẤC BÚT kết thúc nét.'
+      : '☝️ Bấm vào ô để HẠ BÚT bắt đầu nét (rồi rê không cần giữ).';
+  }
+  function setPen(v) { penDown = v; updatePenUI(); }
+  function refreshModeBtns() {
+    if (mouseBtn) mouseBtn.classList.toggle('active', inputMode === 'mouse');
+    if (touchBtn) touchBtn.classList.toggle('active', inputMode === 'touchpad');
+    updatePenUI();
+  }
+  function setInputMode(m) {
+    inputMode = m; setPen(false);
+    try { localStorage.setItem(INKEY, m); } catch (e) {}
+    refreshModeBtns();
+  }
+  if (mouseBtn) mouseBtn.addEventListener('click', function () { setInputMode('mouse'); });
+  if (touchBtn) touchBtn.addEventListener('click', function () { setInputMode('touchpad'); });
+  refreshModeBtns();
+
+  // Touchpad: chặn "nhả chuột" thật → nét KHÔNG bị kết thúc khi anh buông tay
+  document.addEventListener('mouseup', function (e) {
+    if (inputMode !== 'touchpad' || !penDown) return;
+    if (e.isTrusted === false) return;                       // để sự kiện tổng hợp của mình đi qua
+    if (!(box === e.target || box.contains(e.target))) return;
+    e.stopPropagation();
+  }, true);
+  box.addEventListener('mousedown', function (e) {
+    if (inputMode !== 'touchpad') return;
+    if (penDown) {                                           // bấm lần 2 → NHẤC BÚT
+      e.stopPropagation(); e.preventDefault();
+      setPen(false);
+      var el = document.elementFromPoint(e.clientX, e.clientY) || box;
+      el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true, clientX: e.clientX, clientY: e.clientY }));
+    } else { setPen(true); }                                 // bấm lần 1 → HẠ BÚT (cho mousedown đi qua)
+  }, true);
+
+  document.getElementById('lvM1').addEventListener('click', function () { mode = 'view'; mount(); });
+  document.getElementById('lvM2').addEventListener('click', function () { mode = 'trace'; mount(); });
+  document.getElementById('lvM3').addEventListener('click', function () { mode = 'memory'; mount(); });
+  document.getElementById('lvRedo').addEventListener('click', mount);
+  document.getElementById('lvPrev').addEventListener('click', function () { if (idx > 0) { idx--; openStage(); } });
+  document.getElementById('lvNext').addEventListener('click', function () { if (idx < list.length - 1) { idx++; openStage(); } else { msg.innerHTML = '🏁 Hết chữ trong danh sách rồi anh!'; } });
+
+  collSel.addEventListener('change', function () { list = charsFromColl(collSel.value); idx = 0; stage.style.display = 'none'; renderChars(); });
+  goBtn.addEventListener('click', function () {
+    var t = (input.value || '').trim();
+    var arr = [], seen = {};
+    for (var i = 0; i < t.length; i++) { var c = t[i]; if (isCJK(c) && !seen[c]) { seen[c] = 1; arr.push(c); } }
+    if (!arr.length) { alert('Anh gõ chữ Hán vào ô nhé (ví dụ: 你好).'); return; }
+    meta = {}; list = arr; idx = 0; renderChars(); openStage();
+  });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); goBtn.click(); } });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    fillCollSelect();
+    list = charsFromColl('__all');
+    renderChars();
+  });
+  if (document.readyState !== 'loading') { fillCollSelect(); list = charsFromColl('__all'); renderChars(); }
+})();
+</script>
+<script>
+// ===== Bố cục TAB: chỉ hiện 1 phần, mặc định Luyện tập =====
+document.addEventListener('DOMContentLoaded', function () {
+  var TABS = ['luyentap', 'tudien', 'nguphap', 'baisuutap', 'hoithoai', 'luyenviet'];
+  // Trên điện thoại / máy khác (không phải máy chủ localhost): AI Ollama không truy cập được → ẩn tab Hội thoại
+  var IS_REMOTE = ['localhost', '127.0.0.1'].indexOf(location.hostname) === -1;
+  if (IS_REMOTE) {
+    var hoiBtn = document.querySelector('.tab-btn[data-tab="hoithoai"]');
+    if (hoiBtn) hoiBtn.style.display = 'none';
+    TABS = TABS.filter(function (t) { return t !== 'hoithoai'; });
+  }
+  function show(id) {
+    var el0 = document.getElementById('hoithoai');
+    if (IS_REMOTE && el0) el0.style.display = 'none';
+    TABS.forEach(function (t) { var el = document.getElementById(t); if (el) el.style.display = (t === id ? '' : 'none'); });
+    document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-tab') === id); });
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  document.querySelectorAll('.tab-btn').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-tab')); });
+  });
+  show('luyentap');
+});
+</script>
+</body>
+</html>

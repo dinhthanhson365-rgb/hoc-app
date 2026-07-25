@@ -1,0 +1,492 @@
+[
+  {
+    "lv": 1,
+    "name": "Trật tự câu cơ bản",
+    "pattern": "Chủ ngữ + Động từ + Tân ngữ",
+    "explain": "Giống tiếng Việt: Ai + làm gì + cái gì.",
+    "ex": [
+      { "c": "我爱你。", "p": "wǒ ài nǐ", "v": "Tôi yêu bạn." },
+      { "c": "他喝水。", "p": "tā hē shuǐ", "v": "Anh ấy uống nước." }
+    ],
+    "note": "Khác tiếng Việt: thời gian và nơi chốn phải đứng TRƯỚC động từ, không để cuối câu. Thứ tự đầy đủ: Ai + Khi nào + Ở đâu + làm gì. Ví dụ: 我今天在家看书。"
+  },
+  {
+    "lv": 1,
+    "name": "Câu chữ 是 (là)",
+    "pattern": "A + 是 + B  /  A + 不是 + B",
+    "explain": "Dùng 是 để nối hai danh từ, nghĩa là \"A là B\".",
+    "ex": [
+      { "c": "我是学生。", "p": "wǒ shì xuéshēng", "v": "Tôi là học sinh." },
+      { "c": "他不是老师。", "p": "tā bú shì lǎoshī", "v": "Anh ấy không phải giáo viên." }
+    ],
+    "note": "Dễ sai: KHÔNG dùng 是 với tính từ. Nói 我很好 (tôi khỏe), không nói 我是好."
+  },
+  {
+    "lv": 1,
+    "name": "Câu có 有 (có) và 没有",
+    "pattern": "A + 有 + B  /  A + 没有 + B",
+    "explain": "有 chỉ sở hữu hoặc sự tồn tại.",
+    "ex": [
+      { "c": "我有一个妹妹。", "p": "wǒ yǒu yí ge mèimei", "v": "Tôi có một em gái." },
+      { "c": "我没有钱。", "p": "wǒ méiyǒu qián", "v": "Tôi không có tiền." }
+    ],
+    "note": "Dễ sai: phủ định của 有 luôn là 没有, TUYỆT ĐỐI không nói 不有."
+  },
+  {
+    "lv": 1,
+    "name": "Tính từ làm vị ngữ với 很",
+    "pattern": "Chủ ngữ + 很 + Tính từ",
+    "explain": "Khi tính từ làm vị ngữ, thường phải có 很 đứng trước (ở đây 很 gần như không mang nghĩa \"rất\").",
+    "ex": [
+      { "c": "我很好。", "p": "wǒ hěn hǎo", "v": "Tôi khỏe." },
+      { "c": "这个菜很好吃。", "p": "zhège cài hěn hǎochī", "v": "Món này ngon." }
+    ],
+    "note": "Dễ sai: không dùng 是 ở đây. Nói 菜很好吃, không nói 菜是好吃."
+  },
+  {
+    "lv": 1,
+    "name": "Phủ định 不 và 没",
+    "pattern": "不 + Động từ/Tính từ  |  没 + Động từ",
+    "explain": "不 phủ định hiện tại, thói quen, ý muốn, tương lai. 没 phủ định việc ĐÃ xảy ra (quá khứ) và phủ định 有.",
+    "ex": [
+      { "c": "我不喝茶。", "p": "wǒ bù hē chá", "v": "Tôi không uống trà." },
+      { "c": "我没去。", "p": "wǒ méi qù", "v": "Tôi đã không đi." }
+    ],
+    "note": "Mẹo nhớ: 不 = không (nói chung), 没 = chưa/đã không (chuyện đã qua)."
+  },
+  {
+    "lv": 1,
+    "name": "Câu hỏi với 吗",
+    "pattern": "Câu khẳng định + 吗？",
+    "explain": "Thêm 吗 vào cuối câu khẳng định là thành câu hỏi có/không.",
+    "ex": [
+      { "c": "你好吗？", "p": "nǐ hǎo ma", "v": "Bạn khỏe không?" },
+      { "c": "你是老师吗？", "p": "nǐ shì lǎoshī ma", "v": "Bạn là giáo viên phải không?" }
+    ],
+    "note": "Đã có từ để hỏi (什么, 谁…) thì KHÔNG thêm 吗 nữa."
+  },
+  {
+    "lv": 1,
+    "name": "Câu hỏi với từ để hỏi",
+    "pattern": "什么 / 谁 / 哪 / 哪儿 / 几 / 多少 / 怎么 / 怎么样",
+    "explain": "Từ để hỏi đặt ĐÚNG vị trí của câu trả lời, không đảo câu như tiếng Anh.",
+    "ex": [
+      { "c": "这是什么？", "p": "zhè shì shénme", "v": "Đây là cái gì?" },
+      { "c": "你去哪儿？", "p": "nǐ qù nǎr", "v": "Bạn đi đâu?" }
+    ],
+    "note": "几 hỏi số nhỏ (dưới 10, có lượng từ theo sau); 多少 hỏi số lớn bất kỳ."
+  },
+  {
+    "lv": 1,
+    "name": "Câu hỏi chính phản (A 不 A)",
+    "pattern": "Động từ/Tính từ + 不 + Động từ/Tính từ",
+    "explain": "Lặp lại động từ/tính từ với 不 ở giữa để hỏi — nghĩa như câu hỏi 吗.",
+    "ex": [
+      { "c": "你去不去？", "p": "nǐ qù bú qù", "v": "Bạn đi hay không đi?" },
+      { "c": "这个好不好？", "p": "zhège hǎo bu hǎo", "v": "Cái này có tốt không?" }
+    ],
+    "note": "Dạng này KHÔNG được thêm 吗 ở cuối."
+  },
+  {
+    "lv": 1,
+    "name": "Trợ từ 的 (sở hữu / định ngữ)",
+    "pattern": "Người/Vật + 的 + Danh từ",
+    "explain": "的 nối phần bổ nghĩa với danh từ, giống \"của\" trong tiếng Việt.",
+    "ex": [
+      { "c": "我的书", "p": "wǒ de shū", "v": "sách của tôi" },
+      { "c": "老师的名字", "p": "lǎoshī de míngzi", "v": "tên của giáo viên" }
+    ],
+    "note": "Với người thân và nơi chốn thân thiết thường lược bỏ 的: 我妈妈, 我家."
+  },
+  {
+    "lv": 1,
+    "name": "Lượng từ (量词)",
+    "pattern": "Số từ + Lượng từ + Danh từ",
+    "explain": "Tiếng Trung bắt buộc có lượng từ giữa số và danh từ. 个 là lượng từ dùng chung, chưa biết dùng gì thì dùng 个.",
+    "ex": [
+      { "c": "一个人", "p": "yí ge rén", "v": "một người" },
+      { "c": "两本书", "p": "liǎng běn shū", "v": "hai quyển sách" }
+    ],
+    "note": "Dễ sai: số \"hai\" khi đếm dùng 两 chứ không dùng 二. Nói 两个, không nói 二个."
+  },
+  {
+    "lv": 1,
+    "name": "Trợ từ 了 (hoàn thành / thay đổi)",
+    "pattern": "Động từ + 了  /  Câu + 了",
+    "explain": "了 sau động từ = việc đã hoàn thành. 了 cuối câu = tình huống có thay đổi.",
+    "ex": [
+      { "c": "我吃了。", "p": "wǒ chī le", "v": "Tôi ăn rồi." },
+      { "c": "他走了。", "p": "tā zǒu le", "v": "Anh ấy đi rồi." }
+    ],
+    "note": "Phủ định dùng 没 và BỎ 了: 我没吃 (tôi chưa ăn), không nói 我没吃了."
+  },
+  {
+    "lv": 1,
+    "name": "在 (ở / đang)",
+    "pattern": "在 + Nơi chốn  |  在 + Động từ",
+    "explain": "在 + nơi chốn = ở đâu. 在 + động từ = đang làm gì.",
+    "ex": [
+      { "c": "我在家。", "p": "wǒ zài jiā", "v": "Tôi ở nhà." },
+      { "c": "他在看书。", "p": "tā zài kàn shū", "v": "Anh ấy đang đọc sách." }
+    ],
+    "note": "Cụm 在 + nơi chốn phải đứng TRƯỚC động từ: 我在家吃饭 (tôi ăn cơm ở nhà)."
+  },
+  {
+    "lv": 1,
+    "name": "Động từ năng nguyện 想 / 要 / 会 / 能",
+    "pattern": "Chủ ngữ + 想/要/会/能 + Động từ",
+    "explain": "想 = muốn; 要 = muốn/cần/sẽ; 会 = biết (kỹ năng học được); 能 = có thể (điều kiện cho phép).",
+    "ex": [
+      { "c": "我想喝水。", "p": "wǒ xiǎng hē shuǐ", "v": "Tôi muốn uống nước." },
+      { "c": "我会说中文。", "p": "wǒ huì shuō Zhōngwén", "v": "Tôi biết nói tiếng Trung." }
+    ],
+    "note": "Phủ định đặt 不 trước chúng: 我不想去, 我不会说."
+  },
+  {
+    "lv": 1,
+    "name": "喜欢 (thích)",
+    "pattern": "Chủ ngữ + 喜欢 + Danh từ / Động từ",
+    "explain": "喜欢 theo sau có thể là danh từ hoặc cả một hành động.",
+    "ex": [
+      { "c": "我喜欢中国菜。", "p": "wǒ xǐhuan Zhōngguó cài", "v": "Tôi thích món Trung Quốc." },
+      { "c": "我喜欢看书。", "p": "wǒ xǐhuan kàn shū", "v": "Tôi thích đọc sách." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 1,
+    "name": "和 (và) — nối danh từ",
+    "pattern": "Danh từ + 和 + Danh từ",
+    "explain": "和 chỉ dùng nối danh từ với danh từ.",
+    "ex": [
+      { "c": "我和你", "p": "wǒ hé nǐ", "v": "tôi và bạn" },
+      { "c": "爸爸和妈妈", "p": "bàba hé māma", "v": "bố và mẹ" }
+    ],
+    "note": "Dễ sai: KHÔNG dùng 和 để nối hai mệnh đề/hành động như \"và\" tiếng Việt."
+  },
+  {
+    "lv": 1,
+    "name": "太…了 (quá…)",
+    "pattern": "太 + Tính từ + 了",
+    "explain": "Diễn tả mức độ cao, thường mang cảm thán.",
+    "ex": [
+      { "c": "太好了！", "p": "tài hǎo le", "v": "Tuyệt quá!" },
+      { "c": "这个太贵了。", "p": "zhège tài guì le", "v": "Cái này đắt quá." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 1,
+    "name": "呢 và 吧",
+    "pattern": "… 呢？ / … 吧！",
+    "explain": "呢 dùng hỏi lại \"còn…thì sao?\". 吧 dùng đề nghị hoặc phỏng đoán.",
+    "ex": [
+      { "c": "我很好，你呢？", "p": "wǒ hěn hǎo, nǐ ne", "v": "Tôi khỏe, còn bạn?" },
+      { "c": "我们走吧！", "p": "wǒmen zǒu ba", "v": "Chúng ta đi thôi!" }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 1,
+    "name": "这 / 那 và 这儿 / 那儿",
+    "pattern": "这(个) / 那(个) · 这儿 / 那儿",
+    "explain": "这 = này (gần), 那 = kia (xa). Thêm 儿 thành nơi chốn: 这儿 = ở đây, 那儿 = ở kia.",
+    "ex": [
+      { "c": "这是我爸爸。", "p": "zhè shì wǒ bàba", "v": "Đây là bố tôi." },
+      { "c": "我在这儿。", "p": "wǒ zài zhèr", "v": "Tôi ở đây." }
+    ],
+    "note": "Trước danh từ phải có lượng từ: 这个人 (người này), không nói 这人 (trong văn nói chuẩn)."
+  },
+  {
+    "lv": 1,
+    "name": "Cách nói giờ, ngày tháng, tuổi",
+    "pattern": "…点 · …年…月…号 · 星期… · …岁",
+    "explain": "Thứ tự tiếng Trung đi từ LỚN đến NHỎ (năm → tháng → ngày), ngược với tiếng Việt.",
+    "ex": [
+      { "c": "现在两点。", "p": "xiànzài liǎng diǎn", "v": "Bây giờ 2 giờ." },
+      { "c": "我二十岁。", "p": "wǒ èrshí suì", "v": "Tôi 20 tuổi." }
+    ],
+    "note": "Nói tuổi và giờ KHÔNG cần 是: nói 我二十岁, không nói 我是二十岁."
+  },
+
+  {
+    "lv": 2,
+    "name": "正在 / 在…呢 (đang làm)",
+    "pattern": "(正)在 + Động từ + (呢)",
+    "explain": "Diễn tả hành động đang diễn ra ngay lúc nói.",
+    "ex": [
+      { "c": "他正在吃饭呢。", "p": "tā zhèngzài chīfàn ne", "v": "Anh ấy đang ăn cơm." },
+      { "c": "我在看电视。", "p": "wǒ zài kàn diànshì", "v": "Tôi đang xem tivi." }
+    ],
+    "note": "Phủ định: 没在 + động từ. Ví dụ 我没在睡觉."
+  },
+  {
+    "lv": 2,
+    "name": "过 (đã từng)",
+    "pattern": "Động từ + 过",
+    "explain": "Chỉ kinh nghiệm đã từng trải qua trong quá khứ.",
+    "ex": [
+      { "c": "我去过中国。", "p": "wǒ qùguo Zhōngguó", "v": "Tôi đã từng đến Trung Quốc." },
+      { "c": "我没吃过。", "p": "wǒ méi chīguo", "v": "Tôi chưa từng ăn." }
+    ],
+    "note": "Phân biệt: 了 = đã hoàn thành việc đó; 过 = đã từng có kinh nghiệm."
+  },
+  {
+    "lv": 2,
+    "name": "要…了 / 快…了 (sắp)",
+    "pattern": "(快)要 + Động từ/Tính từ + 了",
+    "explain": "Diễn tả việc sắp xảy ra.",
+    "ex": [
+      { "c": "他要来了。", "p": "tā yào lái le", "v": "Anh ấy sắp đến rồi." },
+      { "c": "快下雨了。", "p": "kuài xià yǔ le", "v": "Sắp mưa rồi." }
+    ],
+    "note": "Không được bỏ 了 ở cuối."
+  },
+  {
+    "lv": 2,
+    "name": "比 (so sánh hơn)",
+    "pattern": "A + 比 + B + Tính từ",
+    "explain": "Dùng để so sánh A hơn B.",
+    "ex": [
+      { "c": "我比他高。", "p": "wǒ bǐ tā gāo", "v": "Tôi cao hơn anh ấy." },
+      { "c": "今天比昨天冷。", "p": "jīntiān bǐ zuótiān lěng", "v": "Hôm nay lạnh hơn hôm qua." }
+    ],
+    "note": "Dễ sai: KHÔNG dùng 很 trong câu 比. Nói 我比他高, không nói 我比他很高. Muốn nhấn mạnh dùng 更 hoặc thêm mức độ ở sau: 我比他高一点儿."
+  },
+  {
+    "lv": 2,
+    "name": "跟…一样 (giống như)",
+    "pattern": "A + 跟 + B + 一样 (+ Tính từ)",
+    "explain": "So sánh hai thứ giống nhau.",
+    "ex": [
+      { "c": "我跟他一样高。", "p": "wǒ gēn tā yíyàng gāo", "v": "Tôi cao bằng anh ấy." },
+      { "c": "这个跟那个不一样。", "p": "zhège gēn nàge bù yíyàng", "v": "Cái này không giống cái kia." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "最 (nhất)",
+    "pattern": "最 + Tính từ / Động từ",
+    "explain": "Chỉ mức độ cao nhất.",
+    "ex": [
+      { "c": "他最高。", "p": "tā zuì gāo", "v": "Anh ấy cao nhất." },
+      { "c": "我最喜欢中国菜。", "p": "wǒ zuì xǐhuan Zhōngguó cài", "v": "Tôi thích món Trung nhất." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "有点儿 và 一点儿",
+    "pattern": "有点儿 + Tính từ  |  Tính từ + 一点儿",
+    "explain": "有点儿 đứng TRƯỚC tính từ, mang ý chê/không hài lòng. 一点儿 đứng SAU tính từ, mang ý so sánh nhẹ.",
+    "ex": [
+      { "c": "这个有点儿贵。", "p": "zhège yǒudiǎnr guì", "v": "Cái này hơi đắt (chê)." },
+      { "c": "便宜一点儿吧。", "p": "piányi yìdiǎnr ba", "v": "Rẻ một chút đi." }
+    ],
+    "note": "Đây là lỗi rất phổ biến — nhớ vị trí: 有点儿 TRƯỚC, 一点儿 SAU."
+  },
+  {
+    "lv": 2,
+    "name": "就 và 才",
+    "pattern": "就 / 才 + Động từ",
+    "explain": "就 = sớm hơn/nhanh hơn dự kiến. 才 = muộn hơn/chậm hơn dự kiến.",
+    "ex": [
+      { "c": "他七点就来了。", "p": "tā qī diǎn jiù lái le", "v": "Mới 7 giờ anh ấy đã đến rồi." },
+      { "c": "他九点才来。", "p": "tā jiǔ diǎn cái lái", "v": "Mãi 9 giờ anh ấy mới đến." }
+    ],
+    "note": "Câu có 才 thường KHÔNG dùng 了 ở cuối."
+  },
+  {
+    "lv": 2,
+    "name": "还 và 也",
+    "pattern": "还 / 也 + Động từ",
+    "explain": "还 = vẫn còn, thêm nữa. 也 = cũng.",
+    "ex": [
+      { "c": "我也喜欢。", "p": "wǒ yě xǐhuan", "v": "Tôi cũng thích." },
+      { "c": "他还在睡觉。", "p": "tā hái zài shuìjiào", "v": "Anh ấy vẫn còn đang ngủ." }
+    ],
+    "note": "也 và 还 phải đứng TRƯỚC động từ, không đặt cuối câu."
+  },
+  {
+    "lv": 2,
+    "name": "因为…所以… (vì…nên…)",
+    "pattern": "因为 + lý do, 所以 + kết quả",
+    "explain": "Cặp liên từ chỉ nguyên nhân – kết quả.",
+    "ex": [
+      { "c": "因为下雨，所以我没去。", "p": "yīnwèi xià yǔ, suǒyǐ wǒ méi qù", "v": "Vì trời mưa nên tôi đã không đi." }
+    ],
+    "note": "Khác tiếng Anh: tiếng Trung dùng ĐỦ CẢ HAI vế 因为…所以… được, không sai."
+  },
+  {
+    "lv": 2,
+    "name": "虽然…但是… (tuy…nhưng…)",
+    "pattern": "虽然 + A, 但是 + B",
+    "explain": "Diễn tả ý nhượng bộ, tương phản.",
+    "ex": [
+      { "c": "虽然很累，但是我很高兴。", "p": "suīrán hěn lèi, dànshì wǒ hěn gāoxìng", "v": "Tuy rất mệt nhưng tôi rất vui." }
+    ],
+    "note": "Dùng cả hai vế là chuẩn trong tiếng Trung."
+  },
+  {
+    "lv": 2,
+    "name": "如果…就… (nếu…thì…)",
+    "pattern": "如果 + điều kiện, 就 + kết quả",
+    "explain": "Câu điều kiện.",
+    "ex": [
+      { "c": "如果你去，我就去。", "p": "rúguǒ nǐ qù, wǒ jiù qù", "v": "Nếu bạn đi thì tôi đi." }
+    ],
+    "note": "就 phải đứng trước động từ ở vế sau."
+  },
+  {
+    "lv": 2,
+    "name": "别 / 不要 (đừng)",
+    "pattern": "别 / 不要 + Động từ",
+    "explain": "Dùng để khuyên ngăn, cấm đoán.",
+    "ex": [
+      { "c": "别走！", "p": "bié zǒu", "v": "Đừng đi!" },
+      { "c": "不要说话。", "p": "búyào shuōhuà", "v": "Đừng nói chuyện." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "可以 / 应该 / 得 (děi)",
+    "pattern": "Chủ ngữ + 可以/应该/得 + Động từ",
+    "explain": "可以 = được phép; 应该 = nên; 得 (đọc děi) = phải.",
+    "ex": [
+      { "c": "你可以走了。", "p": "nǐ kěyǐ zǒu le", "v": "Bạn có thể đi rồi." },
+      { "c": "我得走了。", "p": "wǒ děi zǒu le", "v": "Tôi phải đi rồi." }
+    ],
+    "note": "得 ở đây đọc là děi (phải), khác với 得 de trong bổ ngữ trình độ."
+  },
+  {
+    "lv": 2,
+    "name": "Bổ ngữ kết quả",
+    "pattern": "Động từ + 完/到/见/好/错/懂",
+    "explain": "Thêm một chữ sau động từ để nói kết quả của hành động.",
+    "ex": [
+      { "c": "我吃完了。", "p": "wǒ chī wán le", "v": "Tôi ăn xong rồi." },
+      { "c": "我听懂了。", "p": "wǒ tīng dǒng le", "v": "Tôi nghe hiểu rồi." }
+    ],
+    "note": "Phủ định dùng 没: 我没吃完 (tôi chưa ăn xong)."
+  },
+  {
+    "lv": 2,
+    "name": "Bổ ngữ trình độ với 得",
+    "pattern": "Động từ + 得 + Tính từ",
+    "explain": "Nói về mức độ làm việc gì đó tốt hay không.",
+    "ex": [
+      { "c": "他说得很好。", "p": "tā shuō de hěn hǎo", "v": "Anh ấy nói rất tốt." },
+      { "c": "我跑得不快。", "p": "wǒ pǎo de bú kuài", "v": "Tôi chạy không nhanh." }
+    ],
+    "note": "Nếu có tân ngữ phải lặp động từ: 他说汉语说得很好."
+  },
+  {
+    "lv": 2,
+    "name": "一边…一边… (vừa…vừa…)",
+    "pattern": "一边 + V1 + 一边 + V2",
+    "explain": "Hai hành động xảy ra cùng lúc.",
+    "ex": [
+      { "c": "他一边吃饭一边看电视。", "p": "tā yìbiān chīfàn yìbiān kàn diànshì", "v": "Anh ấy vừa ăn cơm vừa xem tivi." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "从…到… (từ…đến…)",
+    "pattern": "从 + A + 到 + B",
+    "explain": "Chỉ khoảng cách thời gian hoặc không gian.",
+    "ex": [
+      { "c": "从星期一到星期五", "p": "cóng xīngqīyī dào xīngqīwǔ", "v": "từ thứ hai đến thứ sáu" },
+      { "c": "从家到学校很近。", "p": "cóng jiā dào xuéxiào hěn jìn", "v": "Từ nhà đến trường rất gần." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "离 (cách)",
+    "pattern": "A + 离 + B + 远/近",
+    "explain": "Nói khoảng cách giữa hai nơi.",
+    "ex": [
+      { "c": "我家离学校很近。", "p": "wǒ jiā lí xuéxiào hěn jìn", "v": "Nhà tôi cách trường rất gần." }
+    ],
+    "note": "Phân biệt: 从 dùng cho điểm xuất phát (di chuyển), 离 dùng cho khoảng cách (tĩnh)."
+  },
+  {
+    "lv": 2,
+    "name": "给 (cho / cho ai đó)",
+    "pattern": "给 + Người + Động từ  |  Động từ + 给 + Người",
+    "explain": "给 chỉ đối tượng nhận.",
+    "ex": [
+      { "c": "我给你打电话。", "p": "wǒ gěi nǐ dǎ diànhuà", "v": "Tôi gọi điện cho bạn." },
+      { "c": "他送给我一本书。", "p": "tā sòng gěi wǒ yì běn shū", "v": "Anh ấy tặng tôi một quyển sách." }
+    ],
+    "note": "Cụm 给 + người thường đứng TRƯỚC động từ."
+  },
+  {
+    "lv": 2,
+    "name": "对 (đối với)",
+    "pattern": "对 + Người/Vật + Tính từ/Động từ",
+    "explain": "Chỉ đối tượng hướng tới.",
+    "ex": [
+      { "c": "他对我很好。", "p": "tā duì wǒ hěn hǎo", "v": "Anh ấy rất tốt với tôi." },
+      { "c": "我对中国文化很感兴趣。", "p": "wǒ duì Zhōngguó wénhuà hěn gǎn xìngqù", "v": "Tôi rất hứng thú với văn hóa Trung Quốc." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "Lượng từ động tác: 次 / 遍",
+    "pattern": "Động từ + Số + 次/遍",
+    "explain": "次 đếm số lần. 遍 đếm số lượt làm trọn vẹn từ đầu đến cuối.",
+    "ex": [
+      { "c": "我去过两次。", "p": "wǒ qùguo liǎng cì", "v": "Tôi đã đi hai lần." },
+      { "c": "请再说一遍。", "p": "qǐng zài shuō yí biàn", "v": "Xin nói lại một lần nữa." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "再 và 又",
+    "pattern": "再 / 又 + Động từ",
+    "explain": "再 = lại (việc CHƯA xảy ra, tương lai). 又 = lại (việc ĐÃ xảy ra rồi).",
+    "ex": [
+      { "c": "明天再说吧。", "p": "míngtiān zài shuō ba", "v": "Mai nói lại nhé." },
+      { "c": "他又来了。", "p": "tā yòu lái le", "v": "Anh ấy lại đến nữa rồi." }
+    ],
+    "note": "Nhớ: 再 nhìn về TƯƠNG LAI, 又 nhìn về QUÁ KHỨ."
+  },
+  {
+    "lv": 2,
+    "name": "Lặp động từ (làm thử, một chút)",
+    "pattern": "V + V  /  V + 一 + V  /  V + 一下",
+    "explain": "Lặp động từ làm giọng điệu nhẹ nhàng hơn, nghĩa \"làm thử một chút\".",
+    "ex": [
+      { "c": "你看看。", "p": "nǐ kànkan", "v": "Bạn xem thử đi." },
+      { "c": "等一下。", "p": "děng yíxià", "v": "Đợi một chút." }
+    ],
+    "note": ""
+  },
+  {
+    "lv": 2,
+    "name": "每…都… (mỗi…đều…)",
+    "pattern": "每 + Lượng từ + Danh từ + 都 + Động từ",
+    "explain": "Nhấn mạnh tính toàn bộ, không ngoại lệ.",
+    "ex": [
+      { "c": "我每天都学习汉语。", "p": "wǒ měi tiān dōu xuéxí Hànyǔ", "v": "Ngày nào tôi cũng học tiếng Trung." }
+    ],
+    "note": "Có 每 thì hầu như luôn phải có 都 đi kèm."
+  },
+  {
+    "lv": 2,
+    "name": "Câu chữ 把 (cơ bản)",
+    "pattern": "Chủ ngữ + 把 + Tân ngữ + Động từ + thành phần khác",
+    "explain": "Đưa tân ngữ lên trước động từ để nhấn mạnh việc XỬ LÝ tân ngữ đó thế nào.",
+    "ex": [
+      { "c": "我把书放在桌子上。", "p": "wǒ bǎ shū fàng zài zhuōzi shang", "v": "Tôi đặt sách lên bàn." },
+      { "c": "请把门关上。", "p": "qǐng bǎ mén guānshàng", "v": "Xin đóng cửa lại." }
+    ],
+    "note": "Bắt buộc: sau động từ PHẢI có thành phần khác (了, 在…, 上, 好…), không được để động từ đứng trơ trọi."
+  }
+]

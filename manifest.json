@@ -1,0 +1,17 @@
+{
+  "name": "Sổ tay học Trung - Anh",
+  "short_name": "Học 学",
+  "description": "Sổ tay học tiếng Trung & tiếng Anh: từ điển, bộ sưu tập, luyện tập lên cấp, luyện viết chữ Hán, ngữ pháp.",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf7f1",
+  "theme_color": "#a5271b",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

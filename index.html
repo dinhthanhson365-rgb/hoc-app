@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#a5271b">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Học 学">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+<title>Sổ tay học ngoại ngữ</title>
+<style>
+  :root {
+    --bg: #faf7f2; --card: #ffffff; --ink: #2b2b2b; --muted: #777;
+    --border: #e8e0d4; --gold: #b8860b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1c1a17; --card: #262320; --ink: #e8e4dd; --muted: #a09a90; --border: #3a352f; --gold: #d4a53a; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--ink); min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; line-height: 1.6;
+  }
+  h1 { font-size: 2rem; text-align: center; margin-bottom: 8px; }
+  .sub { color: var(--muted); text-align: center; margin-bottom: 36px; }
+  .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  a.card {
+    display: block; text-decoration: none; color: var(--ink);
+    background: var(--card); border: 2px solid var(--border); border-radius: 20px;
+    padding: 36px 40px; width: 280px; text-align: center;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  a.card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .flag { font-size: 4rem; line-height: 1; margin-bottom: 14px; }
+  .name { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+  .desc { color: var(--muted); font-size: 0.92rem; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 0.82rem; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>📚 Sổ tay học ngoại ngữ</h1>
+  <p class="sub">Chọn ngôn ngữ anh muốn học hôm nay</p>
+  <div class="cards">
+    <a class="card" href="tu-vung-tieng-trung.html">
+      <div class="flag">🇨🇳</div>
+      <div class="name">Tiếng Trung</div>
+      <div class="desc">Từ điển Trung–Việt · pinyin · 4 kỹ năng · lên cấp</div>
+    </a>
+    <a class="card" href="hoc-tieng-anh.html">
+      <div class="flag">🇬🇧</div>
+      <div class="name">Tiếng Anh</div>
+      <div class="desc">Từ điển Anh–Việt · phiên âm IPA · 4 kỹ năng · lên cấp</div>
+    </a>
+  </div>
+  <footer>Mỗi ngôn ngữ có hồ sơ người học, bộ sưu tập và tiến độ riêng · Chạy trên máy anh</footer>
+</body>
+</html>
