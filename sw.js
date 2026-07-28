@@ -1,6 +1,6 @@
 // Service Worker — cho phép cài app & học OFFLINE
 // Chiến lược: file app (HTML/icon/ngữ pháp) cache trước; từ điển lớn cache khi dùng lần đầu.
-var VERSION = 'hsk-pwa-v1';
+var VERSION = 'hsk-pwa-v2';   // nâng phiên bản → người dùng nhận bản mới (tra Việt→Trung + tab Dịch)
 var CORE = [
   './',
   './index.html',

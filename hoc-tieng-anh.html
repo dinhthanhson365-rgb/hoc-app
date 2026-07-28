@@ -455,6 +455,7 @@
 <nav class="toc" id="tabBar">
   <button class="tab-btn" data-tab="luyentap">🎯 Luyện tập</button>
   <button class="tab-btn" data-tab="tudien">📖 Từ điển</button>
+  <button class="tab-btn" data-tab="dich">🌐 Dịch</button>
   <button class="tab-btn" data-tab="baisuutap">⭐ Bộ sưu tập</button>
   <button class="tab-btn" data-tab="hoithoai">💬 Hội thoại</button>
 </nav>
@@ -1992,11 +1993,33 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!q) { out.innerHTML = ''; return; }
     loadDict(function () {
       var res = [], ql = q.toLowerCase();
+      // Gõ tiếng Việt CÓ DẤU → chắc chắn tra Việt→Anh, bỏ qua từ tiếng Anh
+      var isViet = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/.test(ql);
+      // Chấm mức khớp nghĩa Việt: 0=trùng nguyên nghĩa · 1=nghĩa bắt đầu bằng · 2=chứa nguyên từ · 3=chuỗi con · -1=không khớp
+      function viRank(e) {
+        if (e._vi.indexOf(ql) === -1) return -1;
+        var parts = e._vi.split(' ; '), best = 3;
+        for (var i = 0; i < parts.length; i++) {
+          var p = parts[i].trim();
+          if (p === ql) return 0;
+          if (best > 1 && p.indexOf(ql + ' ') === 0) best = 1;
+          else if (best > 2 && (' ' + p.replace(/[.,;:!?()\/"']/g, ' ') + ' ').indexOf(' ' + ql + ' ') !== -1) best = 2;
+        }
+        return best;
+      }
       DICT.forEach(function (e) {
-        if (e._w === ql) res.push([0, e]);
-        else if (e._w.indexOf(ql) === 0) res.push([1, e]);
-        else if (e._vi.indexOf(ql) !== -1) res.push([2, e]);
-        else if (e._w.indexOf(ql) !== -1) res.push([3, e]);
+        if (isViet) {                                      // Việt→Anh thuần túy
+          var r = viRank(e);
+          if (r >= 0) res.push([r, e]);
+        } else {                                           // chữ không dấu: từ Anh + nghĩa Việt trộn, khớp nhất lên đầu
+          if (e._w === ql) { res.push([0, e]); return; }
+          if (e._w.indexOf(ql) === 0) { res.push([1, e]); return; }
+          var r2 = viRank(e);
+          if (r2 === 0) { res.push([2, e]); return; }
+          if (r2 === 1 || r2 === 2) { res.push([3, e]); return; }
+          if (e._w.indexOf(ql) !== -1) { res.push([4, e]); return; }
+          if (r2 === 3) res.push([5, e]);
+        }
       });
       res.sort(function (a, b) { return a[0] - b[0] || a[1].w.length - b[1].w.length; });
       render(res.slice(0, 50).map(function (x) { return x[1]; }), res.length);
@@ -2145,6 +2168,169 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   document.addEventListener('click', function (ev) {
     if (ev.target !== input && sugBox && !sugBox.contains(ev.target)) hideSug();
+  });
+})();
+</script>
+
+<!-- ============ DỊCH (Anh ↔ Việt, từ / câu / đoạn) ============ -->
+<style>
+  #dich .di-intro { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5; }
+  #dcText { width: 100%; min-height: 110px; padding: 12px 14px; border: 1.5px solid var(--gold); border-radius: 12px; font-size: 1.05rem; background: var(--card); color: var(--ink); resize: vertical; line-height: 1.6; }
+  .di-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 14px; }
+  .di-dir { padding: 8px 14px; border: 1.5px solid #d8cfc4; border-radius: 999px; background: #f3ece2; cursor: pointer; font-size: 0.92rem; color: #4a4137; }
+  .di-seg { border: 1.5px solid #e6ddd2; border-left: 5px solid var(--gold); border-radius: 10px; background: var(--card); padding: 10px 14px; margin-bottom: 10px; }
+  .di-src { font-size: 1.1rem; line-height: 1.6; }
+  .di-py { color: #8a5a00; font-size: 0.92rem; font-style: italic; margin-top: 2px; }
+  .di-tr { color: var(--ink); margin-top: 6px; padding-top: 6px; border-top: 1px dashed #e6ddd2; font-size: 1rem; }
+  .di-tools { margin-top: 7px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .di-mini { font-size: 0.8rem; padding: 4px 10px; border: 1px solid #d8cfc4; border-radius: 999px; background: #f3ece2; cursor: pointer; color: #4a4137; }
+  .di-mini:hover { background: #e9dfd0; }
+  .di-mini.speaking { background: var(--red); color: #fff; }
+  #dcStatus { color: var(--muted); font-size: 0.9rem; min-height: 22px; margin-bottom: 8px; }
+</style>
+<section class="lesson" id="dich">
+<h2>🌐 Dịch Anh ↔ Việt</h2>
+<p class="di-intro">
+  Dán <strong>từ, cụm, câu hay cả đoạn văn</strong> — app tự nhận biết chiều dịch (tiếng Anh → Việt, tiếng Việt → Anh).
+  Kết quả <strong>đối chiếu từng câu</strong> kèm phiên âm IPA, 🔊 nghe và ➕ lưu vào bộ sưu tập để luyện. <em>(Dùng Google Dịch — cần internet.)</em>
+</p>
+<textarea id="dcText" placeholder="Dán đoạn văn tiếng Anh, hoặc gõ tiếng Việt cần dịch sang tiếng Anh…"></textarea>
+<div class="di-bar">
+  <button class="di-dir" id="dcDir">Chiều: Tự nhận biết</button>
+  <button class="di-mini" id="dcCopy" style="display:none">📋 Copy bản dịch</button>
+</div>
+<div id="dcStatus"></div>
+<div id="dcOut"></div>
+</section>
+<script>
+// ===== Dịch Anh ↔ Việt (Google Translate gtx, đối chiếu từng câu) =====
+(function () {
+  var txt = document.getElementById('dcText');
+  var dirBtn = document.getElementById('dcDir');
+  var copyBtn = document.getElementById('dcCopy');
+  var statusEl = document.getElementById('dcStatus');
+  var out = document.getElementById('dcOut');
+  if (!txt) return;
+
+  var DIRS = ['auto', 'en2vi', 'vi2en'];
+  var DIR_LABEL = { auto: 'Tự nhận biết', en2vi: 'Anh → Việt', vi2en: 'Việt → Anh' };
+  var dir = 'auto', lastFull = '';
+  var reqSeq = 0, debTimer = null;                       // dịch tự động: đánh số yêu cầu + hẹn giờ chờ ngừng gõ
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function isVietText(s) { return /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(s); }
+  dirBtn.addEventListener('click', function () {
+    dir = DIRS[(DIRS.indexOf(dir) + 1) % DIRS.length];
+    dirBtn.textContent = 'Chiều: ' + DIR_LABEL[dir];
+    if ((txt.value || '').trim()) translate();           // đổi chiều → dịch lại ngay
+  });
+
+  function callGT(q, tl, cb, errcb) {
+    var body = new URLSearchParams();
+    body.append('q', q);
+    fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + tl + '&dt=t', { method: 'POST', body: body })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (d) {
+        var segs = (d[0] || []).filter(function (x) { return x && x[0] != null && x[1] != null; })
+          .map(function (x) { return { tr: x[0], src: x[1] }; });
+        cb(segs, d[2] || '');
+      })
+      .catch(errcb);
+  }
+
+  function saveSeg(en, vi, btn) {
+    if (!window.CollStore || !CollStore.all().length) { alert('Anh hãy tạo một bộ sưu tập trước ở tab ⭐ Bộ sưu tập.'); return; }
+    var act = CollStore.getActive();
+    var doSave = function (py) {
+      var ok = CollStore.addWord(act, { hanzi: en, pinyin: py, meaning: vi, type: 'sentence' });
+      if (window.renderCollections) renderCollections();
+      btn.textContent = ok ? '✅ Đã lưu' : 'Đã có rồi';
+      btn.disabled = true;
+    };
+    if (window.ensureDict) window.ensureDict(function () { doSave(window.dictPinyin(en) || ''); });
+    else doSave('');
+  }
+
+  function renderSegs(segs, enIsSource) {
+    out.innerHTML = '';
+    lastFull = segs.map(function (s) { return s.tr; }).join('\n');
+    segs.forEach(function (s) {
+      var en = (enIsSource ? s.src : s.tr).trim();
+      var vi = (enIsSource ? s.tr : s.src).trim();
+      if (!en && !vi) return;
+      var d = document.createElement('div'); d.className = 'di-seg';
+      d.innerHTML = '<div class="di-src">' + esc(enIsSource ? en : vi) + '</div>' +
+        '<div class="di-py"></div>' +
+        '<div class="di-tr">→ ' + esc(enIsSource ? vi : en) + '</div>' +
+        '<div class="di-tools"><button class="di-mini di-spk">🔊 Nghe tiếng Anh</button><button class="di-mini di-save">➕ Lưu câu vào bộ</button></div>';
+      out.appendChild(d);
+      var pyEl = d.querySelector('.di-py');
+      if (window.ensureDict && en) window.ensureDict(function () { var p = window.dictPinyin(en); if (p) pyEl.textContent = p; else pyEl.style.display = 'none'; });
+      var spk = d.querySelector('.di-spk');
+      spk.addEventListener('click', function () { if (window.speakChinese && en) speakChinese(en, spk); });
+      d.querySelector('.di-save').addEventListener('click', function () { saveSeg(en, vi, this); });
+    });
+    copyBtn.style.display = '';
+  }
+
+  copyBtn.addEventListener('click', function () {
+    try { navigator.clipboard.writeText(lastFull); copyBtn.textContent = '✅ Đã copy'; setTimeout(function () { copyBtn.textContent = '📋 Copy bản dịch'; }, 1500); } catch (e) {}
+  });
+
+  // Tách văn bản thành từng câu (theo dấu kết câu + xuống dòng người dùng)
+  function splitSentences(t) {
+    var res = [];
+    t.split(/\n+/).forEach(function (line) {
+      line = line.trim(); if (!line) return;
+      var m = line.match(/[^.!?…]+[.!?…]*/g);
+      (m || [line]).forEach(function (s) { s = s.trim(); if (s) res.push(s); });
+    });
+    return res.length ? res : [t];
+  }
+  // Ghép đối chiếu: Google giữ nguyên \n nên dịch theo dòng rồi tách lại
+  function toPairs(sents, segs) {
+    var full = segs.map(function (s) { return s.tr; }).join('');
+    var parts = full.split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
+    if (parts.length === sents.length) return sents.map(function (s, i) { return { src: s, tr: parts[i] }; });
+    return [{ src: sents.join(' '), tr: full.replace(/\n/g, ' ').trim() }];   // lệch số câu → hiện 1 khối
+  }
+  function translate() {
+    var q = (txt.value || '').trim();
+    if (!q) return;
+    var seq = ++reqSeq;                                  // chỉ nhận kết quả của lần gõ MỚI NHẤT
+    var sents = splitSentences(q);
+    var qq = sents.join('\n');
+    var guessEn2Vi = (dir === 'auto') ? !isVietText(q) : (dir === 'en2vi');
+    var tl = guessEn2Vi ? 'vi' : 'en';
+    statusEl.textContent = '⏳ Đang dịch…';
+    function done(pairs, tlUsed) {
+      if (seq !== reqSeq) return;                        // đã gõ tiếp → bỏ kết quả cũ
+      statusEl.textContent = '✅ ' + (tlUsed === 'vi' ? 'Anh → Việt' : 'Việt → Anh') + ' · ' + pairs.length + ' câu';
+      renderSegs(pairs, tlUsed === 'vi');
+    }
+    callGT(qq, tl, function (segs, detected) {
+      if (seq !== reqSeq) return;
+      // Tự sửa chiều nếu ngôn ngữ phát hiện trùng với đích
+      if (dir === 'auto' && ((tl === 'vi' && detected === 'vi') || (tl === 'en' && detected === 'en'))) {
+        var tl2 = tl === 'vi' ? 'en' : 'vi';
+        callGT(qq, tl2, function (segs2) { done(toPairs(sents, segs2), tl2); }, fail);
+        return;
+      }
+      done(toPairs(sents, segs), tl);
+    }, fail);
+    function fail(err) {
+      if (seq !== reqSeq) return;
+      statusEl.innerHTML = '⚠️ Không dịch được — kiểm tra <strong>internet</strong> rồi thử lại. (' + esc(String(err && err.message || err)) + ')';
+    }
+  }
+  // Dịch TỰ ĐỘNG: gõ đến đâu dịch đến đó (chờ ngừng gõ 0.7 giây)
+  txt.addEventListener('input', function () {
+    if (debTimer) clearTimeout(debTimer);
+    reqSeq++;                                            // hủy kết quả đang bay của lần gõ trước
+    var q = (txt.value || '').trim();
+    if (!q) { out.innerHTML = ''; statusEl.textContent = ''; copyBtn.style.display = 'none'; return; }
+    statusEl.textContent = '✏️ …';
+    debTimer = setTimeout(translate, 700);
   });
 })();
 </script>
@@ -2547,7 +2733,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 // ===== Bố cục TAB: chỉ hiện 1 phần, mặc định Luyện tập =====
 document.addEventListener('DOMContentLoaded', function () {
-  var TABS = ['luyentap', 'tudien', 'baisuutap', 'hoithoai'];
+  var TABS = ['luyentap', 'tudien', 'dich', 'baisuutap', 'hoithoai'];
   // Trên điện thoại / máy khác (không phải máy chủ localhost): AI Ollama không truy cập được → ẩn tab Hội thoại
   var IS_REMOTE = ['localhost', '127.0.0.1'].indexOf(location.hostname) === -1;
   if (IS_REMOTE) {
